@@ -1,0 +1,23 @@
+@import "../config/params";
+@import "../config/mixins";
+@import "../config/blocks";
+
+.search_js {
+    position: relative;
+    &__child {
+        position: absolute;
+        top: 2.7rem;
+        width: 18rem;
+        background-color: $white;
+        box-shadow: $box-shadow-lg;
+        z-index: $z-index-min - 9;
+        &--link {
+            padding: .8rem 1.6rem;
+            display: block;
+            @include transition();
+            &:hover {
+                background-color: $gray-100;
+            }
+        }
+    }
+}

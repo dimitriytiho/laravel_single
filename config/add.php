@@ -11,12 +11,9 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'site_off' => env('OFF_WEBSITE', false), // Выключить работу сайта, передать true
-    'site_off_file' => storage_path('site_off.php'),
-
-    'search' => true, // Поиск по сайту
-    'auth' => true, // Включить авторизацию на сайте
-    'shop' => true, // Включить интернет-магазин
+    'search' => false, // Поиск по сайту
+    'auth' => false, // Включить авторизацию на сайте
+    'shop' => false, // Включить интернет-магазин
 
 
     // Список используемых локалей
@@ -112,6 +109,9 @@ return [
         ],
     ],
 
+
+    'namespace_models' => 'App\\Models',
+    'namespace_controllers' => 'App\\Http\\Controllers',
 
 
     // Настройки из файла /.env, т.к. после кэширования они будут возращать null

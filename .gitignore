@@ -13,3 +13,4 @@ yarn-error.log
 .idea/
 /bootstrap/
 /tests/
+package-lock.json

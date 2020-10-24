@@ -1,0 +1,24 @@
+@import "../config/params";
+@import "../config/mixins";
+@import "../config/blocks";
+
+
+.contain {
+    @include bg-img(contain);
+}
+.cover {
+    @include bg-img();
+}
+
+.w-3 {
+    width: 3rem;
+  }
+.h-12 {
+    height: 12rem;
+}
+.h-18 {
+    height: 18rem;
+}
+.h-24 {
+    height: 24rem;
+}

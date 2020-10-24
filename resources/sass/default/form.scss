@@ -1,0 +1,18 @@
+@import "../config/params";
+@import "../config/mixins";
+@import "../config/blocks";
+
+
+
+@media (max-width: 576px) {
+    .g-recaptcha {
+        transform: scale(.8);
+        transform-origin: left center;
+    }
+}
+
+@media (max-width: 380px) {
+    .g-recaptcha {
+        transform: scale(.7);
+    }
+}

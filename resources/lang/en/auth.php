@@ -15,5 +15,10 @@ return [
 
     'failed' => 'These credentials do not match our records.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'email_failed' => 'Email not registered.',
+    'code_incorrect' => 'The verification code is incorrect.',
+    'Verification' => 'Verification',
+
+    'Remember_me' => 'Remember Me',
 
 ];

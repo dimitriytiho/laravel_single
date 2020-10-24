@@ -1,0 +1,49 @@
+@import "../config/params";
+@import "../config/mixins";
+@import "../config/blocks";
+
+.js-none {
+  display: none;
+}
+
+.mt {
+  margin-top: $spacer * 4;
+}
+.mb {
+  margin-bottom: $spacer * 4;
+}
+.mt-mini {
+  margin-top: $spacer * 2.5;
+}
+.mb-mini {
+  margin-bottom: $spacer * 2.5;
+}
+
+.bg-transparent {
+  background-color: transparent !important;
+}
+
+.triangle {
+  @include triangle();
+}
+
+.z-min {
+  z-index: $z-index-min;
+}
+.z {
+  z-index: $z-index-normal;
+}
+.z-max {
+  z-index: $z-index-max;
+}
+
+.w-5 {
+    width: 5rem;
+}
+.w-3 {
+    width: 3rem;
+}
+
+.cur {
+  cursor: pointer;
+}

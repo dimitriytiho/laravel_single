@@ -1,0 +1,83 @@
+@import "init";
+
+// Transition
+$transition-sm: ($transition * .5) + s;
+$transition-md: ($transition * 2) + s;
+$transition-lg: ($transition * 4) + s;
+$transition: $transition + s;
+
+// Colors
+$primary-dark: darken($primary, 10%);
+$white: #fff;
+$black: #000;
+
+// Paths
+$path-fonts: '/fonts';
+
+// Bootstrap color
+//$primary: #007bff;
+//$secondary: #6c757d; // rgba(108, 117, 125, 0)
+$success: #28a745;
+$danger: #dc3545;
+$warning: #ffc107;
+$info: #17a2b8;
+//$light: #f8f9fa;
+//$dark: #343a40;
+
+$primary-light: lighten($primary, 40%);
+$secondary-light: lighten($secondary, 43%);
+$success-light: lighten($success, 50%);
+$danger-light: lighten($danger, 38%);
+$warning-light: lighten($warning, 40%);
+$info-light: lighten($info, 50%);
+$light-light: #fdfdfe;
+$dark-light: lighten($dark, 15%);
+
+$indigo: #6610f2;
+$purple: #6f42c1;
+$pink: #e83e8c;
+$orange: #fd7e14;
+$teal: #20c997;
+
+$gray-100: #f8f9fa; // light
+$gray-200: #e9ecef;
+$gray-300: #dee2e6;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: $secondary; // secondary
+$gray-700: #495057;
+$gray-704: #40464c;
+$gray-800: #343a40;
+$gray-900: #212529; // dark
+
+$colors: (
+    'white': $white,
+    'primary': $primary,
+    'secondary': $secondary,
+    'success': $success,
+    'info': $info,
+    'warning' : $warning,
+    'danger': $danger,
+    'light': $light,
+    'dark': $dark,
+    'black': $black
+);
+
+// Тень
+$box-shadow-mini: 0 0 5px rgba($black, 0.1);
+$box-shadow-text: 0 0 3px rgba($black, 0.8);
+
+// Затемнее фона
+$backdrop: rgba(0, 0, 0, .55);
+
+// Z-index
+$z-index-min: 10;
+$z-index-normal: 100;
+$z-index-max: 9999;
+
+// Animate
+$animate-offset-sm: 50px;
+$animate-offset: 70px;
+
+// Every
+$letter-spacing: 5px;
