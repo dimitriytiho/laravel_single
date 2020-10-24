@@ -76,7 +76,7 @@ class User extends Authenticatable
 
     // Обратная связь один ко многим
     public function role() {
-        return $this->belongsTo(RoleModel::class);
+        return $this->belongsTo(Role::class);
     }
 
 

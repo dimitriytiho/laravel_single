@@ -44,7 +44,7 @@
                         <div>{{ $values->appends(['col' => s(request()->query('s'))])->links() }}</div>
                     </div>
                     <div class="col-12">
-                        <p class="font-weight-light text-center text-secondary mt-3">{{ __("{$lang}::a.shown") . $values->count() . __("{$lang}::a.of") .  $values->total()}}</p>
+                        <p class="font-weight-light text-center text-secondary mt-3">{{ __('a.shown') . $values->count() . __('a.of') .  $values->total()}}</p>
                     </div>
                 </div>
             @else

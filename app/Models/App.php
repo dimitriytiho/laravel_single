@@ -21,4 +21,12 @@ class App extends Model
     {
         parent::__construct();
     }
+
+
+    // Scope для активных элементов, использование ->active()
+    public function scopeActive($query)
+    {
+        $statusActive = config('add.page_statuses')[1] ?: 'active';
+        return $query->where('status', $statusActive);
+    }
 }

@@ -1,0 +1,10 @@
+Developer: Dmitriy Konovalov
+Email: dimitriyyuliya@gmail.com
+Facebook: https://www.facebook.com/dimitriyyuliya
+From: Moscow, Russia
+Language: Russian
+Doctype: HTML5
+Framework: Laravel
+IDE: PHPStorm, Visual Studio, Sublime Text, Photoshop, Illustrator
+Brand: OmegaKontur
+Last update: 2020-06-20

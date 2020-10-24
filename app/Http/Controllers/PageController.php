@@ -51,7 +51,7 @@ class PageController extends AppController
             $values = $this->model::where('slug', $slug)->firstOrFail();
 
         } else {
-            $values = $this->model::where('slug', $slug)->where('status', $this->statusActive)->firstOrFail();
+            $values = $this->model::where('slug', $slug)->active()->firstOrFail();
         }
 
 

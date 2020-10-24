@@ -3,57 +3,11 @@
 
 namespace App\Helpers;
 
-use Curl\Curl;
 use Illuminate\Support\Facades\File as SupportFile;
 use Illuminate\Support\Facades\Storage;
 
 class File
 {
-    /*
-     * Соединяет файлы в один.
-     *
-     * $filesPathArr - массив с путём и названием файлов, относительно диска $diskName, который указан в /config/filesystems.php 'disks'.
-     * Также можно передать url библиотеки, к примеру jQuery.
-     *
-     * $newFilePath - Путь с названием, относительно диска $diskName, который указан в /config/filesystems.php 'disks'.
-     * $diskName - название диска, который указан в /config/filesystems.php 'disks', необязательный параметр, по-умолчанию папка public, можно передать null.
-     * $writeFile - передайте true, если не нужно каждый раз записывать новый файл, необязательный параметр (если в файле .env APP_ENV=local, то будет каждый раз записывать новый файл).
-     */
-    public static function merge($filesPathArr, $newFilePath, $diskName = 'public_folder', $writeFile = false)
-    {
-        $part = '';
-        $diskName = $diskName ?: 'public_folder';
-        $writeFile = $writeFile || config('add.env') === 'local';
-        $disk = Storage::disk($diskName);
-
-
-        if (!$disk->exists(($newFilePath)) || $writeFile) {
-
-            if ($filesPathArr && is_array($filesPathArr)) {
-
-                foreach ($filesPathArr as $key => $file) {
-
-                    // Если передаётся url, то получим содержимое
-                    if (strpos($file, 'http') !== false) {
-
-                        // Библиотека php-curl-class
-                        $curl = new Curl();
-                        $curl->get($file);
-                        $part .= $curl->response . PHP_EOL;
-                    }
-
-                    if ($disk->exists($file)) {
-                        $part .= $disk->get($file) . PHP_EOL;
-                    }
-                }
-
-                // Запишем новый файл
-                $disk->put($newFilePath, $part);
-            }
-        }
-    }
-
-
     /*
      * Обычный php массив сохраняем в файл.
      * $filePath - Путь к файлу, в который сохранить массив.

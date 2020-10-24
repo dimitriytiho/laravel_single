@@ -14,7 +14,8 @@
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
+                    <p>{{ __('You are logged in!') }}</p>
+                    <a href="{{ route('logout') }}" class="btn btn-outline-primary mt-3">{{ __('Logout') }}</a>
                 </div>
             </div>
         </div>

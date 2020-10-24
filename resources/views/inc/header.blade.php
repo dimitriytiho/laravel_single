@@ -20,7 +20,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('contact_us') }}">Связаться с нами</a>
                 </li>
-                {{--@if (config('add.auth'))
+                @if (config('add.auth'))
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('login') }}">Login</a>
                     </li>
@@ -28,12 +28,12 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('enter') }}">Вход</a>
                     </li>
-                @endif--}}
-                @if (Auth::check() && Auth::user()->Admin())
+                @endif
+                {{--@if (auth()->check() && auth()->user()->Admin())
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('admin.main') }}">Админ</a>
                     </li>
-                @endif
+                @endif--}}
             </ul>
             @if (config('add.search'))
                 <form action="{{ route('search') }}" class="form-inline my-2 my-lg-0 search_js" autocomplete="off">

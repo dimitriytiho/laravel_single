@@ -24,6 +24,9 @@ class AppController extends Controller
         $this->perPage = config('add.pagination');
         $this->breadcrumbs = new Breadcrumbs();
 
+        // Строка поиска
+        $searchQuery = s(request()->query('s')) ?: Main::get('search_query');
+
         // Только внутри этой конструкции работают некоторые методы
         /*$this->middleware(function ($request, $next) {
             $authCheck = auth()->check();
@@ -38,8 +41,8 @@ class AppController extends Controller
             return $next($request);
         });*/
 
-        // Строка поиска
-        $searchQuery = s(request()->query('s')) ?: Main::get('search_query');
+        // Удалить все кэши
+        //cache()->flush();
 
         // Передаём в виды
         view()->share(compact('statusActive', 'searchQuery'));
