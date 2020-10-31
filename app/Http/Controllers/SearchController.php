@@ -61,7 +61,6 @@ class SearchController extends AppController
         }
 
         $title = __('a.search');
-        $this->setMeta($title);
         return view("page.{$this->view}", compact('title', 'values'));
     }
 
@@ -96,7 +95,7 @@ class SearchController extends AppController
             }
             die;
         }
-        Main::getError("{$this->class} request", __METHOD__);
+        Main::getError('Request', __METHOD__);
     }
 }
 

@@ -3,7 +3,7 @@
 namespace App\Exports;
 
 use App\Helpers\ImportExport;
-use App\Modules\Admin\Models\User;
+use App\Models\User;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;

@@ -8,16 +8,12 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'settings' => [
-
-        'pagination' => 24, // 10 25 50 100
-        'pagination_default' => 1, // 25 По-умолчанию кол-во пагинации
-
-    ],
+    'pagination' => [10, 25, 50, 100],
+    'pagination_default' => 25, // По-умолчанию кол-во пагинации
 
     'locales' => [
         'ru',
-        //'en',
+        'en',
     ],
 
     'cookie' => 5184000, // 60 дней
@@ -38,8 +34,8 @@ return [
 
     // Зоны доступа для пользователей
     'user_areas' => [
-        1 => env('AREA_PUBLIC', 'public'), // Должна быть 1-я область для всего сайта
-        2 => env('AREA_ADMIN', 'admin'), // Должна быть 2-я область для админки сайта
+        1 => 'public', // Должна быть 1-я область для всего сайта
+        2 => 'admin', // Должна быть 2-я область для админки сайта
     ],
 
     /*
@@ -66,25 +62,12 @@ return [
     // Выбор редактора для контента
     'editor' => 'codemirror', // Есть варианты: codemirror, ckeditor,
 
-    // Прилипающая кнопка отправить
-    'sticky_submit' => true,
 
     // Статусы заказов
     'order_statuses' => [
         'new', // Должен быть первый new статус, т.е. новый
         'in_process',
         'completed',
-    ],
-
-    // Команды для терминала на странице Дополнительно
-    'commands' => [
-        'make:module',
-        'make:controller',
-        'make:model',
-        'make:middleware',
-        'migrate',
-        'migrate:rollback',
-        'make:migration',
     ],
 
 
@@ -96,14 +79,6 @@ return [
         'gif',
     ],
 
-    // Настройки для SCSS, при изменении настроек необходимо запустить метод \App\Helpers\Upload::resourceInit(); и перекомпилировать стили
-    'scss' => [
-        'primary-admin' => '#78909c',
-        'dark-admin' => '#292b37',
-        'light-admin' => '#eceff1',
-        'gray-blue' => '#78909c',
-        'transition-admin' => '.5',
-    ],
 
     // Картинки - для новых, используйте название как написаны, в конце подставляя свои, например imgBrand
     // Пользователи

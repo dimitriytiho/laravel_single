@@ -34,15 +34,15 @@ class AppServiceProvider extends ServiceProvider
         // ЗДЕСЬ ПИСАТЬ КОД, КОТОРЫЙ ЗАПУСКАЕТСЯ ПОСЛЕ ЗАГРУЗКИ ВСЕХ СЕРВИС-ПРОВАЙДЕРОВ
 
 
-        // Определить мобильну версию
-        /*$detect = new \Mobile_Detect();
+        // Определить мобильную версию
+        $detect = new \Mobile_Detect();
         $isMobile = $detect->isMobile();
-        Main::set('isMobile', $isMobile);*/
+        //Main::set('isMobile', $isMobile);
 
         // Подключаем вспомогательные библиотеки из /app/Libs
         $lib = app_path('Libs');
         $functionFile = "{$lib}/function.php";
-        $constructorFile = "{$lib}/constructor.php";
+        $constructorFile = "{$lib}/construct.php";
         if (File::isFile($functionFile)) {
             require_once $functionFile;
         }
@@ -112,6 +112,6 @@ class AppServiceProvider extends ServiceProvider
 
 
         // Передаём в виды переменные
-        view()->share(compact('getMeta', 'cononical', 'img'));
+        view()->share(compact('isMobile', 'getMeta', 'cononical', 'img'));
     }
 }

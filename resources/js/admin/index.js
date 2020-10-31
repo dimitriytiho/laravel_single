@@ -1,0 +1,7 @@
+import './confirm'
+import './ajax'
+import './scroll'
+import './pulse'
+import './validate'
+import './temlate'
+import './scripts'

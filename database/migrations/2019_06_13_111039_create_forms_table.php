@@ -19,6 +19,7 @@ class CreateFormsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->text('message')->nullable();
             $table->string('ip', 32)->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -112,6 +112,7 @@ return [
 
     'namespace_models' => 'App\\Models',
     'namespace_controllers' => 'App\\Http\\Controllers',
+    'namespace_helpers' => 'App\\Helpers',
 
 
     // Настройки из файла /.env, т.к. после кэширования они будут возращать null

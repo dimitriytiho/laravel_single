@@ -1,8 +1,12 @@
 {{--
 
-Основной шаблон по-умолчанию
+@section('titleSeo') Test title @endsection В любом месте переопределить titleSeo
 
---}}
+@section('description') Test description @endsection В любом месте переопределить description
+
+
+
+Основной шаблон по-умолчанию --}}
 <!doctype html>
 <html lang="{{ app()->getLocale() }}" class="no-js">
 <head>
@@ -20,10 +24,15 @@
     <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('touch-icon-ipad-retina.png') }}">
     <link rel="cononical" href="{{ $cononical }}">
     <script src="{{ asset('js/modernizr3.6.0.webp.js') }}"></script>
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.13/css/all.css">
     {{-- <link href="//fonts.googleapis.com/css?family=Roboto:300,400,700&amp;subset=cyrillic" rel="stylesheet"> --}}
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    {!! $getMeta !!}
+    <title>@section('titleSeo'){{ $titleSeo ?? $title ?? Main::site('name') }}@show</title>
+    <meta name="description" content="@section('description'){{ $description ?? ' ' }}@show" />
+    @if (!empty($keywords))
+        <meta name="keywords" content="{{ $keywords }}" />
+    @endif
     {{-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"> --}}
     @include('inc.warning')
     {{--
@@ -36,7 +45,7 @@
 {{--
 
 Панель администратора --}}
-{{--{!! PanelDashboard::init() !!}--}}
+@include('inc.panel_dashboard')
 <div class="app" id="app">
     <div class="content-block">
         @yield('header')
@@ -104,9 +113,6 @@ CDN ленивой загрузки картинок
 
 
 Google ReCaptcha, если есть в настройках указан секретный ключ --}}
-@if (config('add.recaptcha_secret_key'))
-    <script src="//www.google.com/recaptcha/api.js"></script>
-@endif
 @if (config('add.recaptcha_secret_key'))
     <script src="//www.google.com/recaptcha/api.js"></script>
 @endif

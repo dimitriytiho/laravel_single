@@ -23,6 +23,7 @@ class CreatePagesTable extends Migration
             $table->smallInteger('sort')->unsigned()->default('500');
             $table->text('description')->nullable();
             $table->text('body')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

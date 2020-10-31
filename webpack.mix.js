@@ -2,11 +2,18 @@ const mix = require('laravel-mix');
 
 mix
 .js('resources/js/before/index.js', 'public/js/before.js')
+
 .js('resources/js/index.js', 'public/js/app.js')
 .sass('resources/sass/index.scss', 'public/css/app.css')
 	.options({
 		processCssUrls: false,
 	})
+
+.js('resources/js/admin/index.js', 'public/js/append.js')
+.sass('resources/sass/admin/index.scss', 'public/css/append.css')
+    .options({
+        processCssUrls: false,
+    })
 ;
 
 /*mix.styles([
@@ -19,4 +26,4 @@ mix
     'public/js/dashboard.js'
 ], 'public/js/all.js');*/
 
-//mix.browserSync('127.0.0.1:8000');
+mix.browserSync('127.0.0.1:8000');

@@ -14,12 +14,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-// Если нужно выключить веб-сайт, то раскомментируйте
-/*Route::domain(config('add.url'))->group(function () {
-    // Редирект на страницу /public/error.php
-    header('Location: ' . env('APP_URL') . '/error.php');
-    die;
-});*/
+// Если выключен веб-сайт, то редирект на страницу /error.php
+if (env('OFF_WEBSITE')) {
+    Route::domain(config('add.url'))->group(function () {
+        header('Location: ' . env('APP_URL') . '/error.php');
+        die;
+    });
+}
 
 
 // Если в запросе /public, то сделается редирект на без /public
@@ -32,6 +33,11 @@ if (stripos($url, $public) !== false) {
 }
 
 $namespaceControllers = config('add.namespace_controllers');
+
+// Admin
+if (is_file($file = __DIR__ . '/admin.php')) {
+    require_once $file;
+}
 
 
 // Auth

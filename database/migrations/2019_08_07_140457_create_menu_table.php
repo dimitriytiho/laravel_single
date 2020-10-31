@@ -27,6 +27,7 @@ class CreateMenuTable extends Migration
             $table->string('attr', 64)->nullable();
             $table->string('status', 32)->default(config('add.page_statuses')[0]);
             $table->smallInteger('sort')->unsigned()->default('500');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

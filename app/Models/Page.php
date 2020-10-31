@@ -3,23 +3,21 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class Page extends App
 {
-    protected $guarded = ['id', 'created_at', 'updated_at'];
+    protected $guarded = ['id', 'created_at', 'updated_at']; // Запрещается редактировать
 
 
+    use SoftDeletes;
     use HasFactory;
 
 
-    public function __construct()
+    // Связь один ко многим внутри модели
+    public function parents()
     {
-        parent::__construct();
-
-        $this->class = class_basename(__CLASS__);
-        $this->model = "\\App\\Models\\{$this->class}";
-        $this->table = with($this)->getTable();
-        $this->view = Str::snake($this->class);
+        return $this->hasMany(self::class, 'parent_id', 'id');
     }
 }

@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\Main;
 use Illuminate\Http\Request;
 use App\Libs\Breadcrumbs;
+use Illuminate\Support\Str;
 
 class AppController extends Controller
 {
@@ -28,18 +29,26 @@ class AppController extends Controller
         $searchQuery = s(request()->query('s')) ?: Main::get('search_query');
 
         // Только внутри этой конструкции работают некоторые методы
-        /*$this->middleware(function ($request, $next) {
-            $authCheck = auth()->check();
+        $this->middleware(function ($request, $next) {
 
-            // Вручную аутентифицировать каждого пользователя как тестового
-            if (!$authCheck) {
-                $user = $this->userModel::find(1);
-                auth()->login($user);
+            if (auth()->check()) {
+
+                // Сохраняем в сессию страницу с которой пользователь перешёл из админки
+                $previousUrl = url()->previous();
+                $adminPrefix = config('add.admin');
+                if (Str::is("*{$adminPrefix}*", $previousUrl)) { // Если url не содержит админский префикс
+                    session()->put('back_link_admin', $previousUrl);
+                }
             }
 
-            //View::share(compact('authCheck'));
+            // Вручную аутентифицировать каждого пользователя как тестового
+            /*if (!auth()->check()) {
+                $user = $this->userModel::find(1);
+                auth()->login($user);
+            }*/
+
             return $next($request);
-        });*/
+        });
 
         // Удалить все кэши
         //cache()->flush();

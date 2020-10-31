@@ -27,6 +27,7 @@ class CreateOrdersTable extends Migration
             $table->smallInteger('qty')->nullable();
             $table->float('sum')->nullable();
             $table->string('ip', 32)->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

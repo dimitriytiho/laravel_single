@@ -131,6 +131,7 @@ return [
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',
+            'tel' => 'phone',
         ],
     ],
 
@@ -149,6 +150,6 @@ return [
 
 
     'recaptcha' => 'The :attribute answer is invalid.',
-    'tel' => 'The :attribute must be in phone format',
+    'tel' => 'The :attribute must be a valid phone.',
 
 ];

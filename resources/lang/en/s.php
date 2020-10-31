@@ -8,10 +8,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    // Service
     'Close' => 'Close',
-    'remember_me' => 'Remember me',
-    'login' => 'Login',
     'Please_enable_JavaScript' => 'Please enable JavaScript in your browser settings, it is necessary for the correct operation of the website!',
     'browser_you_are_using_is_outdated' => 'Unfortunately, the browser you are using is outdated and cannot display the site correctly. Download any of the following browsers:',
 
@@ -55,7 +52,7 @@ return [
     'removed_successfully_name' => ':name removed successfully.',
     'remove' => 'Remove',
     'remove_not_possible' => 'Remove not possible',
-    'there_are_nested' => 'there are nested',
+    'there_are_nested' => 'there are nested ',
     'there_are_parents' => 'there are parents',
     'user_has' => 'The user has ',
     'product_is_present_in_order' => 'The product is present in the order ',
@@ -120,8 +117,6 @@ return [
     'no' => 'No required',
     'required' => 'required',
 
-
-    // Date
     'January' => 'January',
     'February' => 'February',
     'March' => 'March',
@@ -151,11 +146,9 @@ return [
     'Saturday' => 'Saturday',
     'Sunday' => 'Sunday',
 
-
     'from' => ' from ',
     'to' => ' to ',
 
-    // Shop
     'catalog' => 'Catalog',
     'cart' => 'Cart',
     'add_to_cart' => 'Add to cart',
@@ -169,7 +162,7 @@ return [
     'id' => 'ID',
     'image' => 'Image',
     'title' => 'Title',
-    //'quantity' => 'Quantity',
+    'quantity' => 'Quantity',
     'minus' => 'Minus',
     'plus' => 'Plus',
     'total' => 'Total',
@@ -187,5 +180,75 @@ return [
     'date' => 'Date',
     'time' => 'Time',
     'city' => 'City',
+
+    'name' => 'Name',
+    'description' => 'Description',
+    'email' => 'Email',
+    'tel' => 'Phone',
+    'message' => 'Message',
+    'accept' => 'Consent to the processing of personal data',
+    'password' => 'Password',
+    'password_confirmation' => 'Password confirmation',
+    'submit' => 'Submit',
+    'save' => 'Save',
+    'received' => 'Received',
+    'refusal' => 'Refusal',
+    'verification_code' => 'Verification code',
+    'remember' => 'Remember me',
+    '_token' => 'Token',
+    'reset_password' => 'Reset the password',
+    'link_to_change_password' => 'Link to change your password',
+    'you_forgot_password' => 'You forgot your password? Click the button to reset it.',
+
+    'ip' => 'IP',
+    'img' => 'Image',
+    'status' => 'Status',
+    'slug' => 'Link',
+    'parent_id' => 'Parent',
+    'category_id' => 'Category ID',
+    'sort' => 'Sort',
+    'body' => 'Content',
+    'created_at' => 'Created',
+    'updated_at' => 'Updated',
+    'will_be_updated' => 'Will be updated',
+    'must_accept' => 'You must accept it',
+    'remember_me' => 'Remember me',
+
+    'type' => 'Type',
+    'value' => 'Value',
+    'role_id' => 'Role ID',
+    'role' => 'Role',
+    'address' => 'Address',
+    'note' => 'Note',
+    'target' => 'Target',
+    'item' => 'Item',
+    'class' => 'Class',
+    'attr' => 'Attribute',
+    'current_menu' => 'Current menu',
+    'current_group' => 'Current group',
+
+    'cyrillic' => 'Cyrillic',
+    'latin' => 'Latin',
+    'to_change_key' => 'To change the key',
+    'user_id' => 'User ID',
+    'banned' => 'Banned',
+    'old_price' => 'Old price',
+    'section' => 'Section',
+
+    'login' => 'Login',
+    'register' => 'Register',
+    'forget_password' => 'Forget your password?',
+    'verify_email' => 'Verify your email address',
+    'fresh_verification_link' => 'A fresh verification link has been sent to your email address.',
+    'check_email_verification_link' => 'Before proceeding, please check your email for a verification link.',
+    'not_receive_email' => 'If you did not receive the email:',
+    'request_another' => 'Click here to request another',
+    'account' => 'Account',
+
+    'reply' => 'Reply',
+    'write' => 'To write',
+    'text' => 'Text',
+    'function' => 'Function',
+    'weight' => 'Weight',
 
 ];

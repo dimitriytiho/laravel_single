@@ -20,8 +20,6 @@ class SendServiceMail extends Notification
     public $template;
     public $h1;
     private $layout;
-    private $viewPath;
-    private $lang;
 
     /**
      * Create a new notification instance.
@@ -41,22 +39,11 @@ class SendServiceMail extends Notification
     public function __construct($title, $body = null, $values = null, $template = null, $h1 = true)
     {
         $this->layout = 'mail';
-        $this->lang = lang();
         $this->title = $title;
         $this->body = $body;
         $this->values = $values;
         $this->template = $template;
         $this->h1 = $h1;
-
-        $modulesPath = config('modules.path');
-        $this->viewPath = config('modules.views');
-
-        // Переопределим путь к видам
-        view()->getFinder()->setPaths($modulesPath);
-
-        if (!view()->exists("{$this->viewPath}.{$this->layout}")) {
-            Main::getError("View {$this->viewPath}.{$this->layout} not found", __METHOD__, false, 'critical');
-        }
     }
 
     /**
@@ -83,24 +70,23 @@ class SendServiceMail extends Notification
         $h1 = $this->h1;
         $body = $this->body;
         $view = null;
-        $lang = $this->lang;
         $site_name = Main::site('name') ?? ' ';
         $color = config('add.scss.primary', '#ccc');
 
-        if ($this->template && view()->exists("{$this->viewPath}.mail.{$this->template}")) {
-            $view = view("{$this->viewPath}.mail.{$this->template}",
+        if ($this->template && view()->exists("mail.{$this->template}")) {
+            $view = view("mail.{$this->template}",
                 compact('title', 'values', 'body', 'color', 'site_name'))
                 ->render();
         }
 
         $email = Main::site('email');
         $tel = Main::site('tel');
-        $tel = $tel ? __("{$lang}::s.or_call") . $tel : null;
+        $tel = $tel ? __('s.or_call') . $tel : null;
 
         return (new MailMessage)
-            ->view("{$this->viewPath}.{$this->layout}",
-                compact('view', 'lang', 'title', 'values', 'h1', 'body', 'site_name', 'color', 'email', 'tel'))
-            ->subject(__("{$this->lang}::s.Information_letter"));
+            ->view("layouts.{$this->layout}",
+                compact('view', 'title', 'values', 'h1', 'body', 'site_name', 'color', 'email', 'tel'))
+            ->subject(__('s.Information_letter'));
 
 
 

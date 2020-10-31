@@ -8,10 +8,11 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'accepted' => '^The must be accepted',
-    'email' => '^Must be a valid email address',
-    'required' => '^Field is required',
-    'min' => '^The must be at least characters ',
+    'accepted' => 'The must be accepted',
+    'email' => 'Must be a valid email address',
+    'tel' => 'Must be a valid phone',
+    'required' => 'Field is required',
+    'min' => 'The must be at least characters ',
 
     'min6' => 'Minimum of 6 characters',
     'data_has_not_changed' => 'Data has not changed',

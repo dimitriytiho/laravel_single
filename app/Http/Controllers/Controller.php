@@ -27,11 +27,4 @@ class Controller extends BaseController
     {
         $this->namespaceModels = config('add.namespace_models');
     }
-
-
-    // Метод вывода мета тегов в head
-    protected function setMeta($title, $description = '', $titleSeo = null, $keywords = null)
-    {
-        Main::setMeta($title, $description, $titleSeo, $keywords);
-    }
 }

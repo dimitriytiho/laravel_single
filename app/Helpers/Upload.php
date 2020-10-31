@@ -4,33 +4,36 @@
 namespace App\Helpers;
 
 
-use App\Mail\SendMail;
 use App\Models\Main;
-use App\Models\User;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+use App\Models\Upload as UploadModel;
 
 class Upload
 {
-    // Запусть этот метод, чтобы обновить сайт \App\Helpers\Upload::getUpload();
-    public static function getUpload()
+    /*
+     * Запусть этот метод, чтобы обновить сайт.
+     * \App\Helpers\Upload::getUpload();
+     * $htaccess - передать true, чтобы также сформировать файл .htaccess.
+     */
+    public static function getUpload($htaccess = false)
     {
         self::sitemap();
         self::robots();
         self::human();
         self::errorPage();
-        //self::htaccess();
+        self::resourceInit();
+
+        if ($htaccess) {
+            self::htaccess();
+        }
 
         // Обновление ключа, если в настройках change_key отмечено 1
         if (Main::site('change_key')) {
-            self::getNewKey();
+            UploadModel::getNewKey();
         }
     }
 
@@ -178,73 +181,6 @@ class Upload
                 // Иначе создадим файл и запишем в него
             } else {
                 File::put($file, $r);
-            }
-        }
-    }
-
-
-    // Возвращает ключ для входа в admin
-    public static function getKeyAdmin()
-    {
-        //return true;
-        //return 'testing';
-        //$key = 'testing';
-
-        //dd(\Illuminate\Support\Facades\Crypt::decryptString('eyJpdiI6IlZ3XC9EclVUZUFUQXZCMHpwSWVOSjVnPT0iLCJ2YWx1ZSI6IkJwckY0bGpLTEZ6aHRkYWhrdmRRaWc9PSIsIm1hYyI6ImNjNjdmMDQ4ZTg3ZjEzOTQ0ZGFkNDdkZDJlMTMwZjYzNjkxODdmMjMyNDIwN2I4ODdkYWQxZTc5Mzg5NGZlMzUifQ=='));
-
-        //$key = Crypt::encryptString($key); // Зашифровать
-        //$key = Crypt::decryptString($key->key); // Расшифровать
-
-
-        // Взязь из кэша
-        if (cache()->has('key_for_site')) {
-            return cache()->get('key_for_site');
-
-        } else {
-
-            // Запрос в БД
-            $key = DB::table('uploads')->select('key')->orderBy('id', 'desc')->first();
-
-            if (isset($key->key)) {
-
-                // Кэшируется запрос
-                cache()->forever('key_for_site', $key->key);
-
-                return $key->key;
-            }
-        }
-        return false;
-    }
-
-
-    /*
-     * Сохраниться новый ключ для входа в admin.
-     * $newKey - передать новый ключ, необязательный параметр, по-умолчанию сформируется ромдомный.
-     * $mailAdmins - если не нужно отправлять письма администраторам и редакторам, то передать false, необязательный параметр.
-     */
-    public static function getNewKey($newKey = null, $mailAdmins = true)
-    {
-        $upload = new \App\Models\Upload();
-        $key = $upload->key = $newKey ?: Str::lower(Str::random(18));
-        $upload->save();
-
-
-        // Удалить все кэши
-        cache()->flush();
-
-
-        // Отправить письмо всем admin и editor
-        if ($mailAdmins) {
-            try {
-                $roleIds = User::roleIdAdmin();
-                $emails = DB::table('users')->select('email')->whereIn('role_id', $roleIds)->get();
-                $emails = $emails->toArray();
-
-                if ($emails) {
-                    Mail::to($emails)->send(new SendMail(__("a.Key_use_site") . config('add.domain'), $key));
-                }
-            } catch (\Exception $e) {
-                Log::error("Error sending email {$e}, in " . __METHOD__);
             }
         }
     }

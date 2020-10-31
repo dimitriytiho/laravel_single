@@ -38,32 +38,14 @@ function admin()
  *
  * @return string
  *
- * Возвращает пространство имён для переводов.
- */
-function lang() {
-    $modulesNamespace = config('modules.namespace');
-    $modulesLang = config('modules.lang');
-
-    if ($modulesNamespace && $modulesLang) {
-        return "{$modulesNamespace}\\{$modulesLang}";
-    }
-    return '';
-}
-
-
-/**
- *
- * @return string
- *
  * Возвращается переводную фразу, если её нет, то строку.
  * $str - строка для перевода.
  * $fileLang - имя файла с переводом (без .php), по-умолчанию t(t.php), необязательный параметр.
  */
 function l($str, $fileLang = 't')
 {
-    if ($str) {
-        $lang = lang();
-        return \Lang::has("{$lang}::{$fileLang}.{$str}") ? __("{$lang}::{$fileLang}.{$str}") : $str;
+    if ($str && $fileLang) {
+        return \Lang::has("{$fileLang}.{$str}") ? __("{$fileLang}.{$str}") : $str;
     }
     return '';
 }
@@ -79,11 +61,10 @@ function l($str, $fileLang = 't')
  */
 function r($routeName, $parameter = null)
 {
-    if ($routeName) {
-        $route = $parameter ? route($routeName, $parameter) : route($routeName);
-        return \Route::has($routeName) ? $route : '/';
+    if ($routeName && \Route::has($routeName)) {
+        return $parameter ? route($routeName, $parameter) : route($routeName);
     }
-    return false;
+    return '';
 }
 
 

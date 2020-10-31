@@ -31,7 +31,7 @@
                         {!! input('email', null, true, null, null) !!}
                         {!! textarea('message', null, true, null, true) !!}
                         {!! checkbox('accept', true, true) !!}
-                        <button type="submit" class="btn btn-primary mt-3">@lang('f.submit')</button>
+                        <button type="submit" class="btn btn-primary mt-3">@lang('s.submit')</button>
                     </form>
                 </div>
             </div>

@@ -26,13 +26,13 @@
         @endforeach
         @if (!empty($values['qty']))
             <tr>
-                <th colspan="3" style="padding: 8px; border: 1px solid #ddd; text-align: left;">@lang("{$lang}::s.total"):</th>
+                <th colspan="3" style="padding: 8px; border: 1px solid #ddd; text-align: left;">@lang('s.total'):</th>
                 <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">{{ $values['qty'] }}</th>
             </tr>
         @endif
         @if (!empty($values['sum']))
             <tr>
-                <th colspan="3" style="padding: 8px; border: 1px solid #ddd; text-align: left;">@lang("{$lang}::s.sum"):</th>
+                <th colspan="3" style="padding: 8px; border: 1px solid #ddd; text-align: left;">@lang('s.sum'):</th>
                 <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">{{ $values['sum'] }}</th>
             </tr>
         @endif

@@ -108,46 +108,6 @@ class Main
 
 
     /*
-     * Метод вывода мета тегов в head, для использования в шаблоне.
-     * Вызовите вместо html тегов title, description и keywords, для этого в /app/Http/Controllers/Controller.php создате:
-     protected function setMeta($title, $description = '', $titleSeo = null, $keywords = null)
-    {
-        Main::setMeta($title, $description, $titleSeo, $keywords);
-    }
-     *
-     * $title - строка для вывода title.
-     * $description - строка для вывода description, по-умолчанию пустая строка, необязательный параметр.
-     * $titleSeo - если title для окна браузера отличается от title передаваемого в шаблон, то передать его здесь, по-умолчанию берётся title, необязательный параметр.
-     * $keywords - ключевые слова для страницы, по-умолчанию не выводятся, необязательный параметр.
-     */
-    public static function setMeta($title, $description = '', $titleSeo = null, $keywords = null)
-    {
-        $siteName = self::site('name') ?: ' ';
-
-        // Если нет $title, то передадим название сайта
-        if (!$title) $title = $siteName;
-
-        // Если нет $titleSeo, то передадим в неё $title
-        if (!$titleSeo) $titleSeo = $title;
-
-        // Для главной страницы сначала название сайта, а для остальных - сначала title, потом название
-        $titleSeo = request()->is('/') ? "{$siteName} | {$titleSeo}" : "{$titleSeo} | {$siteName}";
-
-        // Формируем метатеги
-        $getMeta = "<title>{$titleSeo}</title>\n\t";
-        $getMeta .= "<meta name=\"description\" content=\"{$description}\" />\n";
-
-        if ($keywords) {
-            $getMeta .= "<meta name=\"keywords\" content=\"{$keywords}\" />\n";
-        }
-
-        // Переменные передаются в виды
-        View::share(compact('title', 'titleSeo', 'description', 'getMeta'));
-        return;
-    }
-
-
-    /*
      * Возвращает строку: URL, Email, IP пользователя.
      * $referer - передать true, если нужно вывести страницу, с которой перешёл пользователь, необязательный параметр.
      */

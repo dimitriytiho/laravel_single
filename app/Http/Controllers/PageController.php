@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SendMail;
+use App\Models\Form;
 use App\Models\Main;
+use App\Models\User;
+use App\Models\UserAdmin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class PageController extends AppController
@@ -33,14 +38,26 @@ class PageController extends AppController
         dump($mobileDetect->isTablet());*/
 
 
-        $title = __('s.' . config('add.title_main'));
+
+        //$a = \App\Models\User::all();
+        //dump($a[0]->roles[0]->title);
+
+        //$a = \App\Models\Role::all();
+        //dump($a[2]->users[0]->name);
+
+        //$a = \App\Models\User::find(4);
+        //dump($a->admin());
+        //dump($a->roles[0]->roleIdsAdmin('public'));
+        //dump($a->role);
+
 
         // Хлебные крошки
         $breadcrumbs = $this->breadcrumbs
             ->get();
 
-        $this->setMeta($title, __('s.You_are_on_home'));
-        return view("{$this->c}.index", compact('breadcrumbs'));
+        $title = Main::site('name') . ' | ' . __('s.' . config('add.title_main'));
+        $description = __('s.You_are_on_home');
+        return view("{$this->c}.index", compact('title', 'description', 'breadcrumbs'));
     }
 
 
@@ -68,6 +85,7 @@ class PageController extends AppController
 
         // Передаём в контейнер id элемента
         Main::set('id', $values->id);
+        Main::set('view', $this->view);
 
         // Хлебные крошки
         $breadcrumbs = $this->breadcrumbs
@@ -75,8 +93,9 @@ class PageController extends AppController
             ->dynamic($values->id)
             ->get();
 
-        $this->setMeta($values->title ?? null, $values->description ?? null);
-        return view("{$this->c}.show", compact('values', 'breadcrumbs'));
+        $title = $values->title ?? null;
+        $description = $values->description ?? null;
+        return view("{$this->c}.show", compact('title', 'description', 'values', 'breadcrumbs'));
     }
 
 
@@ -88,7 +107,7 @@ class PageController extends AppController
             // Валидация
             $rules = [
                 'name' => 'required|string|max:190',
-                'tel' => 'required|string|max:190',
+                'tel' => "required|tel|max:190",
                 'email' => 'required|string|email|max:190',
                 'message' => 'required', 'string',
                 'accept' => 'accepted',
@@ -96,29 +115,19 @@ class PageController extends AppController
             ];
             $request->validate($rules);
 
-            //unset($data['g-recaptcha-response']);
-
-            /*if (Form::googleReCaptcha($data)) {
-
-                // code form...
-            }*/
-
-            /*$data['accept'] = $data['accept'] ? '1' : '0'; // В чекбокс запишем 1
-            $data['ip'] = $request->ip();
-
-            // Сохраним пользователя отправителя формы. Если есть пользователь, то обновим его данные, если нет, то создадим. Также если пользователь Админ или Редактор, то не будем обновлять его данные.
-            $userId = Form::userFormSave($data);
+            // Сохраним пользователя отправителя формы. Если есть пользователь, то обновим его данные, если нет, то создадим.
+            $userId = UserAdmin::saveUser($request);
             if (!$userId) {
                 Main::getError($this->class, __METHOD__);
             }
 
             // Данные form
-            $dataForm['user_id'] = $userId;
-            $dataForm['message'] = s($data['message']);
-            $dataForm['ip'] = $request->ip();
+            $data['user_id'] = $userId;
+            $data['message'] = s($data['message']);
+            $data['ip'] = $request->ip();
 
             $form = new Form();
-            $form->fill($dataForm);
+            $form->fill($data);
 
             //$method = Str::kebab(__FUNCTION__); // Из contactUs будет contact-us
             if ($form->save()) {
@@ -127,8 +136,8 @@ class PageController extends AppController
 
                 // Письмо пользователю
                 try {
-                    $title = __("{$this->lang}::s.You_have_filled_out_form") . config('add.domain');
-                    $body = __("{$this->lang}::s.Your_form_has_been_received");
+                    $title = __('s.You_have_filled_out_form') . config('add.domain');
+                    $body = __('s.Your_form_has_been_received');
 
                     Mail::to($data['email'])
                         ->send(new SendMail($title, $body));
@@ -141,8 +150,8 @@ class PageController extends AppController
                 try {
                     $formName = Str::snake(__FUNCTION__); // Из contactUs будет contact_us
                     $template = 'table_form'; // Все данные в таблице
-                    $title = __("{$this->lang}::s.Completed_form", ['name' => $formName]) . config('add.domain');
-                    $email_admin = HelpersStr::strToArr(Main::site('admin_email'));
+                    $title = __('s.Completed_form', ['name' => $formName]) . config('add.domain');
+                    $email_admin = \App\Helpers\Str::strToArr(Main::site('admin_email'));
 
                     if ($email_admin) {
                         Mail::to($email_admin)
@@ -154,19 +163,19 @@ class PageController extends AppController
                 }
 
                 // Сообщение об успехе
-                return redirect()->route('index')->with('success', __("{$this->lang}::s.Your_form_successfully"));
-            }*/
+                return redirect()->route('index')->with('success', __('s.Your_form_successfully'));
+            }
         }
 
         $title = __('s.contact_us');
+        $description = ' ';
 
         // Хлебные крошки
         $breadcrumbs = $this->breadcrumbs
             ->end(['contact_us' => $title])
             ->get();
 
-        $this->setMeta($title);
-        return view("{$this->c}.contact_us", compact('breadcrumbs'));
+        return view("{$this->c}.contact_us", compact('title', 'description', 'breadcrumbs'));
     }
 
 

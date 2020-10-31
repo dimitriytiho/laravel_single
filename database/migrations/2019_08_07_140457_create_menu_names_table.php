@@ -18,6 +18,7 @@ class CreateMenuNamesTable extends Migration
             $table->string('title', 64)->nullable();
             $table->index('title');
             $table->smallInteger('sort')->unsigned()->default('500');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

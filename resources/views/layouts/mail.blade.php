@@ -9,7 +9,7 @@
 </head>
 <body>
 
-@if ($h1)
+@if (!empty($h1))
 	<h1 style="font-size: 36px; font-weight: lighter; color: {{ $color }};">{{ $title ?? null }}</h1>
 	<br>
 @endif
