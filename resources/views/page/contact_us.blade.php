@@ -24,13 +24,14 @@
             </div>
             <div class="row">
                 <div class="col-md-6 my-4">
-                    <form method="post" action="{{ route('contact_us') }}" class="needs-validation spinner_submit" novalidate>
+                    <form method="post" action="{{ route('contact_us') }}" class="validate spinner_submit" novalidate>
                         @csrf
                         {!! input('name', null, true, null, null) !!}
-                        {!! input('tel', null, true, null, null) !!}
-                        {!! input('email', null, true, null, null) !!}
+                        {!! input('tel', null, true, 'tel', null) !!}
+                        {!! input('email', null, true, 'email', null) !!}
                         {!! textarea('message', null, true, null, true) !!}
-                        {!! checkbox('accept', true, true) !!}
+                        {!! checkboxSwitch('accept', true, true, true) !!}
+
                         <button type="submit" class="btn btn-primary mt-3">@lang('s.submit')</button>
                     </form>
                 </div>
@@ -41,15 +42,15 @@
 {{--
 
 Этот код будет выведен после всех скриптов --}}
-@push('novalidate')
-    {{--<script src="{{ asset('js/jquery.maskedinput.min.js') }}"></script>
+{{--@push('novalidate')
+    <script src="{{ asset('js/jquery.maskedinput.min.js') }}"></script>
     <script>
         $(function() {
-            $('.needs-validation').attr('novalidate', '');
+            $('.validate').attr('novalidate', '');
             $('#tel').mask('+7(999)999-99-99');
         })
-    </script>--}}
-@endpush
+    </script>
+@endpush--}}
 {{--
 
 Подключается блок footer --}}

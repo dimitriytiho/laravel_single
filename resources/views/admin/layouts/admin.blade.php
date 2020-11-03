@@ -2,21 +2,15 @@
 
     use App\Helpers\Admin\Img;
 
-    $cookie_locale = Cookie::get('locale');
-    if ($cookie_locale) {
-        app()->setLocale($cookie_locale);
-    }
-    $locale = app()->getLocale();
 
-    $path_segment = class_basename(request()->path());
-    $create_edit = $path_segment === 'edit' || $path_segment === 'create';
-
+    $isAdmin = auth()->user()->isAdmin();
+    $pathSegment = class_basename(request()->path());
     $table = $table ?? null;
     $class = $class ?? null;
 
 @endphp
 <!DOCTYPE html>
-<html lang="{{ $locale }}">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -27,15 +21,24 @@
     <link rel="apple-touch-icon" sizes="120x120" href="{{ asset(config('add.img') . '/omegakontur/admin/touch-icon-iphone-retina.png') }}">
     <link rel="apple-touch-icon" sizes="152x152" href="{{ asset(config('add.img') . '/omegakontur/admin/touch-icon-ipad-retina.png') }}">
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    {{--
+
+    Css files --}}
     <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.13/css/all.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{ asset('lte/plugins/select2/css/select2.min.css') }}">
+    {{--<link rel="stylesheet" href="{{ asset('lte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">--}}
     <link rel="stylesheet" href="{{ asset('lte/dist/css/adminlte.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/codemirror.css">
+    @if (config('admin.editor') === 'codemirror')
+        <!-- Codemirror -->
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/codemirror.css">
+    @endif
     <!-- Toastr -->
     <link rel="stylesheet" href="{{ asset('lte/plugins/toastr/toastr.min.css') }}">
     {{--
 
     Для файлового менеджера --}}
-    @if ($path_segment === 'files')
+    @if ($pathSegment === 'files')
         <link rel="stylesheet" href="{{ asset('vendor/file-manager/css/file-manager.css') }}">
     @endif
     <link rel="stylesheet" href="{{ asset('css/append.css') }}">
@@ -71,21 +74,24 @@
 
     @include('admin.inc.footer')
 
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
-    </aside>
-    <!-- /.control-sidebar -->
+    <aside class="control-sidebar control-sidebar-dark"></aside>
 </div>
 <!-- ./wrapper -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="//stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+{{--
+
+Js files --}}
+<!-- Select2 -->
+<script src="{{ asset('lte/plugins/select2/js/select2.min.js') }}"></script>
+<script src="{{ asset('lte/plugins/select2/js/i18n/ru.js') }}"></script>
 <!-- InputMask -->
 {{--<script src="{{ asset('lte/plugins/moment/moment.min.js') }}"></script>--}}
 <script src="{{ asset('lte/plugins/inputmask/jquery.inputmask.min.js') }}"></script>
 <!-- jquery-validation -->
 <script src="{{ asset('lte/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('lte/plugins/jquery-validation/localization/messages_ru.min.js') }}"></script>
 <!-- Toastr -->
 <script src="{{ asset('lte/plugins/toastr/toastr.min.js') }}"></script>
 
@@ -93,45 +99,18 @@
 {{--
 
 Для файлового менеджера --}}
-@if ($path_segment === 'files')
+@if ($pathSegment === 'files')
     <script src="{{ asset('vendor/file-manager/js/file-manager.js') }}"></script>
 @endif
 {{--
 
-    Для страницы редактирования --}}
-@if ($create_edit)
-    {{--
 
-    Выбор редактора кода --}}
-    @if (config('admin.editor') === 'ckeditor')
-        <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
-        <script>
-            CKEDITOR.config.height = '600px'
-        </script>
-        {{-- CKEDITOR.config.filebrowserImageBrowseUrl = '/file-manager/ckeditor'
-
-        --}}
-    @elseif (config('admin.editor') === 'codemirror')
-        <script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/codemirror.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/mode/xml/xml.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                var codemirror = document.querySelector('.codemirror')
-                if (codemirror) {
-                    editor = CodeMirror.fromTextArea(codemirror, {
-                        tabMode: 'indent',
-                        lineNumbers: true,
-                        lineWrapping: true,
-                        matchBrackets: true,
-                        indentUnit: 4
-                    })
-                    editor.setSize('auto', 'auto')
-                    //editor.setSize('auto', 'auto')
-                }
-            }, false)
-
-        </script>
-    @endif
+Выбор редактора кода --}}
+@if (config('admin.editor') === 'ckeditor')
+    <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+@elseif (config('admin.editor') === 'codemirror')
+    <script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/codemirror.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/mode/xml/xml.js"></script>
 @endif
 <script>
     var _token = '{{ session()->token() }}',

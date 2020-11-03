@@ -28,7 +28,10 @@ class UserLastData extends App
 
             $last = new UserLastData();
             $last->fill($userData);
+
+            // Сохраним user_id
             $last->user_id = $user->id;
+
             $last->save();
             return true;
         }
@@ -51,15 +54,18 @@ class UserLastData extends App
             if ($lastUser && $lastUser->count()) {
                 $lastUser = $lastUser->toArray();
                 $collection = collect($lastUser);
-                $diff = $collection->diff($user->toArray());
+                $user = $user->toArray();
+                if (isset($user['roles'])) unset($user['roles']);
+                $diff = $collection->diff($user);
 
                 if ($diff->all()) {
 
-                    // Сохраним user_id
-                    $lastUser['user_id'] = $user->id;
-
                     $last = new UserLastData();
                     $last->fill($lastUser);
+
+                    // Сохраним user_id
+                    $last->user_id = $user['id'];
+
                     $last->save();
                     return true;
                 }

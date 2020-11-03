@@ -12,8 +12,24 @@
                 <!-- Profile Image -->
                 <div class="card card-primary card-outline">
                     <div class="card-body box-profile">
-                        <div class="text-center">
+                        <div class="text-center position-relative">
                             <img class="profile-user-img img-fluid img-circle" src="{{ asset($values->img) }}" alt="{{ $values->name }}">
+                            {{--
+
+                            Удаление картинки --}}
+                            @if ($values->img !== config("admin.img{$class}Default"))
+                                <form method="post" action="{{ route('admin.delete_img') }}" class="close confirm_form">
+                                    @csrf
+                                    {!! hidden('img', $values->img) !!}
+                                    {!! hidden('default', config("admin.img{$class}Default")) !!}
+                                    {!! hidden('table', $table) !!}
+                                    {!! hidden('col', 'img') !!}
+                                    {!! hidden('id', $values->id) !!}
+                                    <button type="submit" class="btn text-danger p">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </form>
+                            @endif
                         </div>
 
                         <h3 class="profile-username text-center mb-4">{{ $values->name }}</h3>
@@ -33,23 +49,24 @@
                         </ul>
                         {{--
 
-                        Если есть связанные элементы --}}
-                        @if ($values->forms && $values->forms->count())
-                            <div class="small text-secondary">@lang('s.remove_not_possible'), @lang('s.there_are_nested') {{ Str::lower(__('a.Forms')) }}</div>
-                            @foreach ($values->forms as $item)
-                                <a href="{{ route('admin.form.show', $item->id) }}">{{ $item->id }}</a>
-                            @endforeach
-                        @else
+                        Если не Админ редактирует Админа --}}
+                        @if (!$values->noAdminEditAdmin())
                             {{--
 
-                            Если не Админ редактирует Админа --}}
-                            @if ($values->isAdmin())
+                            Если есть связанные элементы --}}
+                            @if ($values->forms && $values->forms->count())
+                                <div class="small text-secondary">@lang('s.remove_not_possible'), @lang('s.there_are_nested') {{ Str::lower(__('a.Forms')) }}</div>
+                                @foreach ($values->forms as $item)
+                                    <a href="{{ route('admin.form.show', $item->id) }}">{{ $item->id }}</a>
+                                @endforeach
+                            @else
                                 <form action="{{ route("admin.{$route}.destroy", $values->id) }}" method="post" class="text-right confirm_form">
                                     @method('delete')
                                     @csrf
                                     <button type="submit" class="btn btn-danger mt-3 btn-block pulse">@lang('s.remove')</button>
                                 </form>
                             @endif
+
                         @endif
                     </div>
                 </div>
@@ -69,17 +86,6 @@
                                 {!! $form::select('status', $statuses, $values->status ?? null) !!}
                             </div>
                             <div class="col-md-6">
-                                @if (!empty($roles))
-                                    {!! $form::select('role_id', $roles, $values->roles[0]->roles() ?? null, true, null, null, true, $roleIdAdmin) !!}
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                {!! $form::input('name', $values->name ?? null) !!}
-                            </div>
-                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="img">@lang('a.img')</label>
                                     <div class="form-group mt-0">
@@ -91,6 +97,13 @@
                                 </div>
                             </div>
                         </div>
+                        {{--
+
+                        Множественный select2 --}}
+                        @if (!empty($roles))
+                            {!! $form::select('role_ids', $roles, $values->roles ?? null, 'role', null, ['data-placeholder' => __('s.choose') . '...'], true, $roleIdAdmin, true, 'w-100 select2', null, null) !!}
+                        @endif
+                        {!! $form::input('name', $values->name ?? null) !!}
 
                         <div class="row">
                             <div class="col-md-6">

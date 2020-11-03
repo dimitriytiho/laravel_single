@@ -2,18 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserAdmin extends User
 {
-    use HasFactory;
-    use SoftDeletes;
-
     protected $table = 'users';
     protected $fillable = [];
     protected $guarded = ['id', 'created_at', 'updated_at'];
@@ -25,11 +18,15 @@ class UserAdmin extends User
      * @return bool
      *
      * Если не Админ выбирает себе роль Админ.
+     * $roleIds - передать массив с id ролей, которые выбрал пользователь.
      */
-    /*public function noAdmintoAdmin()
+    public function noAdmintoAdmin($roleIds = [])
     {
-        return $this->id == auth()->user()->id && !auth()->user()->isAdmin() && $this->role_id == auth()->user()->getRoleIdAdmin();
-    }*/
+        if ($roleIds && is_array($roleIds)) {
+            return !auth()->user()->isAdmin() && in_array($this->roleAdminId(), $roleIds); //$this->id == auth()->user()->id &&
+        }
+        return !auth()->user()->isAdmin() && $this->isAdmin(); //$this->id == auth()->user()->id &&
+    }
 
 
     /**
@@ -38,10 +35,10 @@ class UserAdmin extends User
      *
      * Если не Админ редактирует Админа.
      */
-    /*public function noAdminEditAdmin()
+    public function noAdminEditAdmin()
     {
-        return !auth()->user()->isAdmin() && $this->getRoleIdUser() == auth()->user()->getRoleIdAdmin();
-    }*/
+        return !auth()->user()->isAdmin() && $this->isAdmin();
+    }
 
 
 

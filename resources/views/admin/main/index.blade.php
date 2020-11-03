@@ -2,12 +2,21 @@
 
 @section('content')
     <section class="row">
-        @if (config('add.shop'))
-            {!! $construct::smallBox('info', 'fas fa-shopping-cart', $count_orders ?? '0', 'Orders', 'admin.order.index') !!}
+        {{--
+
+        Проверим, есть ли у роли разрешения на класс --}}
+        @if (config('add.shop') && $isAdmin || config('add.shop') && $permission->contains('Order'))
+            {!! $construct::smallBox('info', 'fas fa-shopping-cart', $countTable['Order'] ?? '0', 'Orders', 'admin.order.index') !!}
         @endif
-        {!! $construct::smallBox('success', 'far fa-comment-alt', $count_forms ?? '0', 'Forms', 'admin.form.index') !!}
-        {!! $construct::smallBox('warning', 'fas fa-columns', $count_pages ?? '0', 'Pages', 'admin.page.index') !!}
-        {!! $construct::smallBox('danger', 'fas fa-user-friends', $count_users ?? '0', 'Users', 'admin.user.index') !!}
+        @if ($isAdmin || $permission->contains('Form'))
+            {!! $construct::smallBox('success', 'far fa-comment-alt', $countTable['Form'] ?? '0', 'Forms', 'admin.form.index') !!}
+        @endif
+        @if ($isAdmin || $permission->contains('Page'))
+            {!! $construct::smallBox('warning', 'fas fa-columns', $countTable['Page'] ?? '0', 'Pages', 'admin.page.index') !!}
+        @endif
+        @if ($isAdmin || $permission->contains('User'))
+            {!! $construct::smallBox('danger', 'fas fa-user-friends', $countTable['User'] ?? '0', 'Users', 'admin.user.index') !!}
+        @endif
     </section>
 
     <section class="card mt-3">
@@ -22,7 +31,7 @@
         </div>
     </section>
 
-    @if (!config('add.auth'))
+    @if ($isAdmin && !config('add.auth'))
         <section class="card card-light mt-4">
             <div class="card-header">
                 <h3 class="card-title">@lang('a.key_to_enter')</h3>

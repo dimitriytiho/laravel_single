@@ -17,8 +17,6 @@ class CreateUsersLastDataTable extends Migration
             $table->id();
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->bigInteger('role_id')->unsigned();
-            $table->foreign('role_id')->references('id')->on('roles');
             $table->string('name');
             $table->string('email');
             $table->string('tel')->nullable();

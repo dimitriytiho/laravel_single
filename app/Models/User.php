@@ -13,10 +13,7 @@ use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
-    use SoftDeletes;
-
-    protected $guarded = ['id', 'role_id', 'created_at', 'updated_at'];
+    use HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -57,7 +54,7 @@ class User extends Authenticatable
 
     // Обратная многие ко многим
     public function roles() {
-        return $this->belongsToMany(Role::class);
+        return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id')->withTimestamps();
     }
 
 
@@ -111,9 +108,9 @@ class User extends Authenticatable
     public function isAdmin() {
         $roles = $this->roles;
         if (!empty($roles[0])) {
-            $roleAdmin = $roles[0]->title;
+            $roleAdminId = $roles[0]->roleAdminId();
             foreach ($roles as $key => $role) {
-                if ($roleAdmin === $role->title) {
+                if ($roleAdminId == $role->id) {
                     return true;
                 }
             }
@@ -127,7 +124,7 @@ class User extends Authenticatable
      *
      * Возвращает все id ролей пользователя в массиве.
      */
-    public function rolesIds() {
+    public function thisUserRolesIds() {
         $roles = $this->roles;
         $ids = [];
         if (!empty($roles[0])) {
@@ -185,5 +182,74 @@ class User extends Authenticatable
             return true;
         }
         return false;
+    }
+
+
+
+    /********************** Методы ролей **********************/
+    /**
+     *
+     * @return object
+     *
+     * Возвращает все роли в объекте.
+     */
+    public function getRoles()
+    {
+        $roles = new Role();
+        return $roles->roles();
+    }
+
+
+    /**
+     *
+     * @return string
+     *
+     * Возвращает название роли Администратора.
+     */
+    public function roleAdminTitle()
+    {
+        $roles = new Role();
+        return $roles->roleAdminTitle();
+    }
+
+
+    /**
+     *
+     * @return int
+     *
+     * Возвращает id роли Администратора в БД.
+     */
+    public function roleAdminId()
+    {
+        $roles = new Role();
+        return $roles->roleAdminId();
+    }
+
+    /**
+     *
+     * @return int
+     *
+     * Возвращает id роли Гостя в БД.
+     */
+    public function roleGuestId()
+    {
+        $roles = new Role();
+        return $roles->roleGuestId();
+    }
+
+
+    /**
+     *
+     * @return object
+     *
+     * Возвращает в объкте id ролей пользователей с доступом в админку.
+     *
+     * Если нужно получить id ролей пользователей без доступа в админку (с другой area), то:
+     * $area - название зоны, для которой нужны id ролей, по-умолчанию admin, необязательный параметр.
+     */
+    public function roleAdminIds($area = null)
+    {
+        $roles = new Role();
+        return $roles->roleAdminIds($area);
     }
 }

@@ -1,5 +1,4 @@
 
-
 document.addEventListener('DOMContentLoaded', function() {
 
 
@@ -12,18 +11,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Правила валидации
         rules: {
-            title: {
-                required: true
-            },
-            slug: {
-                required: true
-            },
-            /*value: {
-                required: true
-            },*/
-            'role_ids[]': {
-                required: true
-            },
             name: {
                 required: true
             },
@@ -32,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 email: true
             },
             tel: {
-                //required: true,
+                required: true,
                 checkTel: true
             },
             password: {
@@ -89,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .attr('disabled', true)
                 .prepend(spinnerBtn)
 
-            return true
+            //return true
         }
     });
 

@@ -90,7 +90,7 @@ S;
  */
 function input($name, $idForm = false, $required = true, $type = false, $value = false, $label = false, $placeholder = false, $class = false, $attrs = false)
 {
-    $title = l($name, 'f');
+    $title = l($name, 's');
     $id = $idForm ? "{$idForm}_{$name}" : $name;
 
     $required = $required ? 'required' : null;
@@ -102,9 +102,6 @@ function input($name, $idForm = false, $required = true, $type = false, $value =
     $placeholderLabel = !$label && !$required || $label ? '...' : null;
     $placeholder = ($placeholder ?: $title) . $placeholderStar . $placeholderLabel;
     $label = $label ? null : 'class="sr-only"';
-
-    $_required = __('s.required');
-    $_required = $required ? "<div class=\"invalid-feedback\">{$_required}</div>" : null;
     $part = '';
 
     if ($attrs && is_array($attrs)) {
@@ -119,7 +116,6 @@ function input($name, $idForm = false, $required = true, $type = false, $value =
 <div class="form-group {$class}">
     <label for="{$id}" {$label}>$title $star</label>
     <input type="{$type}" name="{$name}" id="{$id}" class="form-control" placeholder="{$placeholder}" value="{$value}" $part {$required}>
-    $_required
 </div>
 S;
 }
@@ -141,7 +137,7 @@ S;
  */
 function textarea($name, $idForm = false, $required = true, $value = false, $label = false, $placeholder = false, $class = false, $attrs = false, $rows = 3, $htmlspecialchars = true, $lang = null)
 {
-    $title = $lang ?: l($name, 'f');
+    $title = $lang ?: l($name, 's');
     $id = $idForm ? "{$idForm}_{$name}" : $name;
     $required = $required ? 'required' : null;
     $star = $required ? '<sup>*</sup>' : null;
@@ -154,8 +150,6 @@ function textarea($name, $idForm = false, $required = true, $value = false, $lab
 
     $label = $label ? null : 'class="sr-only"';
     $rows = (int)$rows;
-    $_required = __('s.required');
-    $_required = $required ? "<div class=\"invalid-feedback\">{$_required}</div>" : null;
     $part = '';
 
     if ($attrs && is_array($attrs)) {
@@ -170,7 +164,6 @@ function textarea($name, $idForm = false, $required = true, $value = false, $lab
 <div class="form-group">
     <label for="{$id}" {$label}>$title $star</label>
     <textarea name="{$name}" id="{$id}" class="form-control {$class}" placeholder="{$placeholder}" rows="{$rows}" $part {$required}>{$value}</textarea>
-    $_required
 </div>
 S;
 }
@@ -191,7 +184,7 @@ S;
  */
 function select($name, $options, $idForm = null, $value = null, $label = false, $class = null, $attrs = false, $disabledValue = null, $option_id_value = null, $langFile = 't')
 {
-    $title = l($name, 'f');
+    $title = l($name, 's');
     $id = $idForm ? "{$idForm}_{$name}" : $name;
     $value = $value ?: old($name);
     $label = $label ? null : 'class="sr-only"';
@@ -243,22 +236,19 @@ S;
  */
 function checkbox($name, $idForm = false, $required = true, $checked = false, $class = false, $title = false, $value = false)
 {
-    $_title = l($name, 'f');
+    $_title = l($name, 's');
     $title = $title ?: $_title;
     $id = $idForm ? "{$idForm}_{$name}" : $name;
     $value = $value ? "value=\"{$value}\"" : null;
 
     $checked = $checked || old($name) ? 'checked' : null;
     $required = $required ? 'required' : null;
-    $_required = __('s.must_accept');
-    $_required = $required ? "<div class=\"invalid-feedback\">{$_required}</div>" : null;
 
     return <<<S
 <div class="{$class}">
     <div class="custom-control custom-checkbox my-3">
         <input type="checkbox" class="custom-control-input" name="{$name}" id="{$id}" $value $checked {$required}>
         <label class="custom-control-label" for="{$id}">{$title}</label>
-        $_required
     </div>
 </div>
 S;
@@ -266,22 +256,19 @@ S;
 
 function checkboxSimple($name, $idForm = false, $required = true, $checked = false, $class = false, $title = false, $value = false)
 {
-    $_title = l($name, 'f');
+    $_title = l($name, 's');
     $title = $title ?: $_title;
     $id = $idForm ? "{$idForm}_{$name}" : $name;
     $value = $value ? "value=\"{$value}\"" : null;
 
     $checked = $checked || old($name) ? 'checked' : null;
     $required = $required ? 'required' : null;
-    $_required = __('s.must_accept');
-    $_required = $required ? "<div class=\"invalid-feedback\">{$_required}</div>" : null;
 
     return <<<S
 <div class="form-group {$class}">
     <div class="form-check mt-3 mb-2">
         <input class="form-check-input" type="checkbox" name="{$name}" id="{$id}" $value $checked {$required}>
         <label class="form-check-label" for="{$id}">{$title}</label>
-        $_required
     </div>
 </div>
 S;
@@ -289,22 +276,19 @@ S;
 
 function checkboxSwitch($name, $idForm = false, $required = true, $checked = false, $class = false, $title = false, $value = false)
 {
-    $_title = l($name, 'f');
+    $_title = l($name, 's');
     $title = $title ?: $_title;
     $id = $idForm ? "{$idForm}_{$name}" : $name;
     $value = $value ? "value=\"{$value}\"" : null;
 
     $checked = $checked || old($name) ? 'checked' : null;
     $required = $required ? 'required' : null;
-    $_required = __('s.must_accept');
-    $_required = $required ? "<div class=\"invalid-feedback\">{$_required}</div>" : null;
 
     return <<<S
 <div class="{$class}">
     <div class="custom-control custom-switch my-3">
         <input type="checkbox" class="custom-control-input" name="{$name}" id="{$id}" $value $checked {$required}>
         <label class="custom-control-label" for="{$id}">{$title}</label>
-        $_required
     </div>
 </div>
 S;
@@ -323,20 +307,17 @@ S;
  */
 function radio($name, $value, $idForm = false, $required = true, $checked = false, $class = false, $title = false)
 {
-    $_title = l($name, 'f');
+    $_title = l($name, 's');
     $title = $title ?: $_title;
     $id = $idForm ? "{$idForm}_{$name}_{$value}" : $name;
 
     $checked = $checked || old($name) ? 'checked' : null;
     $required = $required ? 'required' : null;
-    $_required = __('s.must_accept');
-    $_required = $required ? "<div class=\"invalid-feedback\">{$_required}</div>" : null;
 
     return <<<S
 <div class="custom-control custom-radio {$class}">
     <input type="radio" class="custom-control-input" id="{$id}" name="{$name}" value="{$value}" $checked {$required}>
     <label class="custom-control-label" for="{$id}">{$title}</label>
-    $_required
 </div>
 S;
 }

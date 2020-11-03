@@ -43,9 +43,7 @@ class Img
         $ImgFolder = config("admin.img{$thisClass}") . '/' . date('Y_m');
 
         // Создадим папку если нет
-        if (!File::exists(public_path($ImgFolder))) {
-            File::makeDirectory(public_path($ImgFolder));
-        }
+        File::ensureDirectoryExists(public_path($ImgFolder));
 
         // Уникальное имя
         $ImgName = "{$ImgFolder}/" . uniqid() . ".{$imgExt}";
@@ -121,23 +119,105 @@ class Img
     }
 
 
-    /*
+    /**
+     *
+     * @return array
+     *
+     * Возвращает массив с данными картинки.
+     * $imagePublicPath - название картинки, как в БД, например /img/product/tovar_1_10-03-2020_21-28.jpeg.
+     */
+    public static function imgInfo($imagePublicPath)
+    {
+        $info = pathinfo($imagePublicPath);
+        return [
+            'public_path' => $imagePublicPath,
+            'full_path' => public_path($imagePublicPath),
+            'folder_public_path' => $info['dirname'] ?? null,
+            'folder_path' => empty($info['dirname']) ? null : public_path($info['dirname']),
+            'basename' => $info['basename'] ?? null,
+            'filename' => $info['filename'] ?? null,
+            'ext' => $info['extension'] ?? null,
+        ];
+    }
+
+
+    /**
+     *
+     * @return bool
+     *
+     * Сделает копию картинки в формате Webp, возвращает true или false.
+     * $imagePublicPath - название картинки, как в БД, например /img/product/tovar_1_10-03-2020_21-28.jpeg.
+     */
+    public static function copyWebp($imagePublicPath)
+    {
+        if ($imagePublicPath) {
+            $info = self::imgInfo($imagePublicPath);
+            $acceptedImagesExt = [
+                'jpg',
+                'jpeg',
+                'png',
+                'gif',
+            ];
+
+            if (in_array($info['ext'], $acceptedImagesExt)) {
+
+                // Создать папку если нет
+                File::ensureDirectoryExists($info['folder_path']);
+
+                if (File::exists($info['full_path'])) {
+
+                    // Определяем разрешение
+                    if ($info['ext'] === 'jpeg' || $info['ext'] === 'jpg') {
+                        $webp = @imagecreatefromjpeg($info['full_path']);
+
+                    } elseif ($info['ext'] === 'png') {
+                        $webp = @imagecreatefrompng($info['full_path']);
+
+                    } elseif ($info['ext'] === 'gif') {
+                        $webp = @imagecreatefromgif($info['full_path']);
+                    }
+
+                    // Копируем webp картинку
+                    if (!empty($webp)) {
+                        $webpName = "/{$info['filename']}.webp";
+                        imagepalettetotruecolor($webp);
+                        imagealphablending($webp, true);
+                        imagesavealpha($webp, true);
+                        imagewebp($webp, $info['folder_path'] . $webpName, config('admin.webpQuality'));
+                        imagedestroy($webp);
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     *
+     * @return bool
+     *
      * Удалим картинку с сервера, возвращает true или false.
      * $img - название картинки, как в БД, например /img/product/tovar_1_10-03-2020_21-28.jpeg.
      * $imgDefault - картинка по-умолчанию, если не надо её удалять, то передать, например config('admin.imgProductDefault'), необязательный параметр.
      */
     public static function deleteImg($img, $imgDefault = null)
     {
-        if ($img) {
-            $path = public_path() . $img;
-            $ifDefault = $imgDefault && $imgDefault === $img;
+        if ($img && strpos($img, config('add.img')) !== false) {
+            $imagesDefault = [
+                config('add.img') . '/default/no_user.png',
+                config('add.img') . '/default/no_image.jpg',
+            ];
+            $path = public_path($img);
+            $ifDefault = $imgDefault === $img || in_array($img, $imagesDefault);
 
             if (!$ifDefault && File::isFile($path)) {
 
                 // Удалим картинку Webp
                 $webp = self::getWebp($img);
                 if ($webp !== $img) {
-                    File::delete(public_path() . $webp);
+                    File::delete(public_path($webp));
                 }
 
                 // Удалим обычную картинку

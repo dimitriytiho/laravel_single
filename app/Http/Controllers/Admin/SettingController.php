@@ -59,6 +59,11 @@ class SettingController extends AppController
             'id' => null,
         ];
 
+
+        // Id элементов, которые нельзя удалять
+        //$guardedIds = $this->model::whereIn('title', $this->titleNoEditArr)->pluck('id')->toArray();
+
+
         $f = __FUNCTION__;
         $title = __('a.' . Str::ucfirst($this->table));
         return view("{$this->viewPath}.{$this->view}.{$f}", compact('title', 'values', 'queryArr', 'col', 'cell', 'thead'));
@@ -74,7 +79,7 @@ class SettingController extends AppController
         $disabled = null;
         $f = __FUNCTION__;
         $title = __('a.' . Str::ucfirst($f));
-        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'readonly'));
+        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title'));
     }
 
     /**

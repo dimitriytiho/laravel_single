@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Mail\SendMail;
 use App\Models\Form;
 use App\Models\Main;
-use App\Models\User;
 use App\Models\UserAdmin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -37,18 +36,8 @@ class PageController extends AppController
         dump($mobileDetect->isMobile());
         dump($mobileDetect->isTablet());*/
 
-
-
-        //$a = \App\Models\User::all();
-        //dump($a[0]->roles[0]->title);
-
-        //$a = \App\Models\Role::all();
-        //dump($a[2]->users[0]->name);
-
-        //$a = \App\Models\User::find(4);
-        //dump($a->admin());
-        //dump($a->roles[0]->roleIdsAdmin('public'));
-        //dump($a->role);
+        // Удалить все кэши
+        //cache()->flush();
 
 
         // Хлебные крошки

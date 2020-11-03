@@ -8,8 +8,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Role extends App
 {
-    use HasFactory;
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
+
+    protected $fillable = [
+        'title',
+        'area',
+    ];
 
 
     /*
@@ -27,6 +31,14 @@ class Role extends App
     {
         return $this->belongsToMany(User::class);
     }
+
+
+    // Связь один к многим
+    public function permission()
+    {
+        return $this->hasMany(Permission::class);
+    }
+
 
 
     /**
@@ -82,9 +94,22 @@ class Role extends App
 
     /**
      *
-     * @return array
+     * @return int
      *
-     * Возвращает в массиве id ролей пользователей с доступом в админку.
+     * Возвращает id роли Гостя в БД.
+     */
+    public function roleGuestId()
+    {
+        $roles = self::roles();
+        return empty($roles[1]) ? 0 : $roles[1]->id;
+    }
+
+
+    /**
+     *
+     * @return object
+     *
+     * Возвращает в объкте id ролей пользователей с доступом в админку.
      *
      * Если нужно получить id ролей пользователей без доступа в админку (с другой area), то:
      * $area - название зоны, для которой нужны id ролей, по-умолчанию admin, необязательный параметр.
@@ -94,10 +119,21 @@ class Role extends App
         $area = $area ?: (config('admin.user_areas')[2] ?? null);
         if ($area) {
             $roles = self::roles();
-            if ($roles && $roles->count()) {
-                return $roles->where('area', $area)->pluck('id')->toArray();
-            }
+            return $roles->where('area', $area)->pluck('id');
         }
-        return [];
+        return null;
+    }
+
+
+    /**
+     *
+     * @return object
+     *
+     * Возвращает в объкте id ролей пользователей, которые запрещено изменять.
+     */
+    public function guardedIds()
+    {
+        $roles = self::roles();
+        return $roles->where('guard', '1')->pluck('id');
     }
 }

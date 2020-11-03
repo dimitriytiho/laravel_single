@@ -84,7 +84,7 @@ return [
 
     'maximum_file_size' => 'Maximum file size :size mb.',
     'allowed_to_upload_files' => 'Allowed to upload files: ',
-    'admin_choose_admin' => 'Only the Administrator can choose the Administrator role.',
+    'admin_choose_admin' => 'This action is available only to the Administrator.',
     'translation_already' => 'This translation already exists.',
 
     'checkbox' => 'Checkbox',

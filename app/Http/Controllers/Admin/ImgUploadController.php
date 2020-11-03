@@ -99,17 +99,17 @@ class ImgUploadController extends AppController
 
                     // Определяем разрешение
                     if ($ext === 'jpeg' || $ext === 'jpg') {
-                        $webp = imagecreatefromjpeg("{$imgSavePath}{$imgName}.{$ext}");
+                        $webp = @imagecreatefromjpeg("{$imgSavePath}{$imgName}.{$ext}");
 
                     } elseif ($ext === 'png') {
-                        $webp = imagecreatefrompng("{$imgSavePath}{$imgName}.{$ext}");
+                        $webp = @imagecreatefrompng("{$imgSavePath}{$imgName}.{$ext}");
 
                     } elseif ($ext === 'gif') {
-                        $webp = imagecreatefromgif("{$imgSavePath}{$imgName}.{$ext}");
+                        $webp = @imagecreatefromgif("{$imgSavePath}{$imgName}.{$ext}");
                     }
 
                     // Копируем webp картинку
-                    if (isset($webp)) {
+                    if (!empty($webp)) {
                         $webpName = "{$imgName}.webp";
                         imagepalettetotruecolor($webp);
                         imagealphablending($webp, true);
@@ -179,11 +179,11 @@ class ImgUploadController extends AppController
     public function remove(Request $request)
     {
         if ($request->ajax()) {
-            $table = $request->table ?? null;
-            $class = $request->class ?? null;
+            $table = $request->table;
+            $class = $request->class;
             $route = Str::lower($class);
-            $img = $request->img ?? null;
-            $maxFiles = $request->maxFiles ?? null;
+            $img = $request->img;
+            $maxFiles = $request->maxFiles;
             $defaultImg = config("admin.img{$class}Default");
 
             // Множественная загрузка
@@ -226,5 +226,26 @@ class ImgUploadController extends AppController
             }
         }
         Main::getError('Request No Ajax', __METHOD__);
+    }
+
+
+    /*
+     * Удаляет картинку (и webp картинку если она есть).
+     * В БД заменяется картинка на по-умолчанию.
+     */
+    public function deleteImg(Request $request) {
+        $img = $request->img;
+        $default = $request->default;
+        $table = $request->table;
+        $id = $request->id;
+        if ($img && $default && $table && $id && Schema::hasTable($table)) {
+
+            DB::table($table)
+                ->where('img', $img)
+                ->update(['img' => $default]);
+
+            Img::deleteImg($img);
+        }
+        return redirect()->back();
     }
 }

@@ -16,7 +16,7 @@
                 <select class="custom-select custom-select-sm" name="col" id="col">
                     @if ($queryArr)
                         @foreach ($queryArr as $option)
-                            <option value="{{ $option }}" @if ($col === $option) selected @endif>@lang("s.{$option}")</option>
+                            <option value="{{ $option }}" @if ($col === $option) selected @endif>@lang("a.{$option}")</option>
                         @endforeach
                     @endif
                 </select>

@@ -27,10 +27,12 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault()
         var modal = $('#confirm_modal'),
             btnOk = modal.find('.btn[data-btn=ok]'),
-            href = e.target.href
+            href = $(this).attr('href')
+
 
         // Открыть модальное окно
         modal.modal()
+
 
         // Отлеживаем клик по кнопке Ок
         btnOk.click(function () {

@@ -1,9 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
 
+    // Lazy
     $('.lazy').lazy()
-
-    // Появление картинки с задержкой
-    $('.lazy_delay').lazy({
+    $('.lazy_delay').lazy({ // Появление картинки с задержкой
         delay: 100
     })
 

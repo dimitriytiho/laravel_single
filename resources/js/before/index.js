@@ -1,1 +1,2 @@
 import './modernizr'
+import './recaptcha'

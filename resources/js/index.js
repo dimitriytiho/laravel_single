@@ -23,7 +23,6 @@ new simpleParallax(simpleParallax6, {
 })*/
 
 import './components'
-import './validate'
 import './default'
 
 

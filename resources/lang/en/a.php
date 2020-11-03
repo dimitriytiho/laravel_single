@@ -58,11 +58,9 @@ return [
     'in_process' => 'In process',
 
     'Pages' => 'Pages',
-    'IPages' => 'page|pages',
     'Order' => 'Order',
     'Orders' => 'Orders',
     'Forms' => 'Forms',
-    'IForms' => 'form|forms',
     'Categories' => 'Categories',
     'category_many' => 'Categories',
     'Products' => 'Products',
@@ -71,6 +69,7 @@ return [
     'db_builder' => 'Db builder',
     'File_manager' => 'File manager',
     'Users' => 'Users',
+    'Roles' => 'Roles',
     'user_many' => 'Users',
     'Menu' => 'Menu',
     'Menu_names' => 'Menu list',
@@ -200,5 +199,8 @@ return [
 
     'asc' => 'Ascending',
     'desc' => 'Descending',
+    'area' => 'Area',
+    'public' => 'Public',
+    'permission' => 'Permission',
 
 ];

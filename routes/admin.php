@@ -46,18 +46,13 @@ Route::namespace($namespace)
 
 
         // Shop controllers
-        Route::post('product-add-category', 'CategoryProductController@productAdd')->name('product_add_category');
-        Route::post('product-destroy-category', 'CategoryProductController@productDestroy')->name('product_destroy_category');
-
-        Route::resource('order', 'OrderController')->only(['index', 'show', 'update', 'destroy']);
+        /*Route::resource('order', 'OrderController')->only(['index', 'show', 'update', 'destroy']);
         Route::resource('category', 'CategoryController')->except(['show']);
-        Route::resource('product', 'ProductController')->except(['show']);
+        Route::resource('product', 'ProductController')->except(['show']);*/
 
         // Filters
-        Route::resource('filter-group', 'FilterGroupController')->except(['show']);
-        Route::resource('filter-value', 'FilterValueController')->except(['show']);
-        Route::post('product-add-filter', 'FilterProductController@productAdd')->name('product_add_filter');
-        Route::post('product-destroy-filter', 'FilterProductController@productDestroy')->name('product_destroy_filter');
+        /*Route::resource('filter-group', 'FilterGroupController')->except(['show']);
+        Route::resource('filters', 'FilterController')->except(['show']);*/
     }
 
 
@@ -65,6 +60,7 @@ Route::namespace($namespace)
     Route::resource('form', FormController::class)->only(['index', 'show', 'destroy']);
     Route::resource('page', PageController::class)->except(['show']);
     Route::resource('user', UserController::class)->except(['show']);
+    Route::resource('role', RoleController::class)->except(['show']);
     Route::resource('menu-name', MenuNameController::class)->except(['show']);
     Route::resource('menu', MenuController::class)->except(['show']);
     Route::resource('setting', SettingController::class)->except(['show']);
@@ -74,7 +70,7 @@ Route::namespace($namespace)
 
 
     // Website add controllers
-    Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+    Route::get('log', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
     Route::match(['get','post'],'additionally', 'AdditionallyController@index')->name('additionally');
     Route::get('/additionally/files', 'AdditionallyController@files')->name('files');
 
@@ -88,6 +84,7 @@ Route::namespace($namespace)
     Route::get('logout', 'UserController@logout')->name('logout');
 
     // Add routes post
+    Route::post('delete-img', 'ImgUploadController@deleteImg')->name('delete_img');
     Route::post('get-slug', 'MainController@getSlug')->name('get_slug');
     Route::post('img-remove', 'ImgUploadController@remove')->name('img_remove');
     Route::post('img-upload', 'ImgUploadController@upload')->name('img_upload');

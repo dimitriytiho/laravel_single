@@ -47,7 +47,7 @@ class EnterController extends AppController
         Main::getError('Open the Admin login page', __METHOD__, false, 'warning');
 
         $title = __('s.login');
-        return view("{$this->viewPath}.{$this->view}.index", compact('title'));
+        return view("admin.{$this->view}.index", compact('title'));
     }
 
     public function enterPost(Request $request)
@@ -124,22 +124,20 @@ class EnterController extends AppController
     }
 
 
+    // Действия после успешной авторизации
     protected function authenticated(Request $request, $user)
     {
-        // Действия после успешной авторизации
-
         // Записать ip пользователя в БД
         $user->saveIp();
 
         // Сохранить сообщение об совершённом входе в админку
         Log::info('Authorization of user with access Admin. ' . Main::dataUser());
-
-        return redirect()->route('admin.main');
     }
 
 
+    // Редирект поле авторизации
     protected function redirectPath()
     {
-        return route('index');
+        return route('admin.main');
     }
 }

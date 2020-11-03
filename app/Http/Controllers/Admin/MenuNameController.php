@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Main;
-use App\Helpers\Admin\App as appHelpers;
 use App\Helpers\Admin\DbSort;
 use App\Models\MenuName;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class MenuNameController extends AppController
@@ -62,6 +59,9 @@ class MenuNameController extends AppController
             'sort' => null,
             'id' => null,
         ];
+
+        // Не показываем кнопки удаления
+        //$deleteBtn = true;
 
         $f = __FUNCTION__;
         $title = __('a.' . Str::ucfirst($this->table));

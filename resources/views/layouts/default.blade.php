@@ -23,9 +23,14 @@
     <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('touch-icon-iphone-retina.png') }}">
     <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('touch-icon-ipad-retina.png') }}">
     <link rel="cononical" href="{{ $cononical }}">
-    <script src="{{ asset('js/modernizr3.6.0.webp.js') }}"></script>
+    {{--
+
+    Fonts website --}}
+    {{--<link href="//fonts.googleapis.com/css?family=Roboto:300,400,700&amp;subset=cyrillic" rel="stylesheet">--}}
+    {{--
+
+    Fontawesome--}}
     <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.13/css/all.css">
-    {{-- <link href="//fonts.googleapis.com/css?family=Roboto:300,400,700&amp;subset=cyrillic" rel="stylesheet"> --}}
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>@section('titleSeo'){{ $titleSeo ?? $title ?? Main::site('name') }}@show</title>
@@ -33,11 +38,14 @@
     @if (!empty($keywords))
         <meta name="keywords" content="{{ $keywords }}" />
     @endif
-    {{-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"> --}}
+    {{--
+
+    Bootstrap --}}
+    {{--<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">--}}
     @include('inc.warning')
     {{--
 
-    Здесь можно добавить файлы css --}}
+    Здесь можно добавить файлы css через @section('css') --}}
     @yield('css')
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
@@ -49,6 +57,7 @@
 <div class="app" id="app">
     <div class="content-block">
         @yield('header')
+
         @include('inc.message')
 
         <div class="content" id="content">
@@ -89,8 +98,8 @@
 {{--
 
 Стрелка вверх --}}
-<div class="scale-out" id="btn-up" title="@lang('s.move_to_top')">
-    {!! icon('arrow-up', 16, 16) !!}
+<div class="btn btn-primary btn-sm scale-out pulse" id="btn_up" aria-label="@lang('s.move_to_top')" title="@lang('s.move_to_top')">
+    <i class="fas fa-arrow-up"></i>
 </div>
 {{--
 
@@ -102,28 +111,60 @@
         </div>
     </div>
 </div>
+{{--
+
+JS
+
+
+Modernizr Webp --}}
+<script src="{{ asset('js/modernizr3.6.0.webp.js') }}"></script>
+{{--
+
+Google ReCaptcha --}}
+@if (config('add.recaptcha_public_key'))
+    {{--
+
+    ReCaptcha v2 --}}
+    {{--<script src="//www.google.com/recaptcha/api.js"></script>--}}
+    {{--
+
+    ReCaptcha v3 --}}
+    <script src="//www.google.com/recaptcha/api.js?render={{ config('add.recaptcha_public_key') }}"></script>
+@endif
+<script>
+    var recaptchaV = 3,
+        recaptchaKey = '{{ config('add.recaptcha_public_key') }}'
+</script>
 <script src="{{ asset('js/before.js') }}"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {{--
 
 
-CDN ленивой загрузки картинок
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script> --}}
+CDN ленивой загрузки картинок --}}
+{{--<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>--}}
 {{--
 
 
-Google ReCaptcha, если есть в настройках указан секретный ключ --}}
-@if (config('add.recaptcha_secret_key'))
-    <script src="//www.google.com/recaptcha/api.js"></script>
-@endif
+InputMask --}}
+{{--<script src="{{ asset('lte/plugins/moment/moment.min.js') }}"></script>--}}
+<script src="{{ asset('lte/plugins/inputmask/jquery.inputmask.min.js') }}"></script>
 {{--
+
+
+jquery-validation --}}
+<script src="{{ asset('lte/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('lte/plugins/jquery-validation/localization/messages_ru.min.js') }}"></script>
 
 @if (!request()->is('/'))
-<script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous" defer></script>
-@endif
-<script src="//stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous" defer></script>
+    {{--
 
---}}
+    Подсказки Bootstrap --}}
+    <script src="//cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous" defer></script>
+@endif
+{{--
+
+Bootstrap --}}
+<script src="//cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous" defer></script>
 {{--<script src="{{ asset('js/svg4everybody.min.js') }}"></script>--}}
 <script>
     {{--svg4everybody()--}}
@@ -143,12 +184,10 @@ Google ReCaptcha, если есть в настройках указан сек�
         cookieUrl = '{{ route('set_cookie') }}',--}}
         spinner = $('#spinner'),
         spinnerBtn = '<span class="spinner-grow spinner-grow-sm mr-2"></span>'
-
-    {!! \App\Helpers\Locale::translationsJson() !!}
 </script>
 {{--
 
-Если в контенте есть скрипты, то они выведятся здесь, через метод Main::getDownScript() --}}
+Если в контенте из БД есть скрипты, то они выведятся здесь, через метод Main::getDownScript() --}}
 @if (Main::get('scripts'))
     @foreach (Main::get('scripts') as $script)
         {!! $script . PHP_EOL !!}
@@ -157,12 +196,15 @@ Google ReCaptcha, если есть в настройках указан сек�
 {{--
 
 Вывод js кода из вида pages.contact_us --}}
-@stack('novalidate')
+{{--@stack('novalidate')--}}
 {{--
 
 Здесь можно добавить файлы js --}}
 @yield('js')
 <script src="{{ asset('js/app.js') }}" defer></script>
+{{--
+
+Все счётчики для сайта поместить в этот файл --}}
 @include('inc.counters')
 </body>
 </html>

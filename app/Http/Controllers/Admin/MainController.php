@@ -6,7 +6,6 @@ use App\Helpers\Admin\App;
 use App\Models\Main;
 use App\Models\Upload;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 
@@ -24,17 +23,10 @@ class MainController extends AppController
 
     public function index()
     {
-        $count_forms = DB::table('forms')->count();
-        $count_pages = DB::table('pages')->count();
-        $count_users = DB::table('users')->count();
-
-        $count_orders = DB::table('orders')->where('status', config('admin.order_statuses')[0])->count();
-
         $key = Upload::getKeyAdmin();
-
         $f = __FUNCTION__;
         $title = __('a.Dashboard');
-        return view("{$this->viewPath}.{$this->view}.{$f}", compact('title', 'count_forms', 'count_pages', 'count_users', 'key', 'count_orders'));
+        return view("{$this->viewPath}.{$this->view}.{$f}", compact('title', 'key'));
     }
 
 

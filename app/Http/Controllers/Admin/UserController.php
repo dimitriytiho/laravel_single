@@ -23,7 +23,7 @@ class UserController extends AppController
 
         $class = $this->class = str_replace('Controller', '', class_basename(__CLASS__));
         $c = $this->c = Str::lower($this->class);
-        $model = $this->model = "{$this->namespaceModels}\\{$this->class}";
+        $model = $this->model = "{$this->namespaceModels}\\UserAdmin";
         $table = $this->table = with(new $model)->getTable();
         $route = $this->route = $request->segment(2);
         $view = $this->view = Str::snake($this->class);
@@ -44,7 +44,6 @@ class UserController extends AppController
             'email',
             'tel',
             'ip',
-            'role_id',
             'id',
         ];
 
@@ -62,9 +61,11 @@ class UserController extends AppController
             'email' => null,
             'tel' => null,
             'ip' => null,
-            'role_id' => null,
             'id' => null,
         ];
+
+        // Не показываем кнопки удаления
+        //$deleteBtn = true;
 
         $f = __FUNCTION__;
         $title = __('a.' . Str::ucfirst($this->table));
@@ -85,7 +86,7 @@ class UserController extends AppController
         $roles = Role::pluck('title', 'id');
 
         // Если не Админ, то запишим id роли Админ
-        $roleIdAdmin = !auth()->user()->isAdmin() ? auth()->user()->roles[0]->roleAdminId() : null;
+        $roleIdAdmin = !auth()->user()->isAdmin() ? auth()->user()->roleAdminId() : null;
 
         $f = __FUNCTION__;
         $title = __('a.' . Str::ucfirst($f));
@@ -103,7 +104,6 @@ class UserController extends AppController
         $magesExt = implode(config('admin.acceptedImagesExt') ?? [], ',');
 
         $rules = [
-            'role_id' => 'required|integer',
             'name' => 'required|string|max:190',
             'email' => "required|string|email|unique:{$this->table},email|max:190",
             'tel' => 'nullable|tel|max:190',
@@ -126,16 +126,6 @@ class UserController extends AppController
             $data['img'] = config("admin.img{$this->class}Default");
         }
 
-
-        // Если не Админ выбирает роль Админ, то ошибка
-        if (!auth()->user()->isAdmin() && $data['role_id'] == auth()->user()->roles[0]->roleAdminId()) {
-
-            // Сообщение об ошибке
-            return redirect()
-                ->back()
-                ->with('error', __('s.admin_choose_admin'));
-        }
-
         // Если нет картинки
         if (empty($data['img'])) {
             $data['img'] = config("admin.img{$this->class}Default");
@@ -156,8 +146,8 @@ class UserController extends AppController
         $values->fill($data);
 
 
-        // Если не Админ выбирает роль Админ
-        if ($values->noAdmintoAdmin()) {
+        // Если не Админ выбирает роль Админ, то ошибка или Если не Админ редактирует Админа
+        if ($values->noAdmintoAdmin($request->role_ids) || $values->noAdminEditAdmin()) {
 
             // Сообщение об ошибке
             return redirect()
@@ -166,8 +156,20 @@ class UserController extends AppController
         }
 
 
+        // Если нет роли, то по умолчанию назначим роль Гость
+        $roleIds = $request->role_ids;
+        if (!$roleIds) {
+            $roleIds[0] = $values->roleGuestId();
+        }
+
+
         // Сохраняем элемент
         $values->save();
+
+
+        // Сохраняем роли
+        $values->roles()->sync($request->role_ids);
+
 
         // Сообщение об успехе
         return redirect()
@@ -212,7 +214,7 @@ class UserController extends AppController
         $imgUploadID = $this->imgUploadID = $values->id;
 
         // Если не Админ, то запишим id роли Админ
-        $roleIdAdmin = !auth()->user()->isAdmin() ? auth()->user()->roles[0]->roleAdminId() : null;
+        $roleIdAdmin = !auth()->user()->isAdmin() ? auth()->user()->roleAdminId() : null;
 
         $f = __FUNCTION__;
         $title = __("a.{$f}");
@@ -234,7 +236,6 @@ class UserController extends AppController
         $magesExt = implode(config('admin.acceptedImagesExt') ?? [], ',');
 
         $rules = [
-            'role_id' => 'required|integer',
             'name' => 'required|string|max:190',
             'email' => "required|string|email|unique:{$this->table},email,{$id}|max:190",
             'tel' => 'nullable|tel|max:190',
@@ -270,17 +271,25 @@ class UserController extends AppController
         $values->fill($data);
 
         // Если не Админ выбирает роль Админ, то ошибка или Если не Админ редактирует Админа
-        if ($values->noAdmintoAdmin() || $values->noAdminEditAdmin()) {
+        if ($values->noAdmintoAdmin($request->role_ids) || $values->noAdminEditAdmin()) {
 
             // Сообщение об ошибке
             return redirect()
-                ->back()
+                ->route("admin.{$this->route}.edit", $values->id)
                 ->with('error', __('s.admin_choose_admin'));
         }
 
-
-        // Сохраняем предыдущие данные, если данные были изменены
+        // Сохраняем предыдущие данные пользователя, если данные были изменены
         UserLastData::diffSaveLastUser($values);
+
+        // Если нет роли, то по умолчанию назначим роль Гость
+        $roleIds = $request->role_ids;
+        if (!$roleIds) {
+            $roleIds[0] = $values->roleGuestId();
+        }
+
+        // Сохраняем роли
+        $values->roles()->sync($roleIds);
 
 
         // Обновляем элемент

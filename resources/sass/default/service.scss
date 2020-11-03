@@ -31,18 +31,13 @@
     }
 }
 
-#btn-up {
+#btn_up {
     position: fixed;
-    bottom: $spacer * 1.3;
-    right: $spacer * 1.5;
-    z-index: $z-index-normal;
+    bottom: 1.3rem;
+    right: 1.5rem;
+    z-index: 100;
     width: 2rem;
     height: 2rem;
-    fill: $white;
-    border-radius: 50%;
-    cursor: pointer;
-    @include flex-center();
-    @include hover(rgba($black, .5), $black, background);
 }
 
 .grecaptcha-badge {

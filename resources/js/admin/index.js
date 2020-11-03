@@ -1,4 +1,5 @@
 import './confirm'
+import './components'
 import './ajax'
 import './scroll'
 import './pulse'

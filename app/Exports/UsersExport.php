@@ -20,7 +20,6 @@ class UsersExport implements FromQuery, WithHeadings // FromCollection
         'email' => 1,
         'tel' => 1,
         'address' => 0,
-        'role_id' => 1,
         'status' => 0,
         'note' => 0,
         'ip' => 0,

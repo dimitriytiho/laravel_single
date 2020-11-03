@@ -127,31 +127,64 @@ S;
      * Возвращает select для формы.
      * $name - передать название, перевод будет взять из /resources/lang/en/s.php.
      * $options - передать в массиве options (если $value будет равна одму из значений этого массива, то этот option будет selected).
-     * $value - передать значение, необязательный параметр.
+     * $value - передать значение, может быть массив или объект, необязательный параметр.
      * $label - если он нужен, то передать true, необязательный параметр.
      * $class - передайте свой класс, необязательный параметр.
      * $attrs - передайте необходимые параметры в массиве ['id' => 'test', 'data-id' => 'dataTest'], необязательный параметр.
      * $option_id_value - передайте true, если передаёте массив $options, в котором ключи это id для вывода как значения для option, необязательный параметр.
-     * $disabledValue - передать значения, для которого установить атрибут disabled.
+     * $disabledValue - передать значения, для которого установить атрибут disabled, может быть массив или объект, необязательный параметр.
+     * $multiple - для множественного select передать true, необязательный параметр.
+     * $classSelect - класс в тег select, необязательный параметр.
+     * $prependOption - передать option строкой, который будет перед другими, необязательный параметр.
+     * $noTranslate - передать null, если не нужно переводить, необязательный параметр.
      * $id - Передайте свой id, необязательный параметр.
-     * $idForm - если используется форма несколько раз на странице, то передайте id формы, чтобы у id у чекбоксова были оригинальные id.
+     * $idForm - если используется форма несколько раз на странице, то передайте id формы, чтобы у id у чекбоксова были оригинальные id, необязательный параметр.
      */
-    public static function select($name, $options, $value = null, $label = true, $class = null, $attrs = null, $option_id_value = null, $disabledValue = null, $id = null, $idForm = null)
+    public static function select($name, $options, $value = null, $label = true, $class = null, $attrs = null, $option_id_value = null, $disabledValue = null, $multiple = null, $classSelect = null, $prependOption = null, $noTranslate = true, $id = null, $idForm = null)
     {
         $title = l($name, 'a');
         $id = $idForm ? "{$idForm}_{$id}" : $id;
         $id = $id ?: $name;
         $value = $value ?: old($name) ?: null;
-        $label = $label ? null : 'class="sr-only"';
+        $multiple = $multiple ? ' multiple="multiple"' : null;
+        $name = $multiple ? "{$name}[]" : $name;
+
+        if (is_string($label)) {
+            $labelTitle = l($label, 'a');
+            $labelClass = null;
+        } elseif ($label) {
+            $labelClass = null;
+        } else {
+            $labelClass = 'class="sr-only"';
+        }
+        $label = empty($labelTitle) ? $title : $labelTitle;
 
         // Принимает в объекте 2 параметра, первый - value для option, второй название для option
         $opts = '';
         if ($options) {
             foreach ($options as $k => $v) {
-                $t = l($v, 'a');
+                $t = $noTranslate ? l($v, 'a') : $v;
                 $v = $option_id_value ? $k : $v;
-                $selected = $value === $v ? ' selected' : null;
-                $disabled = $disabledValue && $k == $disabledValue ? ' disabled' : null;
+
+                if (is_array($value)) {
+                    $selected = in_array($v, $value) ? ' selected' : null;
+                } elseif (is_object($value)) {
+                    $selected = $value->contains($v) ? ' selected' : null;
+
+                } else {
+                    $selected = $value === $v ? ' selected' : null;
+                }
+
+                if (is_array($disabledValue)) {
+                    $disabled = in_array($v, $disabledValue) ? ' disabled' : null;
+
+                } elseif (is_object($disabledValue)) {
+                    $disabled = $disabledValue->contains($v) ? ' selected' : null;
+
+                } else {
+                    $disabled = $disabledValue && $k == $disabledValue ? ' disabled' : null;
+                }
+
                 $opts .= "<option value='{$v}' {$selected}{$disabled}>{$t}</option>\n";
 
             }
@@ -168,8 +201,9 @@ S;
 
         return <<<S
 <div class="form-group $class">
-    <label for="{$id}" {$label}>{$title}</label>
-    <select class="form-control" name="{$name}" id="{$id}" {$part}>
+    <label for="{$id}" {$labelClass}>{$label}</label>
+    <select class="form-control {$classSelect}" name="{$name}" id="{$id}" $multiple {$part}>
+        $prependOption
         $opts
     </select>
 </div>

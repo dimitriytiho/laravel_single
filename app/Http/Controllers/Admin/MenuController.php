@@ -82,6 +82,10 @@ class MenuController extends AppController
             'id' => null,
         ];
 
+
+        // Id элементов, которые нельзя удалять
+        //$guardedIds = $this->model::where('parent_id', '0')->pluck('id')->toArray();
+
         $title = __('a.' . Str::ucfirst($this->table));
         return view("{$this->viewPath}.{$this->view}.{$f}", compact('title', 'parentValues', 'values', 'queryArr', 'col', 'cell', 'currentParentId', 'thead'));
     }

@@ -17,7 +17,7 @@ class CreateRolesTable extends Migration
             $table->id();
             $table->string('title', 32)->unique();
             $table->string('area', 32)->default(config('admin.user_areas')[1]);
-            $table->enum('master', ['0', '1'])->default('0');
+            $table->enum('guard', ['0', '1'])->default('0');
             $table->softDeletes();
             $table->timestamps();
         });

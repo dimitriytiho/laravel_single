@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\Admin\LeftMenu;
+use App\Models\Main;
+use App\Models\Permission;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\Helpers\Admin\Locale;
 use Illuminate\Pagination\Paginator;
@@ -45,22 +48,55 @@ class AppController extends Controller
         $this->perPage = config('admin.pagination_default');
         $this->perPageQuantity = config('admin.pagination');
 
-        /*dump(app_path('Http/Controllers'));
-        $path = app_path('Http/Controllers');
-        $files = \Illuminate\Support\Facades\File::allFiles($path);
-        foreach ($files as $key => $file) {
-            dump($file->getRealPath()); // Полный путь
-            dump($file->isFile()); // Проверка на файл
-            dump($file->isDir()); // Проверка на папку
-            dump($file->getContents()); // Получить содержимое файла
-            dump(pathinfo($file)); // Данные файла php функция pathinfo()
-        }*/
-
-        //dump($request->route()->action);
-        //dump(Str::before($request->route()->action['controller'], '@'));
 
         // Только внутри этой конструкции работают некоторые методы
         $this->middleware(function ($request, $next) {
+
+            $permission = collect([]);
+            $isAdmin = null;
+            if (auth()->check()) {
+                $isAdmin = auth()->user()->isAdmin();
+
+                // Разрешаем доспуп к контроллерам по ролям, кроме Админов
+                if (!$isAdmin) {
+
+                    $rolesIds = auth()->user()->roles()->pluck('role_id');
+                    $permission = Permission::whereIn('role_id', $rolesIds)->pluck('permission');
+
+                    // Всегда разрешает EnterController
+                    $permission->push('Admin\Enter');
+
+                    $currentController = Str::before($request->route()->action['controller'], 'Controller@');
+                    $currentController = Str::after($currentController, 'App\Http\Controllers\\');
+
+                    // Если нет разрешённых, то разрешаем MainController
+                    if ($permission->isEmpty()) {
+                        $permission->push('Admin\Main');
+                    }
+
+
+                    if (!$permission->contains($currentController)) {
+
+                        // Запишем ошибку, выбросим исключение
+                        Main::getError(' Permission Controller for ' . auth()->user()->email, __METHOD__, true, 'error');
+
+                    } /*else {
+
+                        // Сделаем редирект на разрешённый контроллер
+                        if (!empty($permission[0])) {
+                            return redirect();
+                        }
+
+                    }*/
+
+                    // Для видов сохраняем только название класса
+                    $permission = $permission->map(function ($item, $key) {
+                        return Str::after($item, 'Admin\\');
+                    });
+                }
+            }
+
+
 
             // Устанавливаем локаль
             Locale::setLocaleFromCookie($request);
@@ -78,6 +114,8 @@ class AppController extends Controller
             }
 
 
+            view()->share(compact('isAdmin', 'permission'));
+
             return $next($request);
         });
 
@@ -90,6 +128,13 @@ class AppController extends Controller
             $view->with('pathPublic', $pathPublic);
         });*/
 
-        view()->share(compact('imgRequestName', 'imgUploadID', 'namespaceHelpers', 'construct', 'form', 'dbSort'));
+
+        // Кол-во элеменото в некоторых таблицах
+        $countTable['Form'] = DB::table('forms')->count();
+        $countTable['Page'] = DB::table('pages')->count();
+        $countTable['User'] = DB::table('users')->count();
+        $countTable['Order'] = DB::table('orders')->where('status', config('admin.order_statuses')[0])->count();
+
+        view()->share(compact('imgRequestName', 'imgUploadID', 'namespaceHelpers', 'construct', 'form', 'dbSort', 'countTable'));
     }
 }

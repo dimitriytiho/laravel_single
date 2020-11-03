@@ -39,9 +39,8 @@ class Locale
                 $part = "var $varName = ";
                 $translations = require($file);
                 $part .= json_encode($translations, JSON_UNESCAPED_UNICODE);
-                //$part .= Arr::arrToJS($translations, false, true);
             }
-            return $part . "\n";
+            return $part . PHP_EOL;
         }
         return false;
     }

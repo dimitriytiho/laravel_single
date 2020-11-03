@@ -34,10 +34,10 @@ class PageController extends AppController
         // Поиск. Массив гет ключей для поиска
         $queryArr = [
             'title',
-            'parent_id',
             'slug',
             'status',
             'sort',
+            'parent_id',
             'id',
         ];
 
@@ -51,13 +51,18 @@ class PageController extends AppController
 
         // Передать поля для вывода, значение l - с переводом, t - дата
         $thead = [
-            'parent_id' => null,
             'title' => 'l',
             'slug' => null,
             'status' => 'l',
             'sort' => null,
+            'parent_id' => null,
             'id' => null,
         ];
+
+
+        // Id элементов, которые нельзя удалять
+        //$guardedIds = $this->model::where('parent_id', '0')->pluck('id')->toArray();
+
 
         $f = __FUNCTION__;
         $title = __('a.' . Str::ucfirst($this->table));

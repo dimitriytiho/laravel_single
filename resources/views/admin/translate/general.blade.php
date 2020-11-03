@@ -7,7 +7,7 @@
 @section('content')
     <div class="row">
         <div class="col">
-            <form action="{{ isset($id) ? route("admin.{$route}.update", $id) : route("admin.{$route}.store") }}" method="post" class="needs-validation" novalidate>
+            <form action="{{ isset($id) ? route("admin.{$route}.update", $id) : route("admin.{$route}.store") }}" method="post" class="validate" novalidate>
                 @if (isset($id))
                     @method('put')
                 @endif

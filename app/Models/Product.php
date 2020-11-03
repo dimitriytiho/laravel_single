@@ -20,11 +20,6 @@ class Product extends App
         return $this->belongsToMany(Category::class, 'category_product');
     }
 
-    public function orderProduct()
-    {
-        return $this->hasMany(OrderProduct::class, 'product_id');
-    }
-
     // Связь многие ко многим
     public function filter_values()
     {

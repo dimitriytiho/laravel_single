@@ -11,7 +11,7 @@
         </div>
         <div class="card-body">
 
-            <form action="{{ route('enter') }}" method="post" class="needs-validation mt-2" novalidate>
+            <form action="{{ route('enter') }}" method="post" class="validate mt-2" novalidate>
                 @csrf
                 <input type="hidden" name="g-recaptcha-response" data-id="g-recaptcha-response">
 

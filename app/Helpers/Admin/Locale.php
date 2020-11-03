@@ -37,17 +37,8 @@ class Locale
         $currentLocale = $self->currentLocale;
         $locales = $self->locales;
         $locale = $request->cookie(config('add.name') . '_loc');
-        if ($locale) {
-
-            try {
-                $locale = Crypt::decryptString($locale);
-            } catch (DecryptException $e) {
-                Main::getError('Error Crypt::decryptString', __METHOD__, false);
-            }
-
-            if ($locale !== $currentLocale && in_array($locale, $locales)) {
-                app()->setLocale($locale);
-            }
+        if ($locale && $locale !== $currentLocale && in_array($locale, $locales)) {
+            app()->setLocale($locale);
         }
     }
 }

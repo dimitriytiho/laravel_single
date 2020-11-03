@@ -43,7 +43,7 @@ class AppController extends Controller
 
             // Вручную аутентифицировать каждого пользователя как тестового
             /*if (!auth()->check()) {
-                $user = $this->userModel::find(1);
+                $user = $this->userModel::find(4);
                 auth()->login($user);
             }*/
 
