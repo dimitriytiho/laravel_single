@@ -16,9 +16,10 @@ return [
     'unauthorized_error' => 'Unauthorized error',
     'whoops' => 'Whoops! something went wrong... ',
     'whoops_no_page' => 'Whoops! Mistake... The fact is that the page you are looking for does not exist or is outdated. ',
-    'whoops_no_auth' => 'Whoops! Mistake... The thing is, something went wrong with the authorization. ',
     'whoops_no_server' => 'Whoops! Mistake... Something went wrong... ',
-    'you_can_go' => 'You can go back or go to the main page.',
+    'you_can_go' => 'You can go ',
+    'or_go' => ' or go ',
+    'to_home_page' => 'to Home Page',
 
     'Please_do_not_reply_to_this_email' => 'Please do not reply to this email as it is automatically generated.',
     'Please_contact_us' => 'For communication write to us: ',

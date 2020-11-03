@@ -15,20 +15,16 @@
 
 --}}
 @section('content')
-    <main class="main">
+    <main class="main text-center">
         <div class="container">
-            <div class="row">
-                <div class="col">
-                    <h1 class="font-weight-light text-secondary mt-5 mb-4">@lang('s.page_not_found')</h1>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <p class="mt-3 mb-5">@lang('s.whoops_no_page')</p>
-                    <div>
-                        <a href="javascript:history.back()" class="btn btn-outline-dark"><i class="fa fa-arrow-left"></i> @lang('s.back')</a>
-                        <a href="{{ route('index') }}" class="btn btn-primary"><i class="fa fa-home"></i> @lang('s.home')</a>
-                    </div>
+            <div class="row justify-content-center">
+                <div class="col-md-7">
+
+                    <i class="far fa-compass fa-5x fa-spin text-primary my-5"></i>
+
+                    <h1 class="h3 pt-4">@lang('s.whoops_no_page')</h1>
+
+                    <p class="my-5">@lang('s.you_can_go') <a href="javascript:history.back()">{{ Str::lower(__('s.back')) }},</a> @lang('s.or_go')<a href="{{ route('index') }}">@lang('s.to_home_page').</a></p>
                 </div>
             </div>
         </div>
