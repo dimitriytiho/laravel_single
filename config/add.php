@@ -12,7 +12,7 @@ return [
     */
 
     'search' => true, // Поиск по сайту
-    'auth' => false, // Включить авторизацию на сайте
+    'auth' => true, // Включить авторизацию на сайте
     'shop' => false, // Включить интернет-магазин
 
 
@@ -124,8 +124,6 @@ return [
     'dev' => env('APP_DEV', 'OmegaKontur'),
     'enter' => env('APP_ENTER', 'enter'),
     'admin' => env('APP_ADMIN', 'dashboard'),
-    'area_public' => env('AREA_PUBLIC', 'public'),
-    'area_admin' => env('AREA_ADMIN', 'admin'),
     'app_email' => env('APP_EMAIL'),
 
     'youtube_api_key' => env('YOUTUBE_API_KEY'),

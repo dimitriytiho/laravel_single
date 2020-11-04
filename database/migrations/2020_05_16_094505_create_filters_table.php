@@ -17,9 +17,9 @@ class CreateFiltersTable extends Migration
             $table->id();
             $table->bigInteger('parent_id')->unsigned();
             $table->foreign('parent_id')->references('id')->on('filter_groups');
-            $table->string('title', 64);
+            $table->string('title', 100);
             $table->index('title');
-            $table->string('status', 32)->default(config('add.page_statuses')[0]);
+            $table->string('status', 100)->default(config('add.page_statuses')[0]);
             $table->smallInteger('sort')->unsigned()->default('500');
             $table->softDeletes();
             $table->timestamps();

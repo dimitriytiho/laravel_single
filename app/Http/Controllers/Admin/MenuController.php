@@ -58,6 +58,7 @@ class MenuController extends AppController
             'slug',
             'status',
             'sort',
+            'parent_id',
             'id',
         ];
 
@@ -79,6 +80,7 @@ class MenuController extends AppController
             'slug' => null,
             'status' => 'l',
             'sort' => null,
+            'parent_id' => null,
             'id' => null,
         ];
 
@@ -125,8 +127,8 @@ class MenuController extends AppController
     {
         $rules = [
             'belong_id' => 'required|integer',
-            'parent_id' => "nullable|integer",
-            'title' => 'required|string|max:190',
+            'parent_id' => 'nullable|integer',
+            'title' => 'required|string|max:100',
         ];
         $request->validate($rules);
         $data = $request->all();
@@ -212,8 +214,8 @@ class MenuController extends AppController
 
         $rules = [
             'belong_id' => 'required|integer',
-            'parent_id' => "nullable|integer",
-            'title' => 'required|string|max:190',
+            'parent_id' => 'nullable|integer',
+            'title' => 'required|string|max:100',
         ];
         $request->validate($rules);
         $data = $request->all();

@@ -164,24 +164,16 @@ class Upload
     }
 
 
-    // Создаётся файл /error.php и в нём вид error из /app/Modules/views/errors/preventive.blade.php
+    // Создаётся файл /error.php и в нём вид error из /resources/views/errors/error.blade.php
     public static function errorPage()
     {
         $noMain = true;
-        if (view()->exists('errors.preventive')) {
-            $r = view('errors.preventive')
+        if (view()->exists('errors.error')) {
+            $r = view('errors.error')
                 ->with(compact('noMain'))
                 ->render();
             $file = base_path('error.php');
-
-            // Если есть файл, то перезапишем его
-            if (File::isFile($file)) {
-                File::replace($file, $r);
-
-                // Иначе создадим файл и запишем в него
-            } else {
-                File::put($file, $r);
-            }
+            File::put($file, $r);
         }
     }
 

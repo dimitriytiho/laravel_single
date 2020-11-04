@@ -104,12 +104,12 @@ class UserController extends AppController
         $magesExt = implode(config('admin.acceptedImagesExt') ?? [], ',');
 
         $rules = [
-            'name' => 'required|string|max:190',
-            'email' => "required|string|email|unique:{$this->table},email|max:190",
-            'tel' => 'nullable|tel|max:190',
+            'name' => 'required|string|max:250',
+            'email' => "required|string|email|unique:{$this->table},email|max:250",
+            'tel' => 'nullable|tel|max:250',
             'password' => 'required|min:6|same:password_confirmation',
             'img' => "nullable|mimes:{$magesExt}", // |max:2000
-            //'tel' => 'required|string|max:190',
+            //'tel' => 'required|string|max:250',
         ];
         $request->validate($rules);
         $data = $request->all();
@@ -236,12 +236,12 @@ class UserController extends AppController
         $magesExt = implode(config('admin.acceptedImagesExt') ?? [], ',');
 
         $rules = [
-            'name' => 'required|string|max:190',
-            'email' => "required|string|email|unique:{$this->table},email,{$id}|max:190",
-            'tel' => 'nullable|tel|max:190',
+            'name' => 'required|string|max:250',
+            'email' => "required|string|email|unique:{$this->table},email,{$id}|max:250",
+            'tel' => 'nullable|tel|max:250',
             'password' => 'nullable|min:6|same:password_confirmation',
             'img' => "nullable|mimes:{$magesExt}", // |max:2000
-            //'tel' => 'required|string|max:190',
+            //'tel' => 'required|string|max:250',
         ];
         $request->validate($rules);
         $data = $request->all();

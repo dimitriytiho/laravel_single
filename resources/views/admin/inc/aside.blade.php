@@ -21,11 +21,21 @@
 
 
                         Показываем только разрешенный контроллеры --}}
-                        @if ($isAdmin || $permission->contains($item['class']))
+                        @if (
+
+    isset($item['slug']) && $isAdmin
+    ||
+    isset($item['slug']) &&  $permission->contains($item['class'])
+
+    )
                             <li class="nav-item @if (
+
     $item['slug'] === '/' && request()->path() === config('add.admin')
-    || $item['slug'] !== '/' && Str::contains(request()->path(), $item['slug'])
-    || $item['slug'] !== '/' && Str::contains(request()->path(), $item['slugs'] ?? null)
+    ||
+    $item['slug'] !== '/' && Str::contains(request()->path(), $item['slug'])
+    ||
+    $item['slug'] !== '/' && Str::contains(request()->path(), $item['slugs'] ?? null)
+
     ) menu-is-opening menu-open active @endif">
                                 <a href="/{{ config('add.admin') . $item['slug'] }}" class="nav-link">
                                     <i class="nav-icon {{ $item['item'] }}"></i>

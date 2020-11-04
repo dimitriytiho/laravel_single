@@ -89,7 +89,7 @@ class MenuNameController extends AppController
     public function store(Request $request)
     {
         $rules = [
-            'title' => "required|string|unique:{$this->table},title|max:64",
+            'title' => "required|string|unique:{$this->table},title|max:100",
         ];
         $request->validate($rules);
         $data = $request->all();
@@ -156,7 +156,7 @@ class MenuNameController extends AppController
         $values = $this->model::findOrFail($id);
 
         $rules = [
-            'title' => "required|string|unique:{$this->table},title,{$id}|max:64",
+            'title' => "required|string|unique:{$this->table},title,{$id}|max:100",
         ];
         $request->validate($rules);
         $data = $request->all();

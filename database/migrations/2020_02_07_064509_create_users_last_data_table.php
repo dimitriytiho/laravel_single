@@ -21,8 +21,8 @@ class CreateUsersLastDataTable extends Migration
             $table->string('email');
             $table->string('tel')->nullable();
             $table->string('address')->nullable();
-            $table->string('status', 32)->nullable();
-            $table->string('ip', 32)->nullable();
+            $table->string('status', 100)->nullable();
+            $table->string('ip', 100)->nullable();
             $table->string('img')->nullable();
             $table->timestamps();
         });

@@ -95,9 +95,9 @@ class PageController extends AppController
 
             // Валидация
             $rules = [
-                'name' => 'required|string|max:190',
-                'tel' => "required|tel|max:190",
-                'email' => 'required|string|email|max:190',
+                'name' => 'required|string|max:250',
+                'tel' => "required|tel|max:250",
+                'email' => 'required|string|email|max:250',
                 'message' => 'required', 'string',
                 'accept' => 'accepted',
                 //'g-recaptcha-response' => 'required|recaptcha',

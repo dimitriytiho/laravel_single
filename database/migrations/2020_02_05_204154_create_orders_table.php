@@ -18,15 +18,15 @@ class CreateOrdersTable extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->text('note')->nullable(); // Для комментариев администратора
-            $table->string('status', 32)->default(config('admin.order_statuses')[0]);
+            $table->string('status', 100)->default(config('admin.order_statuses')[0]);
             $table->text('message')->nullable(); // Сообщение от пользователя
-            $table->string('delivery', 32)->nullable();
+            $table->string('delivery', 100)->nullable();
             $table->float('delivery_sum')->nullable();
             $table->float('discount')->nullable();
             $table->string('discount_code')->nullable();
             $table->smallInteger('qty')->nullable();
             $table->float('sum')->nullable();
-            $table->string('ip', 32)->nullable();
+            $table->string('ip', 100)->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -90,8 +90,8 @@ class PageController extends AppController
     public function store(Request $request)
     {
         $rules = [
-            'title' => 'required|string|max:190',
-            'slug' => "required|string|unique:{$this->table}|max:190",
+            'title' => 'required|string|max:250',
+            'slug' => "required|string|unique:{$this->table}|max:250",
         ];
         $request->validate($rules);
         $data = $request->all();
@@ -163,8 +163,8 @@ class PageController extends AppController
 
         // Валидация
         $rules = [
-            'title' => 'required|string|max:190',
-            'slug' => "required|string|unique:{$this->table},slug,{$id}|max:190",
+            'title' => 'required|string|max:250',
+            'slug' => "required|string|unique:{$this->table},slug,{$id}|max:250",
             'parent_id' => "nullable|integer",
         ];
         $request->validate($rules);

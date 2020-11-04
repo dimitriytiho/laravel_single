@@ -128,12 +128,12 @@ class TranslateController extends AppController
     public function store(Request $request)
     {
         $rules = [
-            'id' => 'required|max:190',
+            'id' => 'required|max:250',
         ];
 
         if (!empty($this->locales)) {
             foreach ($this->locales as $locale) {
-                $rules = array_merge($rules, [$locale => 'required|string|max:190']);
+                $rules = array_merge($rules, [$locale => 'required|string|max:250']);
             }
         }
 
@@ -239,12 +239,12 @@ class TranslateController extends AppController
     public function update(Request $request, $id)
     {
         $rules = [
-            'id' => 'required|max:190',
+            'id' => 'required|max:250',
         ];
 
         if (!empty($this->locales)) {
             foreach ($this->locales as $locale) {
-                $rules = array_merge($rules, [$locale => 'required|string|max:190']);
+                $rules = array_merge($rules, [$locale => 'required|string|max:250']);
             }
         }
         $request->validate($rules);

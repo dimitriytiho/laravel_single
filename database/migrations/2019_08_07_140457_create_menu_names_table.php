@@ -15,7 +15,7 @@ class CreateMenuNamesTable extends Migration
     {
         Schema::create('menu_names', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 64)->nullable();
+            $table->string('title', 100)->nullable();
             $table->index('title');
             $table->smallInteger('sort')->unsigned()->default('500');
             $table->softDeletes();
