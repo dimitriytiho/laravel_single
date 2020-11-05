@@ -22,6 +22,8 @@ class CreateProductsTable extends Migration
             $table->float('price')->nullable();
             $table->float('old_price')->nullable();
             $table->smallInteger('sort')->unsigned()->default('500');
+            $table->string('weight')->nullable();
+            $table->string('units')->default(config('shop.units')[0]);
             $table->text('description')->nullable();
             $table->text('body')->nullable();
             $table->string('img')->nullable()->default(config('admin.imgProductDefault'));

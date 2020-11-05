@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .attr('disabled', true)
                 .prepend(spinnerBtn)
 
-            //return true
+            return true
         }
     });
 

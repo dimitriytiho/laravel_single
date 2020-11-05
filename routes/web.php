@@ -34,6 +34,7 @@ if (stripos($url, $public) !== false) {
 
 $namespaceControllers = config('add.namespace_controllers');
 
+
 // Admin
 if (is_file($file = __DIR__ . '/admin.php')) {
     require_once $file;
@@ -43,7 +44,7 @@ if (is_file($file = __DIR__ . '/admin.php')) {
 // Auth
 if (config('add.auth')) {
 
-    Route::namespace("$namespaceControllers\\Auth")->group(function () {
+    Route::namespace("{$namespaceControllers}\\Auth")->group(function () {
         Route::get('login', 'LoginController@showLoginForm')->name('login');
         Route::post('login', 'LoginController@login')->name('login_post');
         Route::get('logout', 'LoginController@logout')->name('logout');
@@ -61,10 +62,22 @@ if (config('add.auth')) {
     //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 }
 
-
-// Page
 Route::namespace($namespaceControllers)->group(function () {
 
+
+    // Ex
+    Route::prefix('ex')->name('ex.')->group(function () {
+
+        Route::get('json', 'ExController@json')->name('json');
+        Route::get('get', 'ExController@get')->name('get');
+    });
+
+
+    // Form
+    Route::post('/contact-us', 'FormController@contactUs')->name('post_contact_us');
+
+
+    // Page
     Route::get('home', 'HomeController@index')->name('home');
     Route::get('/', 'PageController@index')->name('index');
     //Route::post('/set-cookie', 'PostController@setCookie')->name('set_cookie');
@@ -72,8 +85,10 @@ Route::namespace($namespaceControllers)->group(function () {
         Route::get('/search', 'SearchController@index')->name('search');
         Route::post('/search-js', 'SearchController@js')->name('search_js');
     }
-    Route::match(['get','post'], '/contact-us', 'PageController@contactUs')->name('contact_us');
+    Route::get('/contact-us', 'PageController@contactUs')->name('contact_us');
+    //Route::match(['get','post'], '/contact-us', 'PageController@contactUs')->name('contact_us');
     Route::get('/{slug}', 'PageController@show')->name('page');
+
 });
 
 /*Route::get('/', function () {

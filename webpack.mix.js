@@ -26,4 +26,4 @@ mix
     'public/js/dashboard.js'
 ], 'public/js/all.js');*/
 
-mix.browserSync('127.0.0.1:8000');
+mix.browserSync('localhost:8888'); // localhost:8888 127.0.0.1:8000

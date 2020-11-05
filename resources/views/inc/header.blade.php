@@ -9,11 +9,6 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                @if (config('add.shop'))
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('catalog') }}">Каталог</a>
-                    </li>
-                @endif
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('index') }}/contacts">Контакты</a>
                 </li>

@@ -35,11 +35,12 @@ return [
         'App',
         'Admin\App',
         'Admin\Enter',
-        'Admin\Main',
         'Admin\ImgUpload',
+        'Admin\Main',
+        'Ex',
+        'Home',
         'Page',
         'Search',
-        'Home',
     ],
 
     // Статусы пользователей

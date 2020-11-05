@@ -24,7 +24,7 @@
             </div>
             <div class="row">
                 <div class="col-md-6 my-4">
-                    <form method="post" action="{{ route('contact_us') }}" class="validate spinner_submit" novalidate>
+                    <form method="post" action="{{ route('post_contact_us') }}" class="validate spinner_submit" novalidate>
                         @csrf
                         {!! input('name', null, true, null, null) !!}
                         {!! input('tel', null, true, 'tel', null) !!}
