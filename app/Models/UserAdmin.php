@@ -44,7 +44,7 @@ class UserAdmin extends User
 
     /**
      *
-     * @return int
+     * @return object
      *
      * Сохраним пользователя отправителя формы, возвращает id пользователя.
      * Если пользователь admin, то пароль не обновляется.
@@ -94,7 +94,7 @@ class UserAdmin extends User
 
             $issetUser->fill($data);
             $issetUser->update();
-            return $issetUser->id;
+            return $issetUser;
 
         } else {
 
@@ -102,7 +102,7 @@ class UserAdmin extends User
             $user = new User();
             $user->fill($data);
             $user->save();
-            return $user->id;
+            return $user;
         }
     }
 }

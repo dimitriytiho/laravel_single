@@ -62,6 +62,27 @@ class Date
 
     /**
      *
+     * @return bool
+     *
+     * Сравнивает время в промежутке часы минуты, возвращает true или false, например 8:45-17:45.
+     * $startTime - время с (8:45).
+     * $endTime - время до (17:45).
+     * https://ru.stackoverflow.com/questions/615207/Сравнение-времени-php-hm
+     */
+    public static function timeComparison($startTime, $endTime)
+    {
+        if ($startTime && $endTime) {
+            $start = strtotime(date('Y-m-d') . " {$startTime}");
+            $end = strtotime(date('Y-m-d') . " {$endTime}");
+            $time = time();
+            return $time >= $start && $time <= $end;
+        }
+        return false;
+    }
+
+
+    /**
+     *
      * @return int
      *
      * Возвращает время даты на конец месяца (формат метки Unix: 1544636288).

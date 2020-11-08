@@ -30,7 +30,7 @@
     {{--
 
     Fontawesome--}}
-    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.13/css/all.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.15/css/all.css">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>@section('titleSeo'){{ $titleSeo ?? $title ?? Main::site('name') }}@show</title>
@@ -205,6 +205,6 @@ Bootstrap --}}
 {{--
 
 Все счётчики для сайта поместить в этот файл --}}
-@include('inc.counters')
+@include('inc.analytics')
 </body>
 </html>

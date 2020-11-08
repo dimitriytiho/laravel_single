@@ -18,7 +18,7 @@ class PageController extends AppController
         $c = $this->c = Str::lower($this->class);
         $model = $this->model = "{$this->namespaceModels}\\{$class}";
         $table = $this->table = with(new $model)->getTable();
-        $view = $this->view = Str::snake($this->class);
+        $view = $this->view = Str::snake($this->c);
 
         view()->share(compact('class', 'c', 'model', 'table', 'view'));
     }
@@ -44,7 +44,7 @@ class PageController extends AppController
 
         $title = Main::site('name') . ' | ' . __('s.' . config('add.title_main'));
         $description = __('s.You_are_on_home');
-        return view("{$this->c}.index", compact('title', 'description', 'breadcrumbs'));
+        return view("{$this->view}.index", compact('title', 'description', 'breadcrumbs'));
     }
 
 
@@ -82,7 +82,7 @@ class PageController extends AppController
 
         $title = $values->title ?? null;
         $description = $values->description ?? null;
-        return view("{$this->c}.show", compact('title', 'description', 'values', 'breadcrumbs'));
+        return view("{$this->view}.show", compact('title', 'description', 'values', 'breadcrumbs'));
     }
 
 
@@ -96,7 +96,7 @@ class PageController extends AppController
             ->end(['contact_us' => $title])
             ->get();
 
-        return view("{$this->c}.contact_us", compact('title', 'description', 'breadcrumbs'));
+        return view("{$this->view}.contact_us", compact('title', 'description', 'breadcrumbs'));
     }
 
 

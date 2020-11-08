@@ -7,23 +7,34 @@ use App\Models\Main;
 use Illuminate\Http\Request;
 use App\Libs\Breadcrumbs;
 use Illuminate\Support\Str;
+use Illuminate\Pagination\Paginator;
 
 class AppController extends Controller
 {
-    public $statusActive;
-    public $perPage;
-    public $breadcrumbs;
-    public $userTable = 'users';
-    public $userModel = 'App\\Models\\User';
+    protected $namespaceModels;
+    protected $namespaceHelpers;
+    
+    protected $statusActive;
+    protected $perPage;
+    protected $breadcrumbs;
+    
+    protected $userTable = 'users';
+    protected $userModel = 'App\\Models\\User';
 
 
     public function __construct()
     {
         parent::__construct();
 
+        $namespaceModels = $this->namespaceModels = config('add.namespace_models');
+        $namespaceHelpers = $this->namespaceHelpers = config('add.namespace_helpers');
+
         $statusActive = $this->statusActive = config('add.page_statuses')[1] ?: 'active';
         $this->perPage = config('add.pagination');
         $this->breadcrumbs = new Breadcrumbs();
+
+        // Пагинация Bootstrap
+        //Paginator::useBootstrap();
 
         // Строка поиска
         $searchQuery = s(request()->query('s')) ?: Main::get('search_query');
@@ -54,6 +65,6 @@ class AppController extends Controller
         //cache()->flush();
 
         // Передаём в виды
-        view()->share(compact('statusActive', 'searchQuery'));
+        view()->share(compact('namespaceHelpers', 'namespaceModels', 'statusActive', 'searchQuery'));
     }
 }

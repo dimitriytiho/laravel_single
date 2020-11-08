@@ -1,5 +1,5 @@
 
-import message from './message';
+import alert from './alert';
 
 
 export default {
@@ -25,7 +25,7 @@ export default {
                     }
                 },
                 error: function() {
-                    message.error(translations['something_went_wrong'])
+                    alert.get(translations['something_went_wrong'])
                 }
             })
         }

@@ -1,83 +1,84 @@
-import func from './functions'
-import message from './message';
+
+document.addEventListener('DOMContentLoaded', function() {
+
+    // Необходимые данные
+    var offset = 20,
+        heightScreen = window.innerHeight,
+        widthScreen = window.innerWidth || document.body.clientWidth
 
 
-// Необходимые данные
-const offset = 20,
-    heightScreen = window.innerHeight,
-    widthScreen = window.innerWidth || document.body.clientWidth
-
-
-// Селекторы в коде
-const btnUp = document.getElementById('btn-up')
+    // Селекторы в коде
+    var btn_up = $('#btn_up')
 
 
 
 // Код со скролом
-$(window).on('scroll', function () {
-    const scrollTop = $(window).scrollTop() || document.documentElement.scrollTop || window.pageYOffset, // Верхняя позиция скрола
-        heightWindow = window.innerHeight // Высота окна браузера
+    $(window).on('scroll', function () {
+        var scrollTop = $(window).scrollTop() || document.documentElement.scrollTop || window.pageYOffset, // Верхняя позиция скрола
+            heightWindow = window.innerHeight // Высота окна браузера
 
-    // pageYOffset Динамическая позиция скрола у верхней кромки
-
-
-    // Кнопка вверх
-    if (btnUp) {
-        if (scrollTop > 300 && !btnUp.classList.contains('scale-in')) {
-            btnUp.classList.remove('scale-out')
-            btnUp.classList.add('scale-in')
-
-        } else if (scrollTop < 300 && !btnUp.classList.contains('scale-out')) {
-            btnUp.classList.remove('scale-in')
-            btnUp.classList.add('scale-out')
-        }
-    }
+        // pageYOffset Динамическая позиция скрола у верхней кромки
 
 
-    // Прилипающее меню
-    /*const stickyMenu = document.getElementById('sticky_menu')
-    if (stickyMenu) {
+        if (scrollTop < 200) {
 
-        const stickyMenuHeight = stickyMenu.offsetHeight
-        if (stickyMenuHeight && document.body.clientWidth > 992 && pageYOffset > stickyMenuHeight) {
-            stickyMenu.classList.add('sticky_menu')
+            // Кнопка вверх
+            btn_up.removeClass('scale-in').addClass('scale-out')
+
         } else {
-            stickyMenu.classList.remove('sticky_menu')
+
+            // Кнопка вверх
+            btn_up.addClass('scale-in').removeClass('scale-out')
+
         }
-    }*/
 
 
-    // Добавление класса анимации для lg дисплеев (или других, можно выбрать)
-    /*const animateBottom = document.querySelectorAll('.animate-bottom-js'),
-        animateRight = document.querySelectorAll('.animate-right-js'),
-        animateLeft = document.querySelectorAll('.animate-left-js')
+        // Прилипающее меню
+        /*const stickyMenu = document.getElementById('sticky_menu')
+        if (stickyMenu) {
 
-    addAnimate(animateBottom)
-    addAnimate(animateRight, 'animate-right')
-    addAnimate(animateLeft, 'animate-left')*/
-
-
-    // Вызовите функцию и передайте нужный селектор, который получите выше чем window.onscroll
-    function addAnimate(selectorAll, addClassName = 'animate-bottom', widthScreenAfter = 992) {
-
-        if (selectorAll[0] && widthScreen > widthScreenAfter) {
-
-            selectorAll.forEach(function (el) {
-                let elTop = el.offsetTop
-                const elHeight = el.offsetHeight,
-                    container = el.closest('.container.animate-add-parent') && el.closest('.container.animate-add-parent').closest('.container')
+            const stickyMenuHeight = stickyMenu.offsetHeight
+            if (stickyMenuHeight && document.body.clientWidth > 992 && pageYOffset > stickyMenuHeight) {
+                stickyMenu.classList.add('sticky_menu')
+            } else {
+                stickyMenu.classList.remove('sticky_menu')
+            }
+        }*/
 
 
-                // Если есть вложенность, то надо прибавить расстояние от родителя до верха экрана браузера
-                if (container) {
-                    //elTop = elTop + container.offsetTop
-                }
+        // Добавление класса анимации для lg дисплеев (или других, можно выбрать)
+        /*const animateBottom = document.querySelectorAll('.animate-bottom-js'),
+            animateRight = document.querySelectorAll('.animate-right-js'),
+            animateLeft = document.querySelectorAll('.animate-left-js')
 
-                if (heightScreen + scrollTop - offset > elTop && scrollTop + offset < elTop + elHeight) {
+        addAnimate(animateBottom)
+        addAnimate(animateRight, 'animate-right')
+        addAnimate(animateLeft, 'animate-left')*/
 
-                    el.classList.add(addClassName)
-                }
-            })
+
+        // Вызовите функцию и передайте нужный селектор, который получите выше чем window.onscroll
+        function addAnimate(selectorAll, addClassName = 'animate-bottom', widthScreenAfter = 992) {
+
+            if (selectorAll[0] && widthScreen > widthScreenAfter) {
+
+                selectorAll.forEach(function (el) {
+                    let elTop = el.offsetTop
+                    const elHeight = el.offsetHeight,
+                        container = el.closest('.container.animate-add-parent') && el.closest('.container.animate-add-parent').closest('.container')
+
+
+                    // Если есть вложенность, то надо прибавить расстояние от родителя до верха экрана браузера
+                    if (container) {
+                        //elTop = elTop + container.offsetTop
+                    }
+
+                    if (heightScreen + scrollTop - offset > elTop && scrollTop + offset < elTop + elHeight) {
+
+                        el.classList.add(addClassName)
+                    }
+                })
+            }
         }
-    }
-})
+    })
+
+}, false)

@@ -36,8 +36,8 @@ $namespaceControllers = config('add.namespace_controllers');
 
 
 // Admin
-if (is_file($file = __DIR__ . '/admin.php')) {
-    require_once $file;
+if (is_file($fileAdmin = __DIR__ . '/admin.php')) {
+    require_once $fileAdmin;
 }
 
 

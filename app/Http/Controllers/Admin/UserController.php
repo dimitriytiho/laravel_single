@@ -101,14 +101,14 @@ class UserController extends AppController
      */
     public function store(Request $request)
     {
-        $magesExt = implode(config('admin.acceptedImagesExt') ?? [], ',');
+        $imagesExt = implode(config('admin.acceptedImagesExt') ?? [], ',');
 
         $rules = [
             'name' => 'required|string|max:250',
             'email' => "required|string|email|unique:{$this->table},email|max:250",
             'tel' => 'nullable|tel|max:250',
             'password' => 'required|min:6|same:password_confirmation',
-            'img' => "nullable|mimes:{$magesExt}", // |max:2000
+            'img' => "nullable|mimes:{$imagesExt}", // |max:2000
             //'tel' => 'required|string|max:250',
         ];
         $request->validate($rules);
@@ -233,14 +233,14 @@ class UserController extends AppController
         // Получаем элемент по id, если нет - будет ошибка
         $values = $this->model::findOrFail($id);
 
-        $magesExt = implode(config('admin.acceptedImagesExt') ?? [], ',');
+        $imagesExt = implode(config('admin.acceptedImagesExt') ?? [], ',');
 
         $rules = [
             'name' => 'required|string|max:250',
             'email' => "required|string|email|unique:{$this->table},email,{$id}|max:250",
             'tel' => 'nullable|tel|max:250',
             'password' => 'nullable|min:6|same:password_confirmation',
-            'img' => "nullable|mimes:{$magesExt}", // |max:2000
+            'img' => "nullable|mimes:{$imagesExt}", // |max:2000
             //'tel' => 'required|string|max:250',
         ];
         $request->validate($rules);

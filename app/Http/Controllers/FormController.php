@@ -30,9 +30,11 @@ class FormController extends Controller
         $request->validate($rules);
 
         // Сохраним пользователя отправителя формы. Если есть пользователь, то обновим его данные, если нет, то создадим.
-        $userId = UserAdmin::saveUser($request);
+        $user = UserAdmin::saveUser($request);
+        $userId = $user->id ?? null;
         if (!$userId) {
-            Main::getError($this->class, __METHOD__);
+            // Сообщение об ошибке
+            return redirect()->back()->with('error', __('s.whoops'));
         }
 
         // Данные form

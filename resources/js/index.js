@@ -24,6 +24,7 @@ new simpleParallax(simpleParallax6, {
 
 import './components'
 import './default'
+import './theme'
 
 
 

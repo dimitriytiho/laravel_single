@@ -78,8 +78,11 @@ class Img
     }
 
 
-    /*
-     * Возвращает название картинки Webp, если она есть, если её нет, то возвращает обычную картинку.
+    /**
+     *
+     * @return string
+     *
+     * Возвращает название картинки Webp, если она есть, если её нет, то возвращает ''.
      * $imagePublicPath - путь с название обычной картинки.
      * Название картинки Webp должно быть одинаково с обычной картинкой.
      */
@@ -87,35 +90,18 @@ class Img
     {
         if ($imagePublicPath) {
 
-            // Полный путь к картинке
-            $pathImg = public_path($imagePublicPath);
-            if (File::isFile($pathImg)) {
+            // Получаем данные картинки
+            $info = self::imgInfo($imagePublicPath);
 
-                // Название картинки
-                $name = class_basename($imagePublicPath);
-
-                // Вырезаем из пути название картинки
-                $path = str_replace($name, '', $imagePublicPath);
-
-                // Получаем разрешение картинки
-                $ext = pathinfo($name)['extension'] ?? null;
-
-                // Вырезаем разрешение картинки
-                $name = str_replace(".{$ext}", '', $name);
-
-                // Название картинки webp
-                $webp = "{$name}.webp";
-
-                // Добавляем к пути название webp
-                $pathWebp = public_path($path . $webp);
-
-                // Если есть webp, то возвращаем её
-                if (File::isFile($pathWebp)) {
-                    return $path . $webp;
-                }
+            // Путь к картинки Webp
+            $webp = "{$info['folder_public_path']}/{$info['filename']}.webp";
+            
+            // Если есть Webp, то возвращаем её
+            if (File::isFile(public_path($webp))) {
+                return $webp;
             }
         }
-        return $imagePublicPath;
+        return '';
     }
 
 
@@ -143,9 +129,9 @@ class Img
 
     /**
      *
-     * @return bool
+     * @return string
      *
-     * Сделает копию картинки в формате Webp, возвращает true или false.
+     * Сделает копию картинки в формате Webp, возвращает путь к Webp картинке.
      * $imagePublicPath - название картинки, как в БД, например /img/product/tovar_1_10-03-2020_21-28.jpeg.
      */
     public static function copyWebp($imagePublicPath)
@@ -185,12 +171,12 @@ class Img
                         imagesavealpha($webp, true);
                         imagewebp($webp, $info['folder_path'] . $webpName, config('admin.webpQuality'));
                         imagedestroy($webp);
-                        return true;
+                        return $info['folder_path'] . $webpName;
                     }
                 }
             }
         }
-        return false;
+        return null;
     }
 
 

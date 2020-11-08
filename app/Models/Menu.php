@@ -29,6 +29,33 @@ class Menu extends App
 
     /**
      *
+     * @return object
+     *
+     * Возвращает объкт меню.
+     * Данные кэшируются.
+     * $belongId - принимает belong_id из таблицы menu_names.
+     */
+    public static function get(int $belongId)
+    {
+        if ($belongId) {
+            $name = "menu_names_{$belongId}";
+            
+            if (cache()->has($name)) {
+                $values = cache()->get($name);
+                
+            } else {
+                
+                $values = self::where('belong_id', $belongId)->get();
+                cache()->put($name, $values);
+            }
+            return $values;
+        }
+        return null;
+    }
+
+
+    /**
+     *
      * @return array
      *
      * Возвращает массив дерево, где потомки в ключе child.

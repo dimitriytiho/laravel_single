@@ -24,7 +24,7 @@ class SearchController extends AppController
 
         $class = $this->class = str_replace('Controller', '', class_basename(__CLASS__));
         $c = $this->c = Str::lower($this->class);
-        $view = $this->view = Str::snake($this->class);
+        $view = $this->view = Str::snake($this->c);
 
         view()->share(compact('class', 'c', 'view'));
     }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Main;
+use App\Helpers\Admin\Img;
 
 
 /*
@@ -141,6 +142,20 @@ function onlyPhoneNumber($phoneNumber)
         return (int)$tel;
     }
     return $phoneNumber;
+}
+
+
+/**
+ *
+ * @return string
+ *
+ * Возвращает картинку Webp, если она есть.
+ * Если нет картинки Webp, то вернёт ''.
+ * $imagePublicPath - путь к картинке от папки public.
+ */
+function webp($imagePublicPath)
+{
+    return Img::getWebp($imagePublicPath);
 }
 
 
