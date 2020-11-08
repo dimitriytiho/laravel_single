@@ -3,15 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\Admin\DbSort;
-use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-class SettingController extends AppController
+class DummyController extends AppController
 {
-    private $titleNoEditArr = [];
-
-
     public function __construct(Request $request)
     {
         parent::__construct($request);
@@ -22,8 +18,6 @@ class SettingController extends AppController
         $table = $this->table = with(new $model)->getTable();
         $route = $this->route = $request->segment(2);
         $view = $this->view = Str::snake($this->class);
-
-        $this->titleNoEditArr = Setting::titleNoEditArr() ?? [];
 
         view()->share(compact('class', 'c','model', 'table', 'route', 'view'));
     }
@@ -38,8 +32,6 @@ class SettingController extends AppController
         // Поиск. Массив гет ключей для поиска
         $queryArr = [
             'title',
-            'value',
-            'section',
             'id',
         ];
 
@@ -54,14 +46,8 @@ class SettingController extends AppController
         // Передать поля для вывода, значение l - с переводом, t - дата
         $thead = [
             'title' => null,
-            'value' => null,
-            'section' => null,
             'id' => null,
         ];
-
-
-        // Id элементов, которые нельзя удалять
-        //$guardedIds = $this->model::whereIn('title', $this->titleNoEditArr)->pluck('id')->toArray();
 
 
         $f = __FUNCTION__;
@@ -96,7 +82,7 @@ class SettingController extends AppController
         $data = $request->all();
 
         // Создаём экземкляр модели
-        $values = new Setting();
+        $values = new Dummy();
 
         // Заполняем модель новыми данными
         $values->fill($data);
@@ -134,12 +120,9 @@ class SettingController extends AppController
     {
         $values = $this->model::findOrFail($id);
 
-        // Если title запрещён к редактированию
-        $disabledDelete = in_array($values->title, $this->titleNoEditArr) ? 'readonly' : null;
-
         $f = __FUNCTION__;
         $title = __("a.{$f}");
-        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'values', 'disabledDelete'));
+        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'values'));
     }
 
     /**
@@ -163,15 +146,6 @@ class SettingController extends AppController
         // Заполняем модель новыми данными
         $values->fill($data);
 
-        // Если title запрещён к редактированию
-        if (in_array($values->title, $this->titleNoEditArr) && $values->title != $request->title) {
-
-            // Сообщение об ошибке
-            return redirect()
-                ->route("admin.{$this->route}.edit", $values->id)
-                ->with('error', __('s.something_went_wrong'));
-        }
-
         // Обновляем элемент
         $values->update();
 
@@ -194,15 +168,6 @@ class SettingController extends AppController
     {
         // Получаем элемент по id, если нет - будет ошибка
         $values = $this->model::findOrFail($id);
-
-        // Если title запрещён к редактированию
-        if (in_array($values->title, $this->titleNoEditArr)) {
-
-            // Сообщение об ошибке
-            return redirect()
-                ->route("admin.{$this->route}.edit", $values->id)
-                ->with('error', __('s.something_went_wrong'));
-        }
 
         // Удаляем элемент
         $values->delete();

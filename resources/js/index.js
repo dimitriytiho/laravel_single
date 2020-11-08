@@ -22,8 +22,8 @@ new simpleParallax(simpleParallax6, {
     transition: 'cubic-bezier(0,0,0,1)'
 })*/
 
-import './components'
 import './default'
+import './components'
 import './theme'
 
 

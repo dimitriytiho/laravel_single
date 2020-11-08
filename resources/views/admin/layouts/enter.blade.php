@@ -43,7 +43,11 @@ Google ReCaptcha, если есть в настройках указан сек�
 @endif
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="//stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+<!-- Select2 -->
+<script src="{{ asset('lte/plugins/select2/js/select2.min.js') }}"></script>
+<script src="{{ asset('lte/plugins/select2/js/i18n/ru.js') }}"></script>
 <!-- jquery-validation -->
+<script src="{{ asset('lte/plugins/inputmask/jquery.inputmask.min.js') }}"></script>
 <script src="{{ asset('lte/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('lte/dist/js/adminlte.min.js') }}"></script>
 <script>
