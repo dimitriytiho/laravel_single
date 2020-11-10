@@ -190,6 +190,7 @@ class Img
      */
     public static function deleteImg($img, $imgDefault = null)
     {
+        // Проверим чтобы в пути картинки была папка для картинок
         if ($img && strpos($img, config('add.img')) !== false) {
             $imagesDefault = [
                 config('add.img') . '/default/no_user.png',

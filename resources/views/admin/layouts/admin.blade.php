@@ -29,7 +29,7 @@
     <link rel="stylesheet" href="{{ asset('lte/plugins/select2/css/select2.min.css') }}">
     {{--<link rel="stylesheet" href="{{ asset('lte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">--}}
     <link rel="stylesheet" href="{{ asset('lte/dist/css/adminlte.min.css') }}">
-    @if (config('admin.editor') === 'codemirror')
+    @if(config('admin.editor') === 'codemirror')
         <!-- Codemirror -->
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/codemirror.css">
     @endif
@@ -38,14 +38,14 @@
     {{--
 
     Для файлового менеджера --}}
-    @if ($pathSegment === 'files')
+    @if($pathSegment === 'files')
         <link rel="stylesheet" href="{{ asset('vendor/file-manager/css/file-manager.css') }}">
     @endif
     <link rel="stylesheet" href="{{ asset('css/append.css') }}">
     <title>{{ $title ?? Main::site('name') }}</title>
     <meta name="description" content=" " />
 </head>
-<body class="hold-transition sidebar-mini @if (request()->cookie('sidebar_mini') !== 'full') sidebar-collapse @endif">
+<body class="hold-transition sidebar-mini @if(request()->cookie('sidebar_mini') !== 'full') sidebar-collapse @endif">
 <!-- Site wrapper -->
 <div class="wrapper">
 
@@ -99,14 +99,14 @@ Js files --}}
 {{--
 
 Для файлового менеджера --}}
-@if ($pathSegment === 'files')
+@if($pathSegment === 'files')
     <script src="{{ asset('vendor/file-manager/js/file-manager.js') }}"></script>
 @endif
 {{--
 
 
 Выбор редактора кода --}}
-@if (config('admin.editor') === 'ckeditor')
+@if(config('admin.editor') === 'ckeditor')
     <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
 @elseif (config('admin.editor') === 'codemirror')
     <script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/codemirror.js"></script>
@@ -137,6 +137,13 @@ Js files --}}
         curID = '{{ auth()->user()->id ?? "" }}'
 
     {!! \App\Helpers\Locale::translationsJson() !!}
+
+
+    // Select2
+    $('.select2').select2({
+        language: 'ru'
+        //theme: 'bootstrap4'
+    })
 </script>
 <script src="{{ asset('js/append.js') }}"></script>
 {{--

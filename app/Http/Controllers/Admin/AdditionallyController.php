@@ -101,14 +101,14 @@ class AdditionallyController extends AppController
         }
 
         $f = __FUNCTION__;
-        $title = __('a.' . Str::ucfirst($this->view));
+        $title = __("a.{$this->view}");
         return view("{$this->viewPath}.{$this->route}.{$f}", compact('title'));
     }
 
 
     public function files(Request $request) {
         $f = __FUNCTION__;
-        $title = __('a.' . Str::ucfirst($f));
+        $title = __("a.{$f}");
         return view("{$this->viewPath}.{$this->route}.{$f}", compact('title'));
     }
 }

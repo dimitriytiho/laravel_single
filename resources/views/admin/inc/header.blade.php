@@ -3,7 +3,7 @@
     <!-- Left navbar links -->
     <ul class="navbar-nav">
         <li class="nav-item">
-            <a class="nav-link link_click" role="button" data-url="{{ route('admin.sidebar_mini') }}" data-val="@if (request()->cookie('sidebar_mini') === 'full') mini @else full @endif">
+            <a class="nav-link link_click" role="button" data-url="{{ route('admin.sidebar_mini') }}" data-val="@if(request()->cookie('sidebar_mini') === 'full') mini @else full @endif">
                 <i class="fas fa-bars"></i>
             </a>
         </li>
@@ -18,7 +18,7 @@
                 <span class="badge badge-warning navbar-badge">1</span>
             </a>
         </li>--}}
-        @if (config('admin.locales') && count(config('admin.locales')) > 1)
+        @if(config('admin.locales') && count(config('admin.locales')) > 1)
             <li class="nav-item dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#">
                     <i class="fas fa-globe"></i>

@@ -5,9 +5,9 @@
 
 --}}
 @section('content')
-    @if (!empty($currentParentId))
+    @if(!empty($currentParentId))
         <div class="card">
-            @isset ($values->menuName->title)
+            @isset($values->menuName->title)
                 <div class="card-header">
                     <div class="card-title">
                         <b>@lang('a.selected'):</b>
@@ -50,14 +50,14 @@
                     </div>
                 </div>
 
-                @isset ($values->id)
+                @isset($values->id)
                     <div class="row">
                         <div class="col-md-4">
                             {!! $form::select('status', config('add.page_statuses'), $values->status ?? null) !!}
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                @if (!empty($all))
+                                @if(!empty($all))
                                     {!! $form::select('parent_id', $all, $values->parent_id ?? null, true, null, null, true, $values->id) !!}
                                 @endif
                             </div>

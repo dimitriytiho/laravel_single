@@ -96,7 +96,7 @@ class RoleController extends AppController
 
 
         $f = __FUNCTION__;
-        $title = __('a.' . Str::ucfirst($this->table));
+        $title = __("a.{$this->table}");
         return view("{$this->viewPath}.{$this->view}.{$f}", compact('title', 'values', 'queryArr', 'col', 'cell', 'thead'));
     }
 
@@ -108,7 +108,7 @@ class RoleController extends AppController
     public function create()
     {
         $f = __FUNCTION__;
-        $title = __('a.' . Str::ucfirst($f));
+        $title = __("a.{$f}");
         return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title'));
     }
 

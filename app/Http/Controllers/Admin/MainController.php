@@ -25,7 +25,7 @@ class MainController extends AppController
     {
         $key = Upload::getKeyAdmin();
         $f = __FUNCTION__;
-        $title = __('a.Dashboard');
+        $title = __('a.dashboard');
         return view("{$this->viewPath}.{$this->view}.{$f}", compact('title', 'key'));
     }
 

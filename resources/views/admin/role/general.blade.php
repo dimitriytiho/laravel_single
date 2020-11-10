@@ -21,9 +21,9 @@
                 </div>
             </div>
 
-            {!! $form::select('permission', $files, $selected ?? null, true, null, [empty($disabledDelete) ? null : 'disabled' => null, 'data-placeholder' => __('s.choose') . '...'], null, $disabledIds ?? null, true, 'w-100 select2', null, null) !!}
+            {!! $form::select('permission', $files, $selected ?? null, true, null, [empty($disabledDelete) ? null : 'disabled' => null, 'data-placeholder' => __('s.choose')], null, $disabledIds ?? null, true, 'w-100 select2', null, null) !!}
 
-            {{--{!! $form::select('allowed', $routesNames, $selected ?? null, true, null, [empty($disabledDelete) ? null : 'disabled' => null, 'data-placeholder' => __('s.choose') . '...'], null, $disabledIds ?? null, true, 'w-100 select2') !!}--}}
+            {{--{!! $form::select('allowed', $routesNames, $selected ?? null, true, null, [empty($disabledDelete) ? null : 'disabled' => null, 'data-placeholder' => __('s.choose')], null, $disabledIds ?? null, true, 'w-100 select2') !!}--}}
 
             {{--
 

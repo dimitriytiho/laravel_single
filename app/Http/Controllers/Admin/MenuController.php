@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\Admin\DbSort;
 use App\Models\Menu;
-use App\Models\MenuName;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class MenuController extends AppController
@@ -21,6 +21,9 @@ class MenuController extends AppController
         $route = $this->route = $request->segment(2);
         $view = $this->view = Str::snake($this->class);
 
+        // Связанная таблица
+        $this->belongTable = 'menu_groups';
+
         view()->share(compact('class', 'c','model', 'table', 'route', 'view'));
     }
 
@@ -32,21 +35,21 @@ class MenuController extends AppController
     public function index(Request $request)
     {
         // Записать в куку id из привязанной таблице, если не записано
-        $currentParentId = $request->cookie("{$this->view}_id");
-        $countParent = MenuName::count();
+        $currentParentId = $request->cookie("{$this->table}_id");
+        $countParent = DB::table($this->belongTable)->count();
 
         if (!$currentParentId && $countParent) {
-            $currentParent = MenuName::first();
+            $currentParent = DB::table($this->belongTable)->first();
 
             // Записать куку навсегда (5 лет)
             return redirect()->back()
-                ->withCookie(cookie()->forever("{$this->view}_id", $currentParent->id)
+                ->withCookie(cookie()->forever("{$this->table}_id", $currentParent->id)
                 );
         }
 
 
-        $parentValues = MenuName::pluck('title', 'id');
-        $parentValues->prepend('Menu_names', 0);
+        $parentValues = DB::table($this->belongTable)->pluck('title', 'id');
+        $parentValues->prepend($this->belongTable, 0);
 
 
         $f = __FUNCTION__;
@@ -88,7 +91,7 @@ class MenuController extends AppController
         // Id элементов, которые нельзя удалять
         //$guardedIds = $this->model::where('parent_id', '0')->pluck('id')->toArray();
 
-        $title = __('a.' . Str::ucfirst($this->table));
+        $title = __("a.{$this->table}");
         return view("{$this->viewPath}.{$this->view}.{$f}", compact('title', 'parentValues', 'values', 'queryArr', 'col', 'cell', 'currentParentId', 'thead'));
     }
 
@@ -100,20 +103,20 @@ class MenuController extends AppController
     public function create(Request $request)
     {
         // Записать в куку id из привязанной таблице, если не записано
-        $currentParentId = $request->cookie("{$this->view}_id");
-        $countParent = MenuName::count();
+        $currentParentId = $request->cookie("{$this->table}_id");
+        $countParent = DB::table($this->belongTable)->count();
 
         if (!$currentParentId && $countParent) {
-            $currentParent = MenuName::first();
+            $currentParent = DB::table($this->belongTable)->first();
 
             // Записать куку навсегда (5 лет)
             return redirect()->back()
-                ->withCookie(cookie()->forever("{$this->view}_id", $currentParent->id)
+                ->withCookie(cookie()->forever("{$this->table}_id", $currentParent->id)
                 );
         }
 
         $f = __FUNCTION__;
-        $title = __('a.' . Str::ucfirst($f));
+        $title = __("a.{$f}");
         return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'currentParentId'));
     }
 
@@ -172,14 +175,14 @@ class MenuController extends AppController
     {
         // Записать в куку id из привязанной таблице, если не записано
         $currentParentId = request()->cookie("{$this->view}_id");
-        $countParent = MenuName::count();
+        $countParent = DB::table($this->belongTable)->count();
 
         if (!$currentParentId && $countParent) {
-            $currentParent = MenuName::first();
+            $currentParent = DB::table($this->belongTable)->first();
 
             // Записать куку навсегда (5 лет)
             return redirect()->back()
-                ->withCookie(cookie()->forever("{$this->view}_id", $currentParent->id)
+                ->withCookie(cookie()->forever("{$this->table}_id", $currentParent->id)
                 );
         }
 
@@ -224,9 +227,6 @@ class MenuController extends AppController
         if ($values->parent_id == $values->id) {
             $values->parent_id = '0';
         }
-
-        // Если нет сортировки, то по-умолчанию 500
-        $data['sort'] = empty($data['sort']) ? 500 : $data['sort'];
 
         // Заполняем модель новыми данными
         $values->fill($data);

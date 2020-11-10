@@ -7,7 +7,7 @@
     <!-- Brand Logo -->
     <a href="{{ session()->get('back_link_site', route('index')) }}" class="brand-link">
         <img src="{{ asset(config('add.img') . '/omegakontur/admin/touch-icon-iphone-retina.png') }}" alt="AdminLTE Logo" class="brand-image img-circle">
-        <span class="brand-text font-weight-light">@lang('a.Website')</span>
+        <span class="brand-text font-weight-light">@lang('a.website')</span>
     </a>
 
     <!-- Sidebar -->
@@ -15,20 +15,20 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                @if ($leftMenu)
-                    @foreach ($leftMenu as $key => $item)
+                @if($leftMenu)
+                    @foreach($leftMenu as $key => $item)
                         {{--
 
 
                         Показываем только разрешенный контроллеры --}}
-                        @if (
+                        @if(
 
     isset($item['slug']) && $isAdmin
     ||
-    isset($item['slug']) &&  $permission->contains($item['class'])
+    isset($item['slug']) && isset($item['class']) && $permission->contains($item['class'])
 
     )
-                            <li class="nav-item @if (
+                            <li class="nav-item @if(
 
     $item['slug'] === '/' && request()->path() === config('add.admin')
     ||
@@ -41,13 +41,13 @@
                                     <i class="nav-icon {{ $item['item'] }}"></i>
                                     <p>
                                         @lang("a.{$item['title']}")
-                                        @if (!empty($item['child']))
+                                        @if(!empty($item['child']))
                                             <i class="right fas fa-angle-left"></i>
                                         @endif
                                         {{--
 
                                         Для показа кол-ва для нужного элемента получите его в Admin/AppController --}}
-                                        @if (!empty($countTable[$item['class']]))
+                                        @if(!empty($countTable[$item['class']]))
                                             <span class="badge badge-info right">{{ $countTable[$item['class']] }}</span>
                                         @endif
                                     </p>
@@ -55,16 +55,16 @@
                                 {{--
 
                                 Вложенный цикл --}}
-                                @if (!empty($item['child']))
+                                @if(!empty($item['child']))
                                     <ul class="nav nav-treeview">
-                                        @foreach ($item['child'] as $child)
+                                        @foreach($item['child'] as $child)
                                             {{--
 
 
                                             Показываем только разрешенный контроллеры --}}
-                                            @if ($isAdmin || $permission->contains($child['class']))
+                                            @if($isAdmin || $permission->contains($child['class']))
                                                 <li class="nav-item">
-                                                    <a href="/{{ config('add.admin') . $child['slug'] }}" class="nav-link @if (request()->path() === config('add.admin') . $child['slug']) active @endif">
+                                                    <a href="/{{ config('add.admin') . $child['slug'] }}" class="nav-link @if(request()->path() === config('add.admin') . $child['slug']) active @endif">
                                                         <i class="{{ $child['item'] }} nav-icon"></i>
                                                         <p>{{ l($child['title'], 'a') }}</p>
                                                     </a>

@@ -5,7 +5,7 @@
 
 --}}
 @section('content')
-    @if ($values->isNotEmpty())
+    @if($values->isNotEmpty())
         <div class="card">
             <div class="card-body">
                 @include('admin.inc.search')

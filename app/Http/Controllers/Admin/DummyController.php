@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\Admin\DbSort;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use App\Models\Dummy;
 
 class DummyController extends AppController
 {
@@ -19,7 +22,21 @@ class DummyController extends AppController
         $route = $this->route = $request->segment(2);
         $view = $this->view = Str::snake($this->class);
 
-        view()->share(compact('class', 'c','model', 'table', 'route', 'view'));
+        // Связанные таблицы, а также в моделе должен быть метод с название таблицы, реализующий связь
+        $this->relatedTables = [
+
+            // Категории
+            //'categories',
+        ];
+
+        // Связанные таблицы, которые нельзя удалить, если есть связанные элементы, а также в моделе должен быть метод с название таблицы, реализующий связь
+        $relatedDelete = $this->relatedDelete = [
+
+            // Формы
+            //'forms',
+        ];
+
+        view()->share(compact('class', 'c','model', 'table', 'route', 'view', 'relatedDelete'));
     }
 
     /**
@@ -51,7 +68,7 @@ class DummyController extends AppController
 
 
         $f = __FUNCTION__;
-        $title = __('a.' . Str::ucfirst($this->table));
+        $title = __("a.{$this->table}");
         return view("{$this->viewPath}.{$this->view}.{$f}", compact('title', 'values', 'queryArr', 'col', 'cell', 'thead'));
     }
 
@@ -63,7 +80,7 @@ class DummyController extends AppController
     public function create()
     {
         $f = __FUNCTION__;
-        $title = __('a.' . Str::ucfirst($f));
+        $title = __("a.{$f}");
         return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title'));
     }
 
@@ -120,9 +137,19 @@ class DummyController extends AppController
     {
         $values = $this->model::findOrFail($id);
 
+        // Получаем данные связанных таблиц
+        $related = [];
+        if (!empty($this->relatedTables)) {
+            foreach ($this->relatedTables as $relatedTable) {
+                if (Schema::hasTable($relatedTable)) {
+                    $related[$relatedTable] = DB::table($relatedTable)->pluck('title', 'id');
+                }
+            }
+        }
+
         $f = __FUNCTION__;
         $title = __("a.{$f}");
-        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'values'));
+        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'values', 'related'));
     }
 
     /**
@@ -142,6 +169,15 @@ class DummyController extends AppController
         ];
         $request->validate($rules);
         $data = $request->all();
+
+
+        // Сохраняем связи
+        if (!empty($this->relatedTables)) {
+            foreach ($this->relatedTables as $relatedTable) {
+                $values->$relatedTable()->sync($request->$relatedTable);
+            }
+        }
+
 
         // Заполняем модель новыми данными
         $values->fill($data);
@@ -168,6 +204,26 @@ class DummyController extends AppController
     {
         // Получаем элемент по id, если нет - будет ошибка
         $values = $this->model::findOrFail($id);
+
+
+        // Если есть связи, то вернём ошибку
+        if (!empty($this->relatedDelete)) {
+            foreach ($this->relatedDelete as $relatedTable) {
+                if ($values->$relatedTable->count()) {
+                    return redirect()
+                        ->route("admin.{$this->route}.edit", $id)
+                        ->with('error', __('s.remove_not_possible') . ', ' . __('s.there_are_nested') . __('a.id'));
+                }
+            }
+        }
+
+
+        // Удаляем связанные элементы
+        if (!empty($this->relatedTables)) {
+            foreach ($this->relatedTables as $relatedTable) {
+                $values->$relatedTable()->sync([]);
+            }
+        }
 
         // Удаляем элемент
         $values->delete();

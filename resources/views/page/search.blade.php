@@ -33,10 +33,10 @@
                 </div>
             </div>
 
-            @if ($values)
+            @if($values)
                 <div class="row mt-4">
                     <div class="col-12">
-                        @foreach ($values as $key => $value)
+                        @foreach($values as $key => $value)
                             <a href="{{ route($value->route, $value->slug) }}" class="d-block my-2">{{ $value->title }}</a>
                         @endforeach
                     </div>

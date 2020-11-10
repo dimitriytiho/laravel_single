@@ -62,7 +62,7 @@ class ImportExportController extends AppController
             $routeImport = route("admin.import_{$query}");;
         }
 
-        $title = __("a.{$this->class}");
+        $title = __("a.{$this->view}");
         return view("{$this->viewPath}.{$this->view}.{$method}", compact('title', 'queryArr', 'query', 'routeExport', 'routeImport'));
     }
 

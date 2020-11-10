@@ -14,7 +14,7 @@
                     {!! $constructor::input('email', null, true, 'email', null) !!}
                     {!! $constructor::input('password', null, true, 'password', null) !!}
                     {!! $constructor::checkbox('remember', null, true) !!}
-                    {{--@if (empty($auth_view))
+                    {{--@if(empty($auth_view))
                         {!! $constructor::input('email', null, true, 'email', null) !!}
                     @elseif($auth_view == 'confirm')
                         {!! $constructor::input('confirm', null, true, 'text', null) !!}

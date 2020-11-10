@@ -115,7 +115,7 @@ class TranslateController extends AppController
     public function create()
     {
         $f = __FUNCTION__;
-        $title = __('a.' . Str::ucfirst($f));
+        $title = __("a.{$f}");
         return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title'));
     }
 

@@ -15,7 +15,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('contact_us') }}">Связаться с нами</a>
                 </li>
-                @if (config('add.auth'))
+                @if(config('add.auth'))
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('login') }}">Login</a>
                     </li>
@@ -24,13 +24,13 @@
                         <a class="nav-link" href="{{ route('enter') }}">Вход</a>
                     </li>
                 @endif
-                {{--@if (auth()->check() && auth()->user()->Admin())
+                {{--@if(auth()->check() && auth()->user()->Admin())
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('admin.main') }}">Админ</a>
                     </li>
                 @endif--}}
             </ul>
-            @if (config('add.search'))
+            @if(config('add.search'))
                 <form action="{{ route('search') }}" class="form-inline my-2 my-lg-0 search_js" autocomplete="off">
                     <input type="text" class="form-control mr-sm-2 search_js__input" name="s" placeholder="@lang('a.search')" aria-label="Search" value="{{ $searchQuery ?? null }}">
                     <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">@lang('a.search')</button>

@@ -16,10 +16,10 @@
                                     <span class="fa fa-folder"></span>
                                     <span>{{ $folder }}</span>
                                 </a>
-                                @if ($current_folder == $folder)
+                                @if($current_folder == $folder)
                                     <div class="list-group folder">
                                         @foreach($folder_files as $file)
-                                            <a href="?l={{ \Illuminate\Support\Facades\Crypt::encrypt($file) }}&f={{ \Illuminate\Support\Facades\Crypt::encrypt($folder) }}" class="btn list-group-item @if ($current_file == $file) llv-active @endif">{{ $file }}</a>
+                                            <a href="?l={{ \Illuminate\Support\Facades\Crypt::encrypt($file) }}&f={{ \Illuminate\Support\Facades\Crypt::encrypt($folder) }}" class="btn list-group-item @if($current_file == $file) llv-active @endif">{{ $file }}</a>
                                         @endforeach
                                     </div>
                                 @endif
@@ -29,7 +29,7 @@
 
                     @if($files)
                         @foreach($files as $file)
-                            <a href="?l={{ \Illuminate\Support\Facades\Crypt::encrypt($file) }}" class="btn list-group-item @if ($current_file == $file) llv-active @endif">{{ $file }}</a>
+                            <a href="?l={{ \Illuminate\Support\Facades\Crypt::encrypt($file) }}" class="btn list-group-item @if($current_file == $file) llv-active @endif">{{ $file }}</a>
                         @endforeach
                     @endif
                 </div>
@@ -70,7 +70,7 @@
                                             </button>
                                         @endif
                                         {{{$log['text']}}}
-                                        @if (isset($log['in_file']))
+                                        @if(isset($log['in_file']))
                                             <br>{{{$log['in_file']}}}
                                         @endif
                                         @if($log['stack'])

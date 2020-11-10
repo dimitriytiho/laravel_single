@@ -3,7 +3,7 @@
 
 Вывод контента --}}
 @section('content')
-    @if ($values->count())
+    @if($values->count())
         <div class="row">
             <div class="col-md-4">
 

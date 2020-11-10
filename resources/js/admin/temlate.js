@@ -36,10 +36,23 @@ document.addEventListener('DOMContentLoaded', function() {
     })
 
 
+    // При клике на .get_disabled добавиться атрибут disabled
+    $('.get_disabled').click(function () {
+        setTimeout(function () {
+            $(this)
+                .attr('disabled', true)
+                .addClass('disabled')
+        }.bind(this),10)
+    })
+
+
     // При клике на .get_disabled_spinner добавиться атрибут disabled и включится spinner
     $('.get_disabled_spinner').click(function () {
         setTimeout(function () {
-            $(this).attr('disabled', true).prepend(spinnerBtn)
+            $(this)
+                .attr('disabled', true)
+                .addClass('disabled')
+                .prepend(spinnerBtn)
         }.bind(this),10)
     })
 

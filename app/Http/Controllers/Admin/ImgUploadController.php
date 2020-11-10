@@ -234,11 +234,12 @@ class ImgUploadController extends AppController
      * В БД заменяется картинка на по-умолчанию.
      */
     public function deleteImg(Request $request) {
+        $token = $request->token;
         $img = $request->img;
         $default = $request->default;
         $table = $request->table;
         $id = $request->id;
-        if ($img && $default && $table && $id && Schema::hasTable($table)) {
+        if ($img && $default && $table && $id && $token === csrf_token() && Schema::hasTable($table)) {
 
             DB::table($table)
                 ->where('img', $img)

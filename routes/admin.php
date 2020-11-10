@@ -27,7 +27,6 @@ Route::namespace($namespace)
     ->prefix($admin)->name('admin.')
     ->middleware(['auth', 'admin'])
     ->group(function () {
-    //Route::post('/menu/index', 'Admin\MenuController@index')->name('menu.index.post');
 
     // Routes import export
     Route::get('import-export', 'ImportExportController@view')->name('import_export');
@@ -61,7 +60,7 @@ Route::namespace($namespace)
     Route::resource('page', PageController::class)->except(['show']);
     Route::resource('user', UserController::class)->except(['show']);
     Route::resource('role', RoleController::class)->except(['show']);
-    Route::resource('menu-name', MenuNameController::class)->except(['show']);
+    Route::resource('menu-group', MenuGroupController::class)->except(['show']);
     Route::resource('menu', MenuController::class)->except(['show']);
     Route::resource('setting', SettingController::class)->except(['show']);
     Route::resource('translate', TranslateController::class)->except(['show']);
@@ -76,6 +75,7 @@ Route::namespace($namespace)
 
 
     // Add routes get
+    Route::get('delete-img', 'ImgUploadController@deleteImg')->name('delete_img');
     Route::get('sidebar-mini', 'MainController@sidebarMini')->name('sidebar_mini');
     Route::get('get-cookie', 'MainController@getCookie')->name('get_cookie');
     Route::get('pagination', 'MainController@pagination')->name('pagination');
@@ -84,7 +84,6 @@ Route::namespace($namespace)
     Route::get('logout', 'UserController@logout')->name('logout');
 
     // Add routes post
-    Route::post('delete-img', 'ImgUploadController@deleteImg')->name('delete_img');
     Route::post('get-slug', 'MainController@getSlug')->name('get_slug');
     Route::post('img-remove', 'ImgUploadController@remove')->name('img_remove');
     Route::post('img-upload', 'ImgUploadController@upload')->name('img_upload');

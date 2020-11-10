@@ -5,17 +5,27 @@
         {{--
 
         Проверим, есть ли у роли разрешения на класс --}}
-        @if (config('add.shop') && $isAdmin || config('add.shop') && $permission->contains('Order'))
-            {!! $construct::smallBox('info', 'fas fa-shopping-cart', $countTable['Order'] ?? '0', 'Orders', 'admin.order.index') !!}
+        @if(config('add.shop') && $isAdmin || config('add.shop') && $permission->contains('Order'))
+            {!! $construct::smallBox('info', 'fas fa-shopping-cart', $countTable['Order'] ?? '0', 'orders', 'admin.order.index') !!}
+            @if($isAdmin || $permission->contains('Category'))
+                {!! $construct::smallBox('success', 'fas fa-sitemap', $countTable['Category'] ?? '0', 'categories', 'admin.category.index') !!}
+            @endif
+            @if($isAdmin || $permission->contains('Product'))
+                {!! $construct::smallBox('warning', 'fas fa-boxes', $countTable['Product'] ?? '0', 'products', 'admin.product.index') !!}
+            @endif
+
+        @else
+
+            @if($isAdmin || $permission->contains('Form'))
+                {!! $construct::smallBox('success', 'far fa-comment-alt', $countTable['Form'] ?? '0', 'forms', 'admin.form.index') !!}
+            @endif
+            @if($isAdmin || $permission->contains('Page'))
+                {!! $construct::smallBox('warning', 'fas fa-columns', $countTable['Page'] ?? '0', 'pages', 'admin.page.index') !!}
+            @endif
         @endif
-        @if ($isAdmin || $permission->contains('Form'))
-            {!! $construct::smallBox('success', 'far fa-comment-alt', $countTable['Form'] ?? '0', 'Forms', 'admin.form.index') !!}
-        @endif
-        @if ($isAdmin || $permission->contains('Page'))
-            {!! $construct::smallBox('warning', 'fas fa-columns', $countTable['Page'] ?? '0', 'Pages', 'admin.page.index') !!}
-        @endif
-        @if ($isAdmin || $permission->contains('User'))
-            {!! $construct::smallBox('danger', 'fas fa-user-friends', $countTable['User'] ?? '0', 'Users', 'admin.user.index') !!}
+
+        @if($isAdmin || $permission->contains('User'))
+            {!! $construct::smallBox('danger', 'fas fa-user-friends', $countTable['User'] ?? '0', 'users', 'admin.user.index') !!}
         @endif
     </section>
 
@@ -31,7 +41,7 @@
         </div>
     </section>
 
-    @if ($isAdmin && !config('add.auth'))
+    @if($isAdmin && !config('add.auth'))
         <section class="card card-light mt-4">
             <div class="card-header">
                 <h3 class="card-title">@lang('a.key_to_enter')</h3>

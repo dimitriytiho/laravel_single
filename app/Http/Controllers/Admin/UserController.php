@@ -14,9 +14,6 @@ use Illuminate\Support\Str;
 
 class UserController extends AppController
 {
-    public static $guardedLast = ['id', 'note', 'accept', 'email_verified_at', 'remember_token', 'created_at', 'updated_at'];
-
-
     public function __construct(Request $request)
     {
         parent::__construct($request);
@@ -28,7 +25,14 @@ class UserController extends AppController
         $route = $this->route = $request->segment(2);
         $view = $this->view = Str::snake($this->class);
 
-        view()->share(compact('class', 'c','model', 'table', 'route', 'view'));
+        // Связанные таблицы, которые нельзя удалить, если есть связанные элементы, а также в моделе должен быть метод с название таблицы, реализующий связь
+        $relatedDelete = $this->relatedDelete = [
+
+            // Формы
+            'forms',
+        ];
+
+        view()->share(compact('class', 'c','model', 'table', 'route', 'view', 'relatedDelete'));
     }
 
     /**
@@ -68,7 +72,7 @@ class UserController extends AppController
         //$deleteBtn = true;
 
         $f = __FUNCTION__;
-        $title = __('a.' . Str::ucfirst($this->table));
+        $title = __("a.{$this->table}");
         return view("{$this->viewPath}.{$this->view}.{$f}", compact('title', 'values', 'queryArr', 'col', 'cell', 'thead'));
     }
 
@@ -89,7 +93,7 @@ class UserController extends AppController
         $roleIdAdmin = !auth()->user()->isAdmin() ? auth()->user()->roleAdminId() : null;
 
         $f = __FUNCTION__;
-        $title = __('a.' . Str::ucfirst($f));
+        $title = __("a.{$f}");
         return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'roles', 'statuses', 'roleIdAdmin'));
     }
 
@@ -126,10 +130,6 @@ class UserController extends AppController
             $data['img'] = config("admin.img{$this->class}Default");
         }
 
-        // Если нет картинки
-        if (empty($data['img'])) {
-            $data['img'] = config("admin.img{$this->class}Default");
-        }
 
         // Поле подтверждение пароля удаляется
         unset($data['password_confirmation']);
@@ -205,20 +205,12 @@ class UserController extends AppController
         // Роли пользователей
         $roles = Role::pluck('title', 'id');
 
-
-        // DROPZONE DATA
-        // Передаём начальную часть названия для передаваемой картинки Dropzone JS
-        $imgRequestName = $this->imgRequestName = App::cyrillicToLatin($values->name, 32);
-
-        // ID элемента, для которого картинка Dropzone JS
-        $imgUploadID = $this->imgUploadID = $values->id;
-
         // Если не Админ, то запишим id роли Админ
         $roleIdAdmin = !auth()->user()->isAdmin() ? auth()->user()->roleAdminId() : null;
 
         $f = __FUNCTION__;
         $title = __("a.{$f}");
-        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'values', 'roles', 'statuses', 'imgRequestName', 'imgUploadID', 'roleIdAdmin'));
+        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'values', 'roles', 'statuses', 'roleIdAdmin'));
     }
 
     /**
@@ -336,12 +328,20 @@ class UserController extends AppController
         }
 
 
-        // Если у пользователя есть формы, то ошибка
-        if ($values->forms && $values->forms->count()) {
-            return redirect()
-                ->route("admin.{$this->route}.edit", $id)
-                ->with('error', __('s.remove_not_possible') . ', ' . __('s.there_are_nested') . __('a.id'));
+        // Если есть связи, то вернём ошибку
+        if (!empty($this->relatedDelete)) {
+            foreach ($this->relatedDelete as $relatedTable) {
+                if ($values->$relatedTable->count()) {
+                    return redirect()
+                        ->route("admin.{$this->route}.edit", $id)
+                        ->with('error', __('s.remove_not_possible') . ', ' . __('s.there_are_nested') . __('a.id'));
+                }
+            }
         }
+
+
+        // Удаляем связанные роли
+        $values->roles()->sync([]);
 
 
         // Удаляем элемент

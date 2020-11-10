@@ -28,6 +28,15 @@ class AppController extends Controller
     protected $perPage;
     protected $perPageQuantity;
 
+    // Связанная таблица
+    protected $belongTable;
+
+    // Связанные таблицы
+    protected $relatedTables = [];
+
+    // Связанные для удаления
+    protected $relatedDelete = [];
+
 
     public function __construct(Request $request)
     {

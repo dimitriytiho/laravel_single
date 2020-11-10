@@ -1,6 +1,9 @@
 @import "params";
 @import "../config/mixins";
 
+body {
+    min-width: 320px;
+}
 
 th,
 label {

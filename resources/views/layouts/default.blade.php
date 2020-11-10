@@ -14,7 +14,7 @@
     {{--
 
     Если не нужно индексировать сайт, то true, если нужно, то false --}}
-    @if (!config('add.not_index_website'))
+    @if(!config('add.not_index_website'))
         <meta name="robots" content="index, follow" />
     @endif
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
@@ -30,12 +30,12 @@
     {{--
 
     Fontawesome--}}
-    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.15/css/all.css">
+    <link href="//use.fontawesome.com/releases/v5.15.0/css/all.css" rel="stylesheet" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>@section('titleSeo'){{ $titleSeo ?? $title ?? Main::site('name') }}@show | {{ Main::site('name') }}</title>
     <meta name="description" content="@section('description'){{ $description ?? ' ' }}@show" />
-    @if (!empty($keywords))
+    @if(!empty($keywords))
         <meta name="keywords" content="{{ $keywords }}" />
     @endif
     {{--
@@ -64,14 +64,14 @@
             {{--
 
             Хлебные крошки --}}
-            @isset ($breadcrumbs)
+            @isset($breadcrumbs)
                 <div class="container mt-3">
                     <div class="row">
                         <div class="col">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    @foreach ($breadcrumbs as $item)
-                                        @if ($item['end'])
+                                    @foreach($breadcrumbs as $item)
+                                        @if($item['end'])
                                             <li class="breadcrumb-item active" aria-current="page">{{ $item['title'] }}</li>
                                         @else
                                             <li class="breadcrumb-item">
@@ -121,7 +121,7 @@ Modernizr Webp --}}
 {{--
 
 Google ReCaptcha --}}
-@if (config('add.recaptcha_public_key'))
+@if(config('add.recaptcha_public_key'))
     {{--
 
     ReCaptcha v2 --}}
@@ -155,7 +155,7 @@ jquery-validation --}}
 <script src="{{ asset('lte/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('lte/plugins/jquery-validation/localization/messages_ru.min.js') }}"></script>
 
-@if (!request()->is('/'))
+@if(!request()->is('/'))
     {{--
 
     Подсказки Bootstrap --}}
@@ -188,8 +188,8 @@ Bootstrap --}}
 {{--
 
 Если в контенте из БД есть скрипты, то они выведятся здесь, через метод Main::getDownScript() --}}
-@if (Main::get('scripts'))
-    @foreach (Main::get('scripts') as $script)
+@if(Main::get('scripts'))
+    @foreach(Main::get('scripts') as $script)
         {!! $script . PHP_EOL !!}
     @endforeach
 @endif
@@ -205,6 +205,8 @@ Bootstrap --}}
 {{--
 
 Все счётчики для сайта поместить в этот файл --}}
-@include('inc.analytics')
+@if(config('add.env') === 'production')
+    @include('inc.analytics')
+@endif
 </body>
 </html>

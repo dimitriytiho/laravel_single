@@ -7,18 +7,18 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <div class="card-title">@lang('a.Cache')</div>
+            <div class="card-title">@lang('a.cache')</div>
         </div>
         <div class="card-body">
             <div class="row">
 
-                {!! $construct::infoBox('info', 'fas fa-database', 'db_caches', 'Remove', 'admin.additionally', 'cache=db', 'confirm_link') !!}
+                {!! $construct::infoBox('info', 'fas fa-database', 'db_caches', 'remove', 'admin.additionally', 'cache=db', 'confirm_link') !!}
 
-                {!! $construct::infoBox('success', 'far fa-star', 'view_caches', 'Remove', 'admin.additionally', 'cache=views', 'confirm_link') !!}
+                {!! $construct::infoBox('success', 'far fa-star', 'view_caches', 'remove', 'admin.additionally', 'cache=views', 'confirm_link') !!}
 
-                {!! $construct::infoBox('warning', 'far fa-flag', 'route_caches', 'Remove', 'admin.additionally', 'cache=routes', 'confirm_link') !!}
+                {!! $construct::infoBox('warning', 'far fa-flag', 'route_caches', 'remove', 'admin.additionally', 'cache=routes', 'confirm_link') !!}
 
-                {!! $construct::infoBox('danger', 'fas fa-cog', 'config_caches', 'Remove', 'admin.additionally', 'cache=config', 'confirm_link') !!}
+                {!! $construct::infoBox('danger', 'fas fa-cog', 'config_caches', 'remove', 'admin.additionally', 'cache=config', 'confirm_link') !!}
 
             </div>
         </div>

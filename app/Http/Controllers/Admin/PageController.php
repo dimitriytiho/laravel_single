@@ -65,7 +65,7 @@ class PageController extends AppController
 
 
         $f = __FUNCTION__;
-        $title = __('a.' . Str::ucfirst($this->table));
+        $title = __("a.{$this->table}");
         return view("{$this->viewPath}.{$this->route}.{$f}", compact('title', 'values', 'queryArr', 'col', 'cell', 'thead'));
     }
 
@@ -77,7 +77,7 @@ class PageController extends AppController
     public function create()
     {
         $f = __FUNCTION__;
-        $title = __('a.' . Str::ucfirst($f));
+        $title = __("a.{$f}");
         return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title'));
     }
 
@@ -165,7 +165,7 @@ class PageController extends AppController
         $rules = [
             'title' => 'required|string|max:250',
             'slug' => "required|string|unique:{$this->table},slug,{$id}|max:250",
-            'parent_id' => "nullable|integer",
+            'parent_id' => 'nullable|integer',
         ];
         $request->validate($rules);
         $data = $request->all();
@@ -174,9 +174,6 @@ class PageController extends AppController
         if ($values->parent_id == $values->id) {
             $values->parent_id = '0';
         }
-
-        // Если нет сортировки, то по-умолчанию 500
-        $data['sort'] = empty($data['sort']) ? 500 : $data['sort'];
 
         // Заполняем модель новыми данными
         $values->fill($data);

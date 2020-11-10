@@ -3,23 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\Admin\DbSort;
-use App\Models\MenuName;
 use Illuminate\Http\Request;
+use App\Models\MenuGroup;
 use Illuminate\Support\Str;
 
-class MenuNameController extends AppController
+class MenuGroupController extends AppController
 {
-    private $belongsTable = 'menu';
-    private $belongsController = 'Menu';
-    private $belongsView;
-
-
     public function __construct(Request $request)
     {
         parent::__construct($request);
-
-        $belongsTable = $this->belongsTable;
-        $this->belongsView = Str::snake($this->belongsController);
 
         $class = $this->class = str_replace('Controller', '', class_basename(__CLASS__));
         $c = $this->c = Str::lower($this->class);
@@ -28,7 +20,18 @@ class MenuNameController extends AppController
         $route = $this->route = $request->segment(2);
         $view = $this->view = Str::snake($this->class);
 
-        view()->share(compact('class', 'c','model', 'table', 'route', 'view', 'belongsTable'));
+
+        // Связанная таблица
+        $this->belongTable = 'menus';
+
+        // Связанные таблицы, которые нельзя удалить, если есть связанные элементы, а также в моделе должен быть метод с название таблицы, реализующий связь
+        $relatedDelete = $this->relatedDelete = [
+
+            // Меню
+            'menus',
+        ];
+
+        view()->share(compact('class', 'c','model', 'table', 'route', 'view', 'relatedDelete'));
     }
 
     /**
@@ -64,7 +67,7 @@ class MenuNameController extends AppController
         //$deleteBtn = true;
 
         $f = __FUNCTION__;
-        $title = __('a.' . Str::ucfirst($this->table));
+        $title = __("a.{$this->table}");
         return view("{$this->viewPath}.{$this->view}.{$f}", compact('title', 'values', 'queryArr', 'col', 'cell', 'thead'));
     }
 
@@ -76,7 +79,7 @@ class MenuNameController extends AppController
     public function create()
     {
         $f = __FUNCTION__;
-        $title = __('a.' . Str::ucfirst($f));
+        $title = __("a.{$f}");
         return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title'));
     }
 
@@ -95,7 +98,7 @@ class MenuNameController extends AppController
         $data = $request->all();
 
         // Создаём экземкляр модели
-        $values = new MenuName();
+        $values = new MenuGroup();
 
         // Заполняем модель новыми данными
         $values->fill($data);
@@ -133,14 +136,9 @@ class MenuNameController extends AppController
     {
         $values = $this->model::findOrFail($id);
 
-
-        // Элементы связанные
-        $valuesBelong = $values->menu;
-        $routeBelong = $this->belongsView;
-
         $f = __FUNCTION__;
         $title = __("a.{$f}");
-        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'values', 'valuesBelong', 'routeBelong'));
+        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'values'));
     }
 
     /**
@@ -204,13 +202,13 @@ class MenuNameController extends AppController
         session()->flash('success', __('s.removed_successfully', ['id' => $values->id]));
 
         // Если удаляется id, который записан в куку, то перезапишем в куку id другого меню
-        $cookie = request()->cookie("{$this->belongsView}_id");
+        $cookie = request()->cookie("{$this->belongTable}_id");
         if ($cookie == $id) {
             $newCookie = $this->model::first();
 
             if ($newCookie) {
                 return redirect()->route("admin.{$this->route}.index")
-                    ->withCookie(cookie()->forever("{$this->belongsView}_id", $newCookie->id));
+                    ->withCookie(cookie()->forever("{$this->belongTable}_id", $newCookie->id));
             }
         }
 

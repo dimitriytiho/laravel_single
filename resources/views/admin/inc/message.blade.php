@@ -2,21 +2,21 @@
 {{--
 
 Сообщения об ошибках --}}
-@if (session()->has('error') || isset($errors) && $errors->any())
+@if(session()->has('error') || isset($errors) && $errors->any())
     <div class="mt-1">
         <div class="alert alert-danger alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            @if ($errors->any())
+            @if($errors->any())
                 <ul class="list-unstyled mb-0">
-                    @foreach ($errors->all() as $error)
+                    @foreach($errors->all() as $error)
                         <li class="mt-1">{{ $error }}</li>
                     @endforeach
                 </ul>
             @endif
-            @if ($errors->any() && session()->has('error'))
+            @if($errors->any() && session()->has('error'))
                 <br>
             @endif
-            @if (session()->has('error'))
+            @if(session()->has('error'))
                 <div>{{ session('error') }}</div>
             @endif
         </div>
@@ -25,17 +25,17 @@
 {{--
 
 Сообщения об успехе --}}
-@if (session()->has('message') || session()->has('success'))
+@if(session()->has('message') || session()->has('success'))
     <div class="mt-1">
         <div class="alert alert-success alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            @if (session()->has('message'))
+            @if(session()->has('message'))
                 <span>{{ session('message') }}</span>
             @endif
-            @if (session()->has('message') && session()->has('success'))
+            @if(session()->has('message') && session()->has('success'))
                 <br>
             @endif
-            @if (session()->has('success'))
+            @if(session()->has('success'))
                 <div>{{ session('success') }}</div>
             @endif
         </div>
@@ -44,7 +44,7 @@
 {{--
 
 Сообщения информационные --}}
-@if (session()->has('info'))
+@if(session()->has('info'))
     <div class="mt-1">
         <div class="alert alert-info alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>

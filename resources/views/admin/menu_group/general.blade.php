@@ -14,7 +14,7 @@
 
             {!! $form::input('title', $values->title ?? null) !!}
 
-            @isset ($values->id)
+            @isset($values->id)
                 {!! $form::input('sort', $values->sort ?? null, null) !!}
             @endisset
             {{--

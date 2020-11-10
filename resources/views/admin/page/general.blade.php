@@ -21,14 +21,14 @@
 
             {!! $form::textarea('body', $values->body ?? null, null, true, null, config('admin.editor'), null, 20) !!}
 
-            @isset ($values->id)
+            @isset($values->id)
                 <div class="row">
                     <div class="col-md-4">
                         {!! $form::select('status', config('add.page_statuses'), $values->status ?? null) !!}
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            @if (!empty($all))
+                            @if(!empty($all))
                                 {!! $form::select('parent_id', $all, $values->parent_id ?? null, true, null, null, true, $values->id) !!}
                             @endif
                         </div>

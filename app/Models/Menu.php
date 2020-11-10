@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Menu extends App
 {
-    protected $table = 'menu';
     protected $guarded = ['id', 'created_at', 'updated_at']; // Запрещается редактировать
 
 
@@ -15,9 +14,9 @@ class Menu extends App
 
 
     // Связь многие к одному
-    public function menuName()
+    public function menu_groups()
     {
-        return $this->belongsTo(MenuName::class, 'belong_id', 'id');
+        return $this->belongsTo(MenuGroup::class, 'belong_id', 'id');
     }
 
     // Связь один ко многим внутри модели
@@ -39,12 +38,12 @@ class Menu extends App
     {
         if ($belongId) {
             $name = "menu_names_{$belongId}";
-            
+
             if (cache()->has($name)) {
                 $values = cache()->get($name);
-                
+
             } else {
-                
+
                 $values = self::where('belong_id', $belongId)->get();
                 cache()->put($name, $values);
             }
