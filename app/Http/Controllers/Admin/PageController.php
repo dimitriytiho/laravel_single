@@ -21,7 +21,14 @@ class PageController extends AppController
         $route = $this->route = $request->segment(2);
         $view = $this->view = Str::snake($this->class);
 
-        view()->share(compact('class', 'c','model', 'table', 'route', 'view'));
+        // Связанные таблицы, которые нельзя удалить, если есть связанные элементы, а также в моделе должен быть метод с название таблицы, реализующий связь
+        $relatedDelete = $this->relatedDelete = [
+
+            // Страницы
+            $table,
+        ];
+
+        view()->share(compact('class', 'c','model', 'table', 'route', 'view', 'relatedDelete'));
     }
 
     /**
@@ -201,11 +208,15 @@ class PageController extends AppController
         // Получаем элемент по id, если нет - будет ошибка
         $values = $this->model::findOrFail($id);
 
-        // Если есть потомки, то ошибка
-        if ($values->parents->isNotEmpty()) {
-            return redirect()
-                ->route("admin.{$this->route}.edit", $id)
-                ->with('error', __('s.remove_not_possible') . ', ' . __('s.there_are_nested') . __('a.id'));
+        // Если есть связи, то вернём ошибку
+        if (!empty($this->relatedDelete)) {
+            foreach ($this->relatedDelete as $relatedTable) {
+                if ($values->$relatedTable->count()) {
+                    return redirect()
+                        ->route("admin.{$this->route}.edit", $id)
+                        ->with('error', __('s.remove_not_possible') . ', ' . __('s.there_are_nested') . __('a.id'));
+                }
+            }
         }
 
         // Удаляем элемент

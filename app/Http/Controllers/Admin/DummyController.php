@@ -22,8 +22,11 @@ class DummyController extends AppController
         $route = $this->route = $request->segment(2);
         $view = $this->view = Str::snake($this->class);
 
+        // Связанная таблица, должен быть метод в моделе с названием таблицы
+        $belongTable = $this->belongTable = '';
+
         // Связанные таблицы, а также в моделе должен быть метод с название таблицы, реализующий связь
-        $this->relatedTables = [
+        $relatedTables = $this->relatedTables = [
 
             // Категории
             //'categories',
@@ -36,7 +39,7 @@ class DummyController extends AppController
             //'forms',
         ];
 
-        view()->share(compact('class', 'c','model', 'table', 'route', 'view', 'relatedDelete'));
+        view()->share(compact('class', 'c','model', 'table', 'route', 'view', 'belongTable', 'relatedTables', 'relatedDelete'));
     }
 
     /**
@@ -44,7 +47,7 @@ class DummyController extends AppController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         // Поиск. Массив гет ключей для поиска
         $queryArr = [
@@ -142,7 +145,9 @@ class DummyController extends AppController
         if (!empty($this->relatedTables)) {
             foreach ($this->relatedTables as $relatedTable) {
                 if (Schema::hasTable($relatedTable)) {
-                    $related[$relatedTable] = DB::table($relatedTable)->pluck('title', 'id');
+                    $related[$relatedTable] = DB::table($relatedTable)
+                        ->where('deleted_at', '=', null)
+                        ->pluck('title', 'id');
                 }
             }
         }

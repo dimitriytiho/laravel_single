@@ -25,44 +25,33 @@
 В моделе должен быть метод с название таблицы, реализующий связь --}}
 @if(isset($values) && !empty($relatedDelete))
     @foreach($relatedDelete as $relatedTable)
-        @if($values->$relatedTable->count())
+        @if(!empty($values->$relatedTable))
+            @php
+
+                $relatedTableCount = true;
+                $routeName = Str::singular($relatedTable);
+                $routeAction = Route::has("admin.{$routeName}.edit") ? "admin.{$routeName}.edit" : "admin.{$routeName}.show";
+
+            @endphp
             <div class="text-right">
                 <div class="small text-secondary">@lang('s.remove_not_possible'),<br>@lang('s.there_are_nested') {{ l($relatedTable, 'a') }}</div>
                 @foreach($values->$relatedTable as $item)
-                    <a href="{{ route('admin.' . Str::singular($relatedTable) . '.edit', $item->id) }}">{{ $item->id }}</a>
+                    <a href="{{ route($routeAction, $item->id) }}">{{ $item->id }}</a>
                 @endforeach
             </div>
         @endif
      @endforeach
+@endif
 
- @else
-
-     @if(isset($values->id) && empty($disabledDelete))
-         <form action="{{ route("admin.{$route}.destroy", $values->id) }}" method="post" class="text-right confirm_form">
-             @method('delete')
-             @csrf
-             <button type="submit" class="btn btn-danger mt-3 pulse">@lang('s.remove')</button>
-         </form>
-     @endif
- @endif
- {{--@if(isset($values) && isset($valuesBelong) && $valuesBelong->count())
-     <div class="text-right mt--3">
-         <div class="small text-secondary">@lang('s.remove_not_possible'),<br>@lang('s.there_are_nested') @lang('a.id')</div>
-         @php
-
-         $r = $routeBelong ?? $route;
-
-         @endphp
-         @foreach($valuesBelong as $item)
-             <a href="{{ route("admin.{$r}.edit", $item->id) }}">{{ $item->id }}</a>
-         @endforeach
-     </div>
- @else
-     @if(isset($values->id) && empty($disabledDelete))
-         <form action="{{ route("admin.{$route}.destroy", $values->id) }}" method="post" class="text-right confirm_form">
-             @method('delete')
-             @csrf
-             <button type="submit" class="btn btn-danger mt-3 pulse">@lang('s.remove')</button>
-         </form>
-     @endif
- @endif--}}
+@if(
+    !('user' === $c && $values->noAdminEditAdmin())
+    && empty($relatedTableCount)
+    && isset($values->id)
+    && empty($disabledDelete)
+    )
+    <form action="{{ route("admin.{$route}.destroy", $values->id) }}" method="post" class="text-right confirm_form">
+        @method('delete')
+        @csrf
+        <button type="submit" class="btn btn-danger mt-3 pulse">@lang('s.remove')</button>
+    </form>
+@endif

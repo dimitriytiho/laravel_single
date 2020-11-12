@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 class LeftMenu
 {
     // Исключения для хлебных крошек, т.е. к ним добавляется ещё один сегмент, добивить в массив
-    private static $breadcrumbExceptions = ['edit', 'form/'];
+    private static $breadcrumbExceptions = ['edit', 'form/', 'order/'];
 
 
 
@@ -27,7 +27,7 @@ class LeftMenu
         if (cache()->has('admin_left_menu')) {
             $leftMenuArr = cache()->get('admin_left_menu');
         } else {
-            $leftMenuArr = Menu::where('belong_id', 1)
+            $leftMenuArr = Menu::where('belong_id', 2)
                 ->active()
                 ->orderBy('sort')
                 ->get()
@@ -101,7 +101,7 @@ class LeftMenu
 
                     $breadcrumbs[] = $menu[$currentMenu['id']];
 
-                    if ($currentMenu['id'] !== $menu[$currentMenu['id']]['parent_id'] && 'List' !== $menu[$currentMenu['id']]['title']) { // Названия пропускаем
+                    if ($currentMenu['id'] !== $menu[$currentMenu['id']]['parent_id'] && 'list' !== $menu[$currentMenu['id']]['title']) { // Названия пропускаем
                         $currentMenu['id'] = $menu[$currentMenu['id']]['parent_id'];
 
                     } else break;

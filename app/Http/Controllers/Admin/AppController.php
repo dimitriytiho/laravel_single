@@ -74,14 +74,11 @@ class AppController extends Controller
 
                     // Всегда разрешает EnterController
                     $permission->push('Admin\Enter');
+                    // Всегда добавляем MainController
+                    $permission->push('Admin\Main');
 
                     $currentController = Str::before($request->route()->action['controller'], 'Controller@');
                     $currentController = Str::after($currentController, 'App\Http\Controllers\\');
-
-                    // Если нет разрешённых, то разрешаем MainController
-                    if ($permission->isEmpty()) {
-                        $permission->push('Admin\Main');
-                    }
 
 
                     if (!$permission->contains($currentController)) {
@@ -142,7 +139,7 @@ class AppController extends Controller
         $countTable['Form'] = DB::table('forms')->count();
         $countTable['Page'] = DB::table('pages')->count();
         $countTable['User'] = DB::table('users')->count();
-        $countTable['Order'] = DB::table('orders')->where('status', config('admin.order_statuses')[0])->count();
+        $countTable['Order'] = DB::table('orders')->count();
 
         view()->share(compact('imgRequestName', 'imgUploadID', 'namespaceHelpers', 'construct', 'form', 'dbSort', 'countTable'));
     }

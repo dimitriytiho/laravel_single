@@ -21,10 +21,10 @@ class MenuController extends AppController
         $route = $this->route = $request->segment(2);
         $view = $this->view = Str::snake($this->class);
 
-        // Связанная таблица
-        $this->belongTable = 'menu_groups';
+        // Связанная таблица, должен быть метод в моделе с названием таблицы
+        $belongTable = $this->belongTable = 'menu_groups';
 
-        view()->share(compact('class', 'c','model', 'table', 'route', 'view'));
+        view()->share(compact('class', 'c','model', 'table', 'route', 'view', 'belongTable'));
     }
 
     /**
@@ -51,8 +51,6 @@ class MenuController extends AppController
         $parentValues = DB::table($this->belongTable)->pluck('title', 'id');
         $parentValues->prepend($this->belongTable, 0);
 
-
-        $f = __FUNCTION__;
         $values = null;
 
         // Поиск. Массив гет ключей для поиска
@@ -87,10 +85,7 @@ class MenuController extends AppController
             'id' => null,
         ];
 
-
-        // Id элементов, которые нельзя удалять
-        //$guardedIds = $this->model::where('parent_id', '0')->pluck('id')->toArray();
-
+        $f = __FUNCTION__;
         $title = __("a.{$this->table}");
         return view("{$this->viewPath}.{$this->view}.{$f}", compact('title', 'parentValues', 'values', 'queryArr', 'col', 'cell', 'currentParentId', 'thead'));
     }
@@ -104,20 +99,21 @@ class MenuController extends AppController
     {
         // Записать в куку id из привязанной таблице, если не записано
         $currentParentId = $request->cookie("{$this->table}_id");
-        $countParent = DB::table($this->belongTable)->count();
+        $parentObj = DB::table($this->belongTable);
 
-        if (!$currentParentId && $countParent) {
-            $currentParent = DB::table($this->belongTable)->first();
+        if (!$currentParentId && $parentObj->count()) {
+            $currentParent = $parentObj->first();
 
             // Записать куку навсегда (5 лет)
             return redirect()->back()
                 ->withCookie(cookie()->forever("{$this->table}_id", $currentParent->id)
                 );
         }
+        $currentParent = $parentObj->find($currentParentId);
 
         $f = __FUNCTION__;
         $title = __("a.{$f}");
-        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'currentParentId'));
+        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'currentParent'));
     }
 
     /**
@@ -174,7 +170,7 @@ class MenuController extends AppController
     public function edit($id)
     {
         // Записать в куку id из привязанной таблице, если не записано
-        $currentParentId = request()->cookie("{$this->view}_id");
+        $currentParentId = request()->cookie("{$this->table}_id");
         $countParent = DB::table($this->belongTable)->count();
 
         if (!$currentParentId && $countParent) {

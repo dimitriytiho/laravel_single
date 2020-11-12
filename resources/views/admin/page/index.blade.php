@@ -5,22 +5,18 @@
 
 --}}
 @section('content')
-    @if($values->isNotEmpty())
-        <div class="card">
-            <div class="card-body">
-                @include('admin.inc.search')
+    <div class="card">
+        <div class="card-body">
+            @include('admin.inc.search')
 
+            @if($values->isNotEmpty())
                 @include('admin.inc.for_index')
-            </div>
-            <div class="card-footer">
-                @include('admin.inc.pagination')
-            </div>
+            @else
+                <h5 class="mt-4">@lang('a.is_nothing_here')</h5>
+            @endif
         </div>
-    @else
-        <div class="card">
-            <div class="card-body">
-                <h5>@lang('a.is_nothing_here')</h5>
-            </div>
+        <div class="card-footer">
+            @include('admin.inc.pagination')
         </div>
-    @endif
+    </div>
 @endsection

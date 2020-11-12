@@ -55,6 +55,7 @@ class SearchController extends AppController
 
 
                 ->select([DB::raw("'{$this->routeSearch}' as route"), 'id', 'title', 'slug'])
+                ->where('deleted_at', '=', null)
                 ->where('status', $this->statusActive)
                 ->where('title', 'LIKE', "%{$query}%")
                 ->paginate($this->perPage);
@@ -87,6 +88,7 @@ class SearchController extends AppController
 
 
                     ->select([DB::raw("'{$this->routeSearch}' as route"), 'id', 'title', 'slug'])
+                    ->where('deleted_at', '=', null)
                     ->where('status', $this->statusActive)
                     ->where('title', 'LIKE', "%{$query}%")
                     ->limit('10')

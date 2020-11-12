@@ -22,7 +22,7 @@
                         </div>
                     </div>
                     <label for="email" class="sr-only"></label>
-                    <input type="email" name="email" id="email" class="form-control" placeholder="@lang('a.email')">
+                    <input type="email" name="email" id="email" class="form-control" placeholder="@lang('a.email')" value="{{ old('email') }}">
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
@@ -35,10 +35,10 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-5">
+                    <div class="col-6">
                         <button type="submit" class="btn btn-primary btn-block pulse">@lang('s.submit')</button>
                     </div>
-                    <div class="col-7">
+                    <div class="col-6">
                         <div class="icheck-primary text-right">
                             <input type="checkbox" name="remember" id="remember">
                             <label for="remember">@lang('a.remember')</label>
@@ -47,7 +47,7 @@
                 </div>
             </form>
 
-            <p class="login-box-msg">
+            <p class="login-box-msg mt-4">
                 <small class="font-weight-light">
                     Сайт защищен reCAPTCHA и применяются
                     <a href="//policies.google.com/privacy" class="text-dark">Политика конфиденциальности</a> и

@@ -7,21 +7,15 @@
 @section('content')
     @if(!empty($currentParentId))
         <div class="card">
-            @isset($values->menuName->title)
-                <div class="card-header">
-                    <div class="card-title">
-                        <b>@lang('a.selected'):</b>
-                        <span> {{ l($values->menuName->title, 'a') }}</span>
-                    </div>
-                </div>
-            @endisset
+            @include('admin.inc.belong_check')
             <div class="card-body">
                 {{--
 
                 Начало формы --}}
                 @include('admin.inc.general_start')
 
-                {!! $form::hidden('belong_id', $currentParentId) !!}
+                {!! $form::hidden('belong_id', $values->belong_id ?? $currentParent->id ?? null) !!}
+
 
                 <div class="row">
                     <div class="col-md-6">

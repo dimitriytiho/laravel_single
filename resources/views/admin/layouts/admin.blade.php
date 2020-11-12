@@ -35,6 +35,8 @@
     @endif
     <!-- Toastr -->
     <link rel="stylesheet" href="{{ asset('lte/plugins/toastr/toastr.min.css') }}">
+    <!-- Bootstrap Switch -->
+    <link rel="stylesheet" href="{{ asset('lte/plugins/bootstrap-switch/css/bootstrap4/bootstrap-switch.min.css') }}">
     {{--
 
     Для файлового менеджера --}}
@@ -94,6 +96,8 @@ Js files --}}
 <script src="{{ asset('lte/plugins/jquery-validation/localization/messages_ru.min.js') }}"></script>
 <!-- Toastr -->
 <script src="{{ asset('lte/plugins/toastr/toastr.min.js') }}"></script>
+<!-- Bootstrap Switch -->
+<script src="{{ asset('lte/plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}"></script>
 
 <script src="{{ asset('lte/dist/js/adminlte.min.js') }}"></script>
 {{--

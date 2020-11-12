@@ -20,7 +20,7 @@ class Menu extends App
     }
 
     // Связь один ко многим внутри модели
-    public function parents()
+    public function menus()
     {
         return $this->hasMany(self::class, 'parent_id', 'id');
     }

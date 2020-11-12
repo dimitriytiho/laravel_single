@@ -62,6 +62,10 @@ class User extends Authenticatable
         return $this->hasMany(Form::class, 'user_id', 'id');
     }
 
+    public function orders() {
+        return $this->hasMany(Order::class, 'user_id', 'id');
+    }
+
 
 
     // Меняем шаблон письма при сбросе пароля
@@ -141,6 +145,13 @@ class User extends Authenticatable
     {
         $this->ip = request()->ip();
         $this->update();
+    }
+
+
+    // Записать роль гость для пользователя.
+    public function saveRoleGuest()
+    {
+        $this->roles()->sync([$this->roleGuestId()]);
     }
 
 

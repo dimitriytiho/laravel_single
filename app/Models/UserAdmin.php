@@ -102,6 +102,10 @@ class UserAdmin extends User
             $user = new User();
             $user->fill($data);
             $user->save();
+
+            // По умолчанию назначим роль Гость
+            $user->saveRoleGuest();
+            
             return $user;
         }
     }

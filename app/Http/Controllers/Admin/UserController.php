@@ -25,6 +25,15 @@ class UserController extends AppController
         $route = $this->route = $request->segment(2);
         $view = $this->view = Str::snake($this->class);
 
+
+        // Связанные таблицы, а также в моделе должен быть метод с название таблицы, реализующий связь
+        $this->relatedTables = [
+
+            // Роли
+            'roles',
+        ];
+
+
         // Связанные таблицы, которые нельзя удалить, если есть связанные элементы, а также в моделе должен быть метод с название таблицы, реализующий связь
         $relatedDelete = $this->relatedDelete = [
 
@@ -147,7 +156,7 @@ class UserController extends AppController
 
 
         // Если не Админ выбирает роль Админ, то ошибка или Если не Админ редактирует Админа
-        if ($values->noAdmintoAdmin($request->role_ids) || $values->noAdminEditAdmin()) {
+        if ($values->noAdmintoAdmin($request->roles) || $values->noAdminEditAdmin()) {
 
             // Сообщение об ошибке
             return redirect()
@@ -156,19 +165,12 @@ class UserController extends AppController
         }
 
 
-        // Если нет роли, то по умолчанию назначим роль Гость
-        $roleIds = $request->role_ids;
-        if (!$roleIds) {
-            $roleIds[0] = $values->roleGuestId();
-        }
-
-
         // Сохраняем элемент
         $values->save();
 
 
-        // Сохраняем роли
-        $values->roles()->sync($request->role_ids);
+        // Если нет роли, то по умолчанию назначим роль Гость
+        $values->saveRoleGuest();
 
 
         // Сообщение об успехе
@@ -202,8 +204,19 @@ class UserController extends AppController
         // Статусы пользователей
         $statuses = config('admin.user_statuses');
 
-        // Роли пользователей
-        $roles = Role::pluck('title', 'id');
+
+        // Получаем данные связанных таблиц
+        $related = [];
+        if (!empty($this->relatedTables)) {
+            foreach ($this->relatedTables as $relatedTable) {
+                if (Schema::hasTable($relatedTable)) {
+                    $related[$relatedTable] = DB::table($relatedTable)
+                        ->where('deleted_at', '=', null)
+                        ->pluck('title', 'id');
+                }
+            }
+        }
+
 
         // Если не Админ, то запишим id роли Админ
         $roleIdAdmin = !auth()->user()->isAdmin() ? auth()->user()->roleAdminId() : null;
@@ -263,7 +276,7 @@ class UserController extends AppController
         $values->fill($data);
 
         // Если не Админ выбирает роль Админ, то ошибка или Если не Админ редактирует Админа
-        if ($values->noAdmintoAdmin($request->role_ids) || $values->noAdminEditAdmin()) {
+        if ($values->noAdmintoAdmin($request->roles) || $values->noAdminEditAdmin()) {
 
             // Сообщение об ошибке
             return redirect()
@@ -274,18 +287,22 @@ class UserController extends AppController
         // Сохраняем предыдущие данные пользователя, если данные были изменены
         UserLastData::diffSaveLastUser($values);
 
-        // Если нет роли, то по умолчанию назначим роль Гость
-        $roleIds = $request->role_ids;
-        if (!$roleIds) {
-            $roleIds[0] = $values->roleGuestId();
-        }
 
-        // Сохраняем роли
-        $values->roles()->sync($roleIds);
+        // Сохраняем связи
+        if (!empty($this->relatedTables)) {
+            foreach ($this->relatedTables as $relatedTable) {
+                
+                // Добавим условие, чтобы роль по-умолчанию Гость
+                $requestSync = $relatedTable === 'roles' && empty($request->$relatedTable) ? $values->roleGuestId() : $request->$relatedTable;
+
+                $values->$relatedTable()->sync($requestSync);
+            }
+        }
 
 
         // Обновляем элемент
         $values->update();
+
         // Если меняются данные текущего пользователя, то изменим их в объекте auth
         if ($values->id === auth()->user()->id) {
             $auth = auth()->user()->toArray();
@@ -340,8 +357,12 @@ class UserController extends AppController
         }
 
 
-        // Удаляем связанные роли
-        $values->roles()->sync([]);
+        // Удаляем связанные элементы
+        if (!empty($this->relatedTables)) {
+            foreach ($this->relatedTables as $relatedTable) {
+                $values->$relatedTable()->sync([]);
+            }
+        }
 
 
         // Удаляем элемент

@@ -186,7 +186,7 @@ class MenuGroupController extends AppController
         $values = $this->model::findOrFail($id);
 
         // Если есть потомки, то ошибка
-        if ($values->menu && $values->menu->count()) {
+        if ($values->{$this->belongTable}->count()) {
             return redirect()
                 ->route("admin.{$this->route}.edit", $id)
                 ->with('error', __('s.remove_not_possible') . ', ' . __('s.there_are_nested') . __('a.id'));

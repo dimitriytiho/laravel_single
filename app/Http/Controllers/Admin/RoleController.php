@@ -56,7 +56,15 @@ class RoleController extends AppController
             }
         }*/
 
-        view()->share(compact('class', 'c','model', 'table', 'route', 'view', 'files'));
+
+        // Связанные таблицы, которые нельзя удалить, если есть связанные элементы, а также в моделе должен быть метод с название таблицы, реализующий связь
+        $relatedDelete = $this->relatedDelete = [
+
+            // Страницы
+            'users',
+        ];
+
+        view()->share(compact('class', 'c','model', 'table', 'route', 'view', 'files', 'relatedDelete'));
     }
 
     /**
@@ -284,11 +292,15 @@ class RoleController extends AppController
         // Получаем элемент по id, если нет - будет ошибка
         $values = $this->model::findOrFail($id);
 
-        // Если есть потомки, то ошибка или если роль запрещена к удалению
-        if ($values->users && $values->users->count() || $values->guardedIds()->contains($values->id)) {
-            return redirect()
-                ->route("admin.{$this->route}.edit", $id)
-                ->with('error', __('s.remove_not_possible') . ', ' . __('s.there_are_nested') . __('a.id'));
+        // Если есть связи, то вернём ошибку
+        if (!empty($this->relatedDelete)) {
+            foreach ($this->relatedDelete as $relatedTable) {
+                if ($values->$relatedTable->count()) {
+                    return redirect()
+                        ->route("admin.{$this->route}.edit", $id)
+                        ->with('error', __('s.remove_not_possible') . ', ' . __('s.there_are_nested') . __('a.id'));
+                }
+            }
         }
 
         // Удаляем связанные разрешения

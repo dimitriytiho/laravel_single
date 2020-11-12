@@ -1,3 +1,4 @@
+@section('titleSeo')@lang('s.page_not_found')@endsection
 {{--
 
 Наследуем шаблон --}}

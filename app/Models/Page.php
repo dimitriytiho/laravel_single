@@ -16,7 +16,7 @@ class Page extends App
 
 
     // Связь один ко многим внутри модели
-    public function parents()
+    public function pages()
     {
         return $this->hasMany(self::class, 'parent_id', 'id');
     }

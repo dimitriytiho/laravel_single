@@ -1,6 +1,10 @@
 
 document.addEventListener('DOMContentLoaded', function() {
 
+    // Bootstrap Switch
+    $('[data-toggle=switch]').bootstrapSwitch()
+    
+
     // Codemirror
     var codemirror = document.querySelector('.codemirror')
     if (codemirror) {

@@ -96,4 +96,16 @@ class MainController extends AppController
         }
         Main::getError('Request to', __METHOD__);
     }
+
+
+    public function newOrder(Request $request)
+    {
+        if ($request->ajax()) {
+            return DB::table('orders')
+                ->where('deleted_at', '=', null)
+                ->where('status', config('admin.order_statuses')[0])
+                ->count();
+        }
+        Main::getError('Request No Ajax', __METHOD__);
+    }
 }

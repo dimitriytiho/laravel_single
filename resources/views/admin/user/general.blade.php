@@ -47,39 +47,11 @@
                             <li class="list-group-item">
                                 <b>@lang('a.address')</b> <span class="float-right">{{ $values->address }}</span>
                             </li>
+                            <li class="list-group-item">
+                                <b>@lang('a.ip')</b> <span class="float-right">{{ $values->ip }}</span>
+                            </li>
                         </ul>
-                        {{--
-
-                        Если не Админ редактирует Админа --}}
-                        @if(!$values->noAdminEditAdmin())
-                            {{--
-
-                            Если есть связанные для удаления элементы --}}
-                            @if(!empty($relatedDelete))
-                                @foreach($relatedDelete as $relatedTable)
-                                    @if($values->$relatedTable->count())
-                                        @php
-
-                                        $relatedTableCount = true;
-
-                                        @endphp
-                                        <div>
-                                            <div class="small text-secondary">@lang('s.remove_not_possible'), @lang('s.there_are_nested') {{ l($relatedTable, 'a') }}</div>
-                                            @foreach($values->$relatedTable as $item)
-                                                <a href="{{ route('admin.form.show', $item->id) }}">{{ $item->id }}</a>
-                                            @endforeach
-                                        </div>
-                                    @endif
-                                @endforeach
-                            @endif
-                            @empty($relatedTableCount)
-                                <form action="{{ route("admin.{$route}.destroy", $values->id) }}" method="post" class="text-right confirm_form">
-                                    @method('delete')
-                                    @csrf
-                                    <button type="submit" class="btn btn-danger mt-3 btn-block pulse">@lang('s.remove')</button>
-                                </form>
-                            @endempty
-                        @endif
+                        <div class="badge badge-{{ $values->status }} d-block mt-4 py-2">@lang("a.{$values->status}")</div>
                     </div>
                 </div>
                 <!-- /.card Profile Image -->
@@ -111,10 +83,13 @@
                         </div>
                         {{--
 
-                        Множественный select2 --}}
-                        @if(!empty($roles))
-                            {!! $form::select('role_ids', $roles, $values->roles ?? null, 'role', null, ['data-placeholder' => __('s.choose')], true, $roleIdAdmin, true, 'w-100 select2', null, null) !!}
+                        Связи множественные select2 --}}
+                        @if (!empty($related))
+                            @foreach ($related as $tableName => $items)
+                                {!! $form::select($tableName, $items, $values->$tableName ?? null, $tableName, null, ['data-placeholder' => __('s.choose')], true, null, true, 'w-100 select2', null, null) !!}
+                            @endforeach
                         @endif
+
                         {!! $form::input('name', $values->name ?? null) !!}
 
                         <div class="row">
@@ -136,29 +111,10 @@
                                 {!! $form::input('password_confirmation', null, null, 'password') !!}
                             </div>
                         </div>
+                    {{--
 
-                        @isset($values->id)
-                            <div class="row">
-                                <div class="col-md-6">
-                                    {!! $form::input('id', $values->id, null, 'text', true, null, null, ['disabled' => 'true']) !!}
-                                </div>
-                                <div class="col-md-6">
-                                    {!! $form::input('ip', $values->ip, null, 'text', true, null, null, ['disabled' => 'true']) !!}
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    {!! $form::input('updated_at', d($values->updated_at, config('admin.date_format')), null, 'text', true, null, null, ['disabled' => 'true']) !!}
-                                </div>
-                                <div class="col-md-6">
-                                    {!! $form::input('created_at', d($values->created_at, config('admin.date_format')), null, 'text', true, null, null, ['disabled' => 'true'])!!}
-                                </div>
-                            </div>
-                        @endisset
-
-                        <button type="submit" class="btn btn-primary mt-3 mr-2 pulse">{{ isset($values->id) ? __('s.save') : __('s.submit') }}</button>
-                    </form>
+                    Конец формы --}}
+                    @include('admin.inc.general_end')
                 </div>
             </div>
             <!-- /.card -->

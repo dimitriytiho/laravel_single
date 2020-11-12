@@ -34,6 +34,7 @@ return [
     'permission_skip_controllers' => [
         'App',
         'Admin\App',
+        'Admin\Dummy',
         'Admin\Enter',
         'Admin\ImgUpload',
         'Admin\Main',
@@ -45,11 +46,11 @@ return [
 
     // Статусы пользователей
     'user_statuses' => [
-        'new', // Должен быть первый new статус, т.е. непонятный пользователь
-        'strange',
-        'dangerous',
-        'sociable',
-        'wonderful',
+        'secondary', // По-умолчанию
+        'info',
+        'success',
+        'warning',
+        'danger',
     ],
 
 

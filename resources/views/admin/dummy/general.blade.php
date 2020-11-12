@@ -6,6 +6,7 @@
 --}}
 @section('content')
     <div class="card">
+        @include('admin.inc.belong_check')
         <div class="card-body">
             {{--
 

@@ -75,10 +75,12 @@ return [
     'checked' => 'Checked',
     'moderator' => 'Moderator',
     'new' => 'New',
-    'strange' => 'Strange',
-    'dangerous' => 'Dangerous',
-    'sociable' => 'Sociable',
-    'wonderful' => 'Wonderful',
+    
+    'secondary' => 'New',
+    'info' => 'Info',
+    'success' => 'Success',
+    'warning' => 'Warning',
+    'danger' => 'Danger',
     'completed' => 'Completed',
     'in_process' => 'In process',
 
@@ -189,10 +191,19 @@ return [
     'updated_count_files' => 'Updated :count files, below is a list of updated files:',
     'if_something_breaks' => 'If something breaks, then replace back from the backup archive /storage/app/:name.',
 
+    'checkbox' => 'Checkbox',
+    'radio' => 'Radio',
+    'no' => 'No',
+    'required' => 'Required',
+
     'asc' => 'Ascending',
     'desc' => 'Descending',
     'area' => 'Area',
     'public' => 'Public',
     'permission' => 'Permission',
+    'icon' => 'Icon',
+    'on' => 'ON',
+    'off' => 'OFF',
+    'default' => 'Default',
 
 ];

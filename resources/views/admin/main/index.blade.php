@@ -48,7 +48,7 @@
             </div>
             <div class="card-body">
                 <p>
-                    <strong><i class="fas fa-key mr-1"></i> @lang('a.Change')</strong>
+                    <strong><i class="fas fa-key mr-1"></i> @lang('a.change')</strong>
                 </p>
 
                 {!! $form::input('key', $key ?? null, null, null, null, null, null, [], null, null, null,

@@ -1,3 +1,4 @@
+@section('titleSeo')@lang('s.Preventive_work')@endsection
 {{--
 
 Наследуем шаблон --}}

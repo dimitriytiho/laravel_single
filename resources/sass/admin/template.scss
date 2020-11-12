@@ -2,10 +2,34 @@
 @import "../config/mixins";
 
 
+.js-none {
+    display: none;
+}
+
+thead th {
+    white-space: nowrap;
+}
+
 .cur {
     cursor: pointer;
 }
 
 .p {
     font-size: 1rem !important;
+}
+
+.btn_radio {
+    .active.btn {
+        position: relative;
+        &:after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 6px;
+            height: 6px;
+            background-color: $white;
+            border-radius: 50%;
+        }
+    }
 }

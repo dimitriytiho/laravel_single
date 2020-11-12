@@ -84,6 +84,7 @@ Route::namespace($namespace)
     Route::get('logout', 'UserController@logout')->name('logout');
 
     // Add routes post
+    //Route::post('new-order', 'MainController@newOrder')->name('new_order');
     Route::post('get-slug', 'MainController@getSlug')->name('get_slug');
     Route::post('img-remove', 'ImgUploadController@remove')->name('img_remove');
     Route::post('img-upload', 'ImgUploadController@upload')->name('img_upload');
