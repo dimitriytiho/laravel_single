@@ -1,5 +1,5 @@
 <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">Laravel {{ App::version() }} | Admin LTE 3.0.3</div>
+    <div class="float-right d-none d-sm-block">PHP {{ phpversion() }} | Laravel {{ App::version() }} | Admin LTE 3.0.3</div>
     <div>&copy; {{ date('Y') }} {{ config('add.dev') }}</div>
 </footer>
 

@@ -25,7 +25,7 @@
 В моделе должен быть метод с название таблицы, реализующий связь --}}
 @if(isset($values) && !empty($relatedDelete))
     @foreach($relatedDelete as $relatedTable)
-        @if(!empty($values->$relatedTable))
+        @if(isset($values->$relatedTable) && $values->$relatedTable->count())
             @php
 
                 $relatedTableCount = true;

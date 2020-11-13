@@ -46,8 +46,8 @@ return [
 
     // Статусы пользователей
     'user_statuses' => [
-        'secondary', // По-умолчанию
-        'info',
+        'secondary', // По-умолчанию, должен быть первый
+        'info', // Повторно, должен быть втрой
         'success',
         'warning',
         'danger',

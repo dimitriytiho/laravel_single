@@ -29,9 +29,9 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
 
         /*
-         * Настроим крон на работу каждый час в 01 минуту.
+         * Настроим крон на работу каждый час в 00 минуту.
          * По документации: * * * * * php /path-to-your-project/artisan schedule:run >> /dev/null 2>&1
-         * На сервере для php 7.3:
+         * На сервере для php 7.4:
          * 1 * * * *
          * cd ~/site.ru/public_html && /usr/local/bin/php7.3 artisan schedule:run >> /dev/null 2>&1
          */
@@ -50,8 +50,13 @@ class Kernel extends ConsoleKernel
 
 
         // Резервное копирование веб-сайта
-        //$schedule->command('backup:clean')->monthlyOn(1, '02:01');
-        //$schedule->command('backup:run')->monthlyOn(1, '03:01');
+        //$schedule->command('backup:clean')->monthlyOn(1, '02:00');
+        //$schedule->command('backup:run')->monthlyOn(1, '03:00');
+
+        // Обновление веб-сайта (в 4 день месяца)
+        /*$schedule->call(function () {
+            Upload::getUpload();
+        })->monthlyOn(1, '04:00');*/
     }
 
     /**

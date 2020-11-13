@@ -36,17 +36,17 @@ class AdditionallyController extends AppController
                     return redirect()->route("admin.{$this->route}");
 
                 case 'views':
-                    $res = Commands::getCommand('view:clear');
+                    $res = Commands::getCommand('php artisan view:clear');
                     $res ? session()->flash('success', $res) : session()->flash('error', __('s.something_went_wrong'));
                     return redirect()->route("admin.{$this->route}");
 
                 case 'routes':
-                    $res1 = Commands::getCommand('route:clear');
+                    $res1 = Commands::getCommand('php artisan route:clear');
                     $res1 ? session()->flash('success', $res1) : session()->flash('error', __('s.something_went_wrong'));
                     return redirect()->route("admin.{$this->route}");
 
                 case 'config':
-                    $res1 = Commands::getCommand('config:clear');
+                    $res1 = Commands::getCommand('php artisan config:clear');
                     $res1 ? session()->flash('success', $res1) : session()->flash('error', __('s.something_went_wrong'));
                     return redirect()->route("admin.{$this->route}");
             }

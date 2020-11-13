@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Helpers\Admin\App;
 use App\Helpers\Admin\DbSort;
 use App\Helpers\Admin\Img;
 use App\Models\Role;
 use App\Models\UserAdmin;
 use App\Models\UserLastData;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class UserController extends AppController
@@ -70,6 +71,7 @@ class UserController extends AppController
 
         // Передать поля для вывода, значение l - с переводом, t - дата
         $thead = [
+            'img' => 'img',
             'name' => null,
             'email' => null,
             'tel' => null,
@@ -156,7 +158,7 @@ class UserController extends AppController
 
 
         // Если не Админ выбирает роль Админ, то ошибка или Если не Админ редактирует Админа
-        if ($values->noAdmintoAdmin($request->roles) || $values->noAdminEditAdmin()) {
+        if ($values->noAdminToAdmin($request->roles) || $values->noAdminEditAdmin()) {
 
             // Сообщение об ошибке
             return redirect()
@@ -223,7 +225,7 @@ class UserController extends AppController
 
         $f = __FUNCTION__;
         $title = __("a.{$f}");
-        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'values', 'roles', 'statuses', 'roleIdAdmin'));
+        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'values', 'related', 'statuses', 'roleIdAdmin'));
     }
 
     /**
@@ -276,7 +278,7 @@ class UserController extends AppController
         $values->fill($data);
 
         // Если не Админ выбирает роль Админ, то ошибка или Если не Админ редактирует Админа
-        if ($values->noAdmintoAdmin($request->roles) || $values->noAdminEditAdmin()) {
+        if ($values->noAdminToAdmin($request->roles) || $values->noAdminEditAdmin()) {
 
             // Сообщение об ошибке
             return redirect()
@@ -291,7 +293,7 @@ class UserController extends AppController
         // Сохраняем связи
         if (!empty($this->relatedTables)) {
             foreach ($this->relatedTables as $relatedTable) {
-                
+
                 // Добавим условие, чтобы роль по-умолчанию Гость
                 $requestSync = $relatedTable === 'roles' && empty($request->$relatedTable) ? $values->roleGuestId() : $request->$relatedTable;
 
@@ -336,7 +338,7 @@ class UserController extends AppController
 
 
         // Если не Админ удаляет Админа
-        if ($values->noAdmintoAdmin()) {
+        if ($values->noAdminToAdmin()) {
 
             // Сообщение об ошибке
             return redirect()

@@ -20,7 +20,7 @@ class UserAdmin extends User
      * Если не Админ выбирает себе роль Админ.
      * $roleIds - передать массив с id ролей, которые выбрал пользователь.
      */
-    public function noAdmintoAdmin($roleIds = [])
+    public function noAdminToAdmin($roleIds = [])
     {
         if ($roleIds && is_array($roleIds)) {
             return !auth()->user()->isAdmin() && in_array($this->roleAdminId(), $roleIds); //$this->id == auth()->user()->id &&
@@ -60,7 +60,7 @@ class UserAdmin extends User
         $data['email'] = empty($data['email']) ? null : s($data['email'], null, true);
 
         // Проверяем существует ли такой пользователь
-        $issetUser = User::where('email', $data['email'])->first();
+        $issetUser = User::withTrashed()->where('email', $data['email'])->first();
 
         // Данные
         if (!empty($data['name'])) {
@@ -92,7 +92,16 @@ class UserAdmin extends User
             // Сохраняем предыдущие данные
             UserLastData::saveLastUser($issetUser);
 
+            // Если пользователь был удалён, то вернём его
+            if ($issetUser->deleted_at) {
+                $issetUser->restore();
+            }
+
             $issetUser->fill($data);
+
+            // Статус повторно
+            $issetUser->status = config('admin.user_statuses')['1'] ?? 'info';
+            
             $issetUser->update();
             return $issetUser;
 
@@ -105,7 +114,7 @@ class UserAdmin extends User
 
             // По умолчанию назначим роль Гость
             $user->saveRoleGuest();
-            
+
             return $user;
         }
     }

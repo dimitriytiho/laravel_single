@@ -77,7 +77,7 @@ return [
     'new' => 'New',
     
     'secondary' => 'New',
-    'info' => 'Info',
+    'info' => 'Re',
     'success' => 'Success',
     'warning' => 'Warning',
     'danger' => 'Danger',

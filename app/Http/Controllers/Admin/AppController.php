@@ -27,6 +27,7 @@ class AppController extends Controller
     protected $imgUploadID;
     protected $perPage;
     protected $perPageQuantity;
+    protected $statusActive;
 
     // Связанная таблица
     protected $belongTable;
@@ -56,6 +57,8 @@ class AppController extends Controller
         $dbSort = $this->dbSort = "{$this->namespaceHelpers}\\DbSort";
         $this->perPage = config('admin.pagination_default');
         $this->perPageQuantity = config('admin.pagination');
+
+        $statusActive = $this->statusActive = config('add.page_statuses')[1] ?? 'active';
 
 
         // Только внутри этой конструкции работают некоторые методы
@@ -141,6 +144,6 @@ class AppController extends Controller
         $countTable['User'] = DB::table('users')->count();
         $countTable['Order'] = DB::table('orders')->count();
 
-        view()->share(compact('imgRequestName', 'imgUploadID', 'namespaceHelpers', 'construct', 'form', 'dbSort', 'countTable'));
+        view()->share(compact('imgRequestName', 'imgUploadID', 'namespaceHelpers', 'construct', 'form', 'dbSort', 'countTable', 'statusActive'));
     }
 }
