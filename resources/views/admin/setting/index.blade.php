@@ -22,8 +22,8 @@
 
     <div class="card mt-4">
         <div class="card-body">
-            <b>@lang('a.example_use_in_views')</b>
-            <span>@{{ Main::site('name') }}</span>
+            <span>@lang('a.example_use_in_views')</span>
+            <b>@{{ Main::site('name') }}</b>
         </div>
     </div>
 @endsection
