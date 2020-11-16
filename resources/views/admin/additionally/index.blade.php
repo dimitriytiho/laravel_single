@@ -69,10 +69,9 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body" style="display: none;">
-            <p>php artisan make:module Name --all <span class="font-weight-light text-secondary">({{ __('a.make:module') . __('a.module_add_text') }})</span></p>
             <p>php artisan make:controller NameController <span class="font-weight-light text-secondary">({{ __('a.make:controller') }} Name)</span></p>
             <p>php artisan make:model Name <span class="font-weight-light text-secondary">({{ __('a.make:model') }} Name)</span></p>
-            <p>php artisan make:model Helpers/Name <span class="font-weight-light text-secondary">({{ __('a.create') . __('a.model') }} Name{{ __('a.in') }}app/Helpers)</span></p>
+            <p>php artisan make:model Admin/Name <span class="font-weight-light text-secondary">({{ __('a.create') . __('a.model') }} Name{{ __('a.in') }}app/Models/Admin)</span></p>
             <p>php artisan make:model Name -m -c <span class="font-weight-light text-secondary">({{ __('a.create') . __('a.controller') }},{{ __('a.model') }},{{ __('a.migration_') }})</span></p>
             <p>php artisan make:controller Admin/NameController --resource <span class="font-weight-light text-secondary">({{ __('a.create') . __('a.controller') }} Name{{ __('a.for') }}CRUD)</span></p>
             <p>php artisan make:controller NameController --resource --model=Name <span class="font-weight-light text-secondary">({{ __('a.create') . __('a.controller') . __('a.for') }}CRUD{{ __('a.with_model') }})</span></p>

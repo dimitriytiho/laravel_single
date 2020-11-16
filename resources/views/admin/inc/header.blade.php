@@ -22,10 +22,10 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         <!-- Notifications Dropdown Menu -->
-        {{--<li class="nav-item bell_danger js-none">
-            <a href="#" class="nav-link">
+        {{--<li class="nav-item bell_danger {{ empty($countTable['Order_new']) ? 'js-none' : null }}">
+            <a href="{{ route('admin.order.index') }}" class="nav-link">
                 <i class="fas fa-bell text-danger"></i>
-                <span class="badge badge-info navbar-badge">1</span>
+                <span class="badge badge-info navbar-badge">{{ $countTable['Order_new'] ?? 1 }}</span>
             </a>
         </li>--}}
         @if(config('admin.locales') && count(config('admin.locales')) > 1)

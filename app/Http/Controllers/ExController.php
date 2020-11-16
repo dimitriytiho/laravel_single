@@ -18,7 +18,7 @@ class ExController extends Controller
 
 
         $ex = null;
-        if (Schema::hasTable($table)) {
+        if ($table && Schema::hasTable($table)) {
             $ex = DB::table($table)->get();
         }
 

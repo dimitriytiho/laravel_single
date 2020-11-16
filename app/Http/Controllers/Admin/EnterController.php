@@ -58,8 +58,14 @@ class EnterController extends AppController
         $rules = [
             'email' => 'required|string|email',
             'password' => 'required|string',
-            //'g-recaptcha-response' => 'required|recaptcha',
         ];
+
+        // Если есть ключ Recaptcha и не локально запущен сайт
+        if (config('add.env') !== 'local' && config('add.recaptcha_public_key')) {
+            $rules += [
+                'g-recaptcha-response' => 'required|recaptcha',
+            ];
+        }
         $request->validate($rules);
 
         // Laravel блокирует неправильные попытки входа

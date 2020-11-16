@@ -75,7 +75,7 @@ return [
     'checked' => 'Checked',
     'moderator' => 'Moderator',
     'new' => 'New',
-    
+
     'secondary' => 'New',
     'info' => 'Re',
     'success' => 'Success',
@@ -143,8 +143,6 @@ return [
     'command' => 'Command',
 
     'example_commands' => 'Example commands',
-    'make:module' => 'Create module',
-    'module_add_text' => ' Name with the model and migration. Without parameters only files, --model - with the model, --migration - with migration',
     'make:controller' => 'Create controller',
     'controller' => ' controller',
     'make:model' => 'Create model',
@@ -190,6 +188,7 @@ return [
     'updating_files_github_successfully' => 'Updating CMS Files from GitHub Successfully ',
     'updated_count_files' => 'Updated :count files, below is a list of updated files:',
     'if_something_breaks' => 'If something breaks, then replace back from the backup archive /storage/app/:name.',
+    'to_use_the_view_file' => 'To use the view file from the /resources/views/inc folder, the file is called inc_contacts.blade.php, write the following directive to the content:',
 
     'checkbox' => 'Checkbox',
     'radio' => 'Radio',

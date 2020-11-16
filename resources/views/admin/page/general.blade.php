@@ -44,4 +44,11 @@
             @include('admin.inc.general_end')
         </div>
     </div>
+
+    <div class="card mt-4">
+        <div class="card-body">
+            <span>@lang('a.to_use_the_view_file')</span>
+            <b>##!!!contacts</b>
+        </div>
+    </div>
 @endsection

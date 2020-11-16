@@ -2,7 +2,9 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     // Bootstrap Switch
-    $('[data-toggle=switch]').bootstrapSwitch()
+    if (document.querySelector('[data-toggle=switch]')) {
+        $('[data-toggle=switch]').bootstrapSwitch()
+    }
     
 
     // Codemirror

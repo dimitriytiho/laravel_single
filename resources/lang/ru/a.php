@@ -75,7 +75,7 @@ return [
     'checked' => 'Проверенный',
     'moderator' => 'Модератор',
     'new' => 'Новый',
-    
+
     'secondary' => 'Новый',
     'info' => 'Повторно',
     'success' => 'Успех',
@@ -142,8 +142,6 @@ return [
     'command' => 'Команда',
 
     'example_commands' => 'Примеры команд',
-    'make:module' => 'Создать модуль',
-    'module_add_text' => ' Name с моделью и миграцией. Без параметров только файлы, --model - с моделью, --migration - с миграцией',
     'make:controller' => 'Создать контроллер',
     'controller' => ' контроллер',
     'make:model' => 'Создать модель',
@@ -189,6 +187,7 @@ return [
     'updating_files_github_successfully' => 'Обновление файлов CMS с GitHub прошло успешно ',
     'updated_count_files' => 'Обновлено :count файлов, ниже список обновлённых файлов:',
     'if_something_breaks' => 'Если что-то сломалось, то замените обратно из архива резервной копии /storage/app/:name.',
+    'to_use_the_view_file' => 'Чтобы использовать файл вида из папки /resources/views/inc, файл называется inc_contacts.blade.php, в контент написать директиву:',
 
     'checkbox' => 'Чекбокс',
     'radio' => 'Радио',

@@ -29,4 +29,11 @@ class App extends Model
         $statusActive = config('add.page_statuses')[1] ?: 'active';
         return $query->where('status', $statusActive);
     }
+
+    // Scope для привязанной таблицы, чтобы была сортировка по-сортировке, использование ->withSort()
+    public function scopeWithSort($query)
+    {
+        $statusActive = config('add.page_statuses')[1] ?: 'active';
+        return $query->where('status', $statusActive);
+    }
 }

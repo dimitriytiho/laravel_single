@@ -1,9 +1,13 @@
 
 if (recaptchaKey && recaptchaV === 3) {
-    grecaptcha.execute(recaptchaKey, {action: 'homepage'}).then(function(token) {
-        grecaptchaIds = document.querySelectorAll('input[type=hidden][name="g-recaptcha-response"]')
-        grecaptchaIds.forEach(function (el) {
-            el.value = token
+    grecaptcha.ready(function() {
+        grecaptcha.execute(recaptchaKey, {action: 'submit'}).then(function(token) {
+            grecaptchaIds = document.querySelectorAll('input[name="g-recaptcha-response"]')
+            if (grecaptchaIds) {
+                grecaptchaIds.forEach(function (el) {
+                    el.value = token
+                })
+            }
         })
     })
 }

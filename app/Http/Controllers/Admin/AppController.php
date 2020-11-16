@@ -139,11 +139,14 @@ class AppController extends Controller
 
 
         // Кол-во элеменото в некоторых таблицах
-        $countTable['Form'] = DB::table('forms')->count();
-        $countTable['Page'] = DB::table('pages')->count();
-        $countTable['User'] = DB::table('users')->count();
-        $countTable['Order'] = DB::table('orders')->count();
+        $countTable['Page'] = DB::table('pages')->where('deleted_at', '=', null)->count();
+        $countTable['User'] = DB::table('users')->where('deleted_at', '=', null)->count();
 
-        view()->share(compact('imgRequestName', 'imgUploadID', 'namespaceHelpers', 'construct', 'form', 'dbSort', 'countTable', 'statusActive'));
+        $countTable['Product'] = DB::table('products')->where('deleted_at', '=', null)->count();
+        $countTable['Category'] = DB::table('categories')->where('deleted_at', '=', null)->count();
+
+        $orders = DB::table('orders')->where('deleted_at', '=', null);
+        $countTable['Order'] = $orders->count();
+        $countTable['Order_new'] = $orders->where('status', config('admin.order_statuses')[0])->count();
     }
 }

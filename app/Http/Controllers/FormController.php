@@ -16,8 +16,6 @@ class FormController extends Controller
 
     public function contactUs(Request $request)
     {
-        $data = $request->all();
-
         // Валидация
         $rules = [
             'name' => 'required|string|max:250',
@@ -25,9 +23,17 @@ class FormController extends Controller
             'email' => 'required|string|email|max:250',
             'message' => 'required', 'string',
             'accept' => 'accepted',
-            //'g-recaptcha-response' => 'required|recaptcha',
         ];
+
+        // Если есть ключ Recaptcha и не локально запущен сайт
+        if (config('add.env') !== 'local' && config('add.recaptcha_public_key')) {
+            $rules += [
+                'g-recaptcha-response' => 'required|recaptcha',
+            ];
+        }
         $request->validate($rules);
+
+        $data = $request->all();
 
         // Сохраним пользователя отправителя формы. Если есть пользователь, то обновим его данные, если нет, то создадим.
         $user = UserAdmin::saveUser($request);

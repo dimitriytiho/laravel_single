@@ -13,7 +13,7 @@
 
             <form action="{{ route('enter') }}" method="post" class="validate mt-2" novalidate>
                 @csrf
-                <input type="hidden" name="g-recaptcha-response" data-id="g-recaptcha-response">
+                <input type="hidden" name="g-recaptcha-response">
 
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">

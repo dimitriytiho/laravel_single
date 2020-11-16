@@ -28,29 +28,41 @@
 </section>
 {{--
 
+jQuery --}}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{{--
 
-Google ReCaptcha, если есть в настройках указан секретный ключ --}}
-@if(config('add.recaptcha_public_key'))
+
+Google ReCaptcha, если есть в настройках ключи --}}
+@if(config('add.env') !== 'local' && config('add.recaptcha_public_key'))
     <script src="//www.google.com/recaptcha/api.js?render={{ config('add.recaptcha_public_key') }}"></script>
     <script>
-        grecaptcha.execute("{{ config('add.recaptcha_secret_key') }}", {action: 'homepage'}).then(function(token) {
-            grecaptchaIds = document.querySelectorAll('input[type=hidden][name="g-recaptcha-response"]')
-            grecaptchaIds.forEach(function (el) {
-                el.value = token
+        grecaptcha.ready(function() {
+            grecaptcha.execute("{{ config('add.recaptcha_public_key') }}", {action: 'submit'}).then(function(token) {
+                $('input[name="g-recaptcha-response"]').val(token)
             })
         })
     </script>
 @endif
-<script src="//ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{{--
+
+Bootstrap --}}
 <script src="//stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-<!-- jquery-validation -->
+{{--
+
+Jquery-validation --}}
 <script src="{{ asset('lte/plugins/inputmask/jquery.inputmask.min.js') }}"></script>
 <script src="{{ asset('lte/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('lte/plugins/jquery-validation/localization/messages_ru.min.js') }}"></script>
+{{--
+
+Admin LTE --}}
 <script src="{{ asset('lte/dist/js/adminlte.min.js') }}"></script>
 <script>
 
     var _token = '{{ session()->token() }}',
         spinner = $('#spinner'),
+        requestPath = '',
         spinnerBtn = '<span class="spinner-grow spinner-grow-sm mr-2"></span>'
 
     {!! \App\Helpers\Locale::translationsJson() !!}
