@@ -23,17 +23,32 @@ class App extends Model
     }
 
 
-    // Scope для активных элементов, использование ->active()
+    /*
+     * Scope для элементов с статусом active.
+     *
+     * Использование ->active()
+     */
     public function scopeActive($query)
     {
-        $statusActive = config('add.page_statuses')[1] ?: 'active';
-        return $query->where('status', $statusActive);
+        return $query->where('status', config('add.page_statuses')[1] ?: 'active');
     }
 
-    // Scope для привязанной таблицы, чтобы была сортировка по-сортировке, использование ->withSort()
-    public function scopeWithSort($query)
+
+    /*
+     * Добавляет в зарос связь из привязанной моделе.
+     *
+     * Использование ->withActiveSort('pages') - параметром передать название связи.
+     *
+     * Scope для привязанной таблицы, с условиями:
+     * статус active,
+     * сортировка по-сортировке,
+     */
+    public function scopeWithActiveSort($query, $type)
     {
-        $statusActive = config('add.page_statuses')[1] ?: 'active';
-        return $query->where('status', $statusActive);
+        return $query->with([$type => function ($query) {
+            $query
+                ->where('status', config('add.page_statuses')[1] ?: 'active')
+                ->orderBy('sort');
+        }]);
     }
 }
