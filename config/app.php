@@ -230,6 +230,7 @@ return [
 
         // Добавляем алиасы
         'Main' => App\Models\Main::class,
+        'Menu' => App\Models\Menu::class,
 
     ],
 

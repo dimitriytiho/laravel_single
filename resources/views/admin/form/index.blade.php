@@ -45,9 +45,11 @@
                                     <a href="{{ route("admin.{$route}.show", $item->id) }}" class="btn btn-info btn-sm mr-1 pulse" title="@lang('a.edit')">
                                         <i class="fas fa-pencil-alt"></i>
                                     </a>
-                                    <a href="{{ route('admin.user.edit', $item->user->id) }}" class="btn btn-success btn-sm mr-1 pulse" title="{{ $item->user->name }}">
-                                        <i class="fas fa-user"></i>
-                                    </a>
+                                    @if(auth()->user()->checkPermission('Admin\User'))
+                                        <a href="{{ route('admin.user.edit', $item->user->id) }}" class="btn btn-success btn-sm mr-1 pulse" title="{{ $item->user->name }}">
+                                            <i class="fas fa-user"></i>
+                                        </a>
+                                    @endif
                                     {{--<form action="{{ route("admin.{$route}.destroy", $item->id) }}" method="post" class="confirm_form">
                                         @method('delete')
                                         @csrf

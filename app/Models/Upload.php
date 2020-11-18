@@ -12,7 +12,6 @@ use Illuminate\Support\Str;
 
 class Upload extends App
 {
-    use HasFactory;
 
 
     /**

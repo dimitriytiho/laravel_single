@@ -44,9 +44,9 @@
 @endif
 
 @if(
-    !('user' === $c && $values->noAdminEditAdmin())
+    isset($values->id)
+    && !('user' === $c && $values->noAdminEditAdmin())
     && empty($relatedTableCount)
-    && isset($values->id)
     && empty($disabledDelete)
     )
     <form action="{{ route("admin.{$route}.destroy", $values->id) }}" method="post" class="text-right confirm_form">

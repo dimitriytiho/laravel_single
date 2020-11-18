@@ -25,7 +25,7 @@ class CreateMenusTable extends Migration
             $table->string('item', 100)->nullable();
             $table->string('class', 100)->nullable();
             $table->string('attr', 100)->nullable();
-            $table->string('status', 100)->default(config('add.page_statuses')[0]);
+            $table->string('status', 100)->default(config('add.page_statuses')[0] ?? 'inactive');
             $table->smallInteger('sort')->unsigned()->default('500');
             $table->softDeletes();
             $table->timestamps();

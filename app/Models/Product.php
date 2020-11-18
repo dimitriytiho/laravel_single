@@ -15,14 +15,14 @@ class Product extends App
 
 
     // Связь многие ко многим
-    public function category()
-    {
-        return $this->belongsToMany(Category::class, 'category_product');
-    }
-
-    // Связь многие ко многим
     public function filter_values()
     {
         return $this->belongsToMany(Filter::class, 'filter_products');
+    }
+
+    // Связь многие ко многим
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'category_product');
     }
 }

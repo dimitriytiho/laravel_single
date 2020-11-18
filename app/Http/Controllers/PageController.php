@@ -28,8 +28,6 @@ class PageController extends AppController
 
     public function index()
     {
-        //dump(session()->all());
-
         //Mail::to('dimitriyyuliya@gmail.com')->send(new SendMail(__("{$this->lang}::a.Code"), '12345'));
 
         /*$mobileDetect = new \Mobile_Detect();
@@ -44,7 +42,7 @@ class PageController extends AppController
         $breadcrumbs = $this->breadcrumbs
             ->get();
 
-        $title = Main::site('name') . ' | ' . __('s.' . config('add.title_main'));
+        $title = __('s.' . config('add.title_main'));
         $description = __('s.You_are_on_home');
         return view("{$this->view}.index", compact('title', 'description', 'breadcrumbs'));
     }
@@ -72,7 +70,7 @@ class PageController extends AppController
         $values->body = Main::getDownScript($values->body);
 
 
-        // Передаём в контейнер id элемента
+        // Передаём в контейнер id и view элемента
         Main::set('id', $values->id);
         Main::set('view', $this->view);
 

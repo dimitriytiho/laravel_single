@@ -19,7 +19,7 @@ class CreateCategoriesTable extends Migration
             $table->string('title');
             $table->index('title');
             $table->string('slug')->unique();
-            $table->string('status', 100)->default(config('add.page_statuses')[0]);
+            $table->string('status', 100)->default(config('add.page_statuses')[0] ?? 'inactive');
             $table->smallInteger('sort')->unsigned()->default('500');
             $table->text('description')->nullable();
             $table->text('body')->nullable();

@@ -22,7 +22,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('touch-icon-ipad.png') }}">
     <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('touch-icon-iphone-retina.png') }}">
     <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('touch-icon-ipad-retina.png') }}">
-    <link rel="cononical" href="{{ $cononical }}">
+    <link rel="cononical" href="@section('cononical'){{ request()->url() }}@show">
     {{--
 
     Fonts website --}}
@@ -146,7 +146,6 @@ CDN ленивой загрузки картинок --}}
 
 
 InputMask --}}
-{{--<script src="{{ asset('lte/plugins/moment/moment.min.js') }}"></script>--}}
 <script src="{{ asset('lte/plugins/inputmask/jquery.inputmask.min.js') }}"></script>
 {{--
 

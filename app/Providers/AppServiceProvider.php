@@ -3,9 +3,10 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\{DB, File, Validator};
+use Illuminate\Support\Facades\{File, Validator};
 use App\Libs\Registry;
 use App\Models\Main;
+use App\Models\Setting;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,10 +30,15 @@ class AppServiceProvider extends ServiceProvider
         // ЗДЕСЬ ПИСАТЬ КОД, КОТОРЫЙ ЗАПУСКАЕТСЯ ПОСЛЕ ЗАГРУЗКИ ВСЕХ СЕРВИС-ПРОВАЙДЕРОВ
 
 
+        // Паттерн реестр
+        Main::$registry = Registry::instance();
+
+
         // Определить мобильную версию
         $detect = new \Mobile_Detect();
         $isMobile = $detect->isMobile();
-        //Main::set('isMobile', $isMobile);
+        Main::set('isMobile', $isMobile);
+
 
         // Подключаем вспомогательные библиотеки из /app/Libs
         $lib = app_path('Libs');
@@ -44,9 +50,6 @@ class AppServiceProvider extends ServiceProvider
         if (File::isFile($constructorFile)) {
             require_once $constructorFile;
         }
-
-        // Паттерн реестр
-        Main::$registry = Registry::instance();
 
 
         // Добавляем Google ReCaptcha в валидатор
@@ -73,33 +76,17 @@ class AppServiceProvider extends ServiceProvider
          * Использовать: echo Main::site('name');
          *
          * Дополнительные варианты:
-         * echo Main::get('settings')['name'];
+         * echo Main::get('settings')->name;
          */
         if (cache()->has('settings_for_site')) {
             $settings = cache()->get('settings_for_site');
-
         } else {
-            $settings = DB::table('settings')->get();
+            $settings = Setting::all()->pluck('value', 'title');
 
             // Кэшируется запрос
             cache()->forever('settings_for_site', $settings);
         }
-        if (!empty($settings)) {
-            $part = [];
-            foreach ($settings as $v) {
-                $part[$v->title] = $v->value;
-            }
-            Main::set('settings', $part);
-        }
-
-
-        // Если не вызван метод \App\Helpers\App\setMeta(), то по-умолчанию мета: title - название сайта, тег description - пустой
-        $siteName = Main::site('name') ?: config('add.name');
-        $getMeta = "<title>{$siteName}</title>\n\t<meta name='description' content=''>\n";
-
-
-        // Кононический Url без Get параметров
-        $cononical = Main::notPublicInURL();
+        Main::set('settings', $settings);
 
 
         // Название папки для картинок в public
@@ -107,6 +94,6 @@ class AppServiceProvider extends ServiceProvider
 
 
         // Передаём в виды переменные
-        view()->share(compact('isMobile', 'getMeta', 'cononical', 'img'));
+        view()->share(compact('isMobile', 'img'));
     }
 }

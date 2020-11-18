@@ -14,9 +14,10 @@ class Category extends App
 
 
 
-    public function parentId()
+    // Связь один ко многим внутри модели
+    public function categories()
     {
-        return $this->belongsTo(self::class);
+        return $this->hasMany(self::class, 'parent_id', 'id');
     }
 
     // Связь многие ко многим

@@ -5,11 +5,16 @@
         {{--
 
         Проверим, есть ли у роли разрешения на класс --}}
-        @if(config('add.shop') && $isAdmin || config('add.shop') && $permission->contains('Order'))
-            {!! $construct::smallBox('info', 'fas fa-shopping-cart', $countTable['Order'] ?? '0', 'orders', 'admin.order.index') !!}
+        @if(config('add.shop'))
+
+            @if($isAdmin || $permission->contains('Order'))
+                {!! $construct::smallBox('info', 'fas fa-shopping-cart', $countTable['Order'] ?? '0', 'orders', 'admin.order.index') !!}
+            @endif
+
             @if($isAdmin || $permission->contains('Category'))
                 {!! $construct::smallBox('success', 'fas fa-sitemap', $countTable['Category'] ?? '0', 'categories', 'admin.category.index') !!}
             @endif
+
             @if($isAdmin || $permission->contains('Product'))
                 {!! $construct::smallBox('warning', 'fas fa-boxes', $countTable['Product'] ?? '0', 'products', 'admin.product.index') !!}
             @endif
@@ -19,9 +24,11 @@
             @if($isAdmin || $permission->contains('Form'))
                 {!! $construct::smallBox('success', 'far fa-comment-alt', $countTable['Form'] ?? '0', 'forms', 'admin.form.index') !!}
             @endif
+
             @if($isAdmin || $permission->contains('Page'))
                 {!! $construct::smallBox('warning', 'fas fa-columns', $countTable['Page'] ?? '0', 'pages', 'admin.page.index') !!}
             @endif
+
         @endif
 
         @if($isAdmin || $permission->contains('User'))

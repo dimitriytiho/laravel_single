@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\View;
 
 class Menu extends App
 {
@@ -32,20 +33,23 @@ class Menu extends App
      *
      * Возвращает объкт меню.
      * Данные кэшируются.
-     * $belongId - принимает belong_id из таблицы menu_names.
+     * $belongId - принимает id из таблицы menu_groups.
+     * $cacheName - по-умолчанию не кэшируется, если надо кэшировать, то передать название кэша, необязательный параметр.
      */
-    public static function get(int $belongId)
+    public static function get(int $belongId, $cacheName = '')
     {
         if ($belongId) {
-            $name = "menu_names_{$belongId}";
 
-            if (cache()->has($name)) {
-                $values = cache()->get($name);
+            if ($cacheName && cache()->has($cacheName)) {
+                $values = cache()->get($cacheName);
 
             } else {
 
                 $values = self::where('belong_id', $belongId)->get();
-                cache()->put($name, $values);
+
+                if ($cacheName) {
+                    cache()->put($cacheName, $values);
+                }
             }
             return $values;
         }
@@ -58,11 +62,10 @@ class Menu extends App
      * @return array
      *
      * Возвращает массив дерево, где потомки в ключе child.
-     * $menu - принимает коллекцию Laravel (например: Menu::where('belong_id', 1)->get()).
-     * $nameParentId - строим дерево по полю parent_id, если нужно изменить, то передайте, необязательный параметр.
+     * $menu - принимает id из таблицы menu_groups.
      * $cacheName - по-умолчанию не кэшируется, если надо кэшировать, то передать название кэша, необязательный параметр.
      */
-    public static function tree($menu, $nameParentId = 'parent_id', $cacheName = '')
+    public static function tree(int $belongId, $cacheName = '')
     {
         $tree = [];
         if ($cacheName && cache()->has($cacheName)) {
@@ -70,15 +73,22 @@ class Menu extends App
 
         } else {
 
-            if (is_object($menu) && $menu->count()) {
-                $menu = $menu->keyBy('id')->toArray();
+            if ($belongId) {
 
-                foreach ($menu as $id => &$node) {
+                $menu = self::where('belong_id', $belongId)
+                    ->whereStatus(config('add.page_statuses')[1] ?? 'active')
+                    ->get()
+                    ->keyBy('id')
+                    ->toArray();
 
-                    if (empty($node[$nameParentId])) {
-                        $tree[$id] = &$node;
-                    } else {
-                        $menu[$node[$nameParentId]]['child'][$id] = &$node;
+                if (!empty($menu)) {
+                    foreach ($menu as $id => &$node) {
+
+                        if (empty($node['parent_id'])) {
+                            $tree[$id] = &$node;
+                        } else {
+                            $menu[$node['parent_id']]['child'][$id] = &$node;
+                        }
                     }
                 }
             }
@@ -88,5 +98,38 @@ class Menu extends App
             }
         }
         return $tree;
+    }
+
+
+    /**
+     * @return string
+     *
+     * Возвращает вложенное меню с видом.
+     * $viewName - название вида из папки resources/views/menu.
+     * $tree - массив в виде дерева, его строит метод выше tree().
+     * $tab - показывает вложенность, например передать -.
+     * $cacheName - по-умолчанию не кэшируется, если надо кэшировать, то передать название кэша, необязательный параметр.
+     */
+    public static function getView($viewName, $tree, $tab = '', $cacheName = '')
+    {
+        $view = '';
+        if ($cacheName && cache()->has($cacheName)) {
+            $view = cache()->get($cacheName);
+
+        } else {
+
+            $i = 0;
+            if ($tree && View::exists("menu.{$viewName}")) {
+                foreach ($tree as $id => $item) {
+                    $i++;
+                    $view .= view("menu.{$viewName}", compact('viewName', 'item', 'tab', 'id', 'i'))->render();
+                }
+            }
+
+            if ($cacheName) {
+                cache()->put($cacheName, $view);
+            }
+        }
+        return $view;
     }
 }

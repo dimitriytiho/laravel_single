@@ -198,6 +198,47 @@ class User extends Authenticatable
 
 
     /********************** Методы ролей **********************/
+
+
+    /**
+     *
+     * @return array
+     *
+     * Возвращает все разрешения ролей пользователя в массиве.
+     * Разрешения в формате Admin\User.
+     */
+    public function permission()
+    {
+        $permission = [];
+        $roles = $this->roles()->with('permission')->get();
+        if ($roles->count()) {
+            foreach ($roles as $role) {
+                if ($role->permission->count()) {
+                    foreach ($role->permission as $item) {
+                        $permission[] = $item->permission;
+                    }
+                }
+            }
+        }
+        return $permission;
+    }
+
+
+    /**
+     *
+     * @return bool
+     *
+     * Проверяет разрешен ли пользователю переданый элемент.
+     * Если роль admin, то всегда разрешено.
+     * Разрешения в формате Admin\User.
+     */
+    public function checkPermission($permission)
+    {
+        if ($this->isAdmin()) return true;
+        return $permission && in_array($permission, $this->permission());
+    }
+
+
     /**
      *
      * @return object

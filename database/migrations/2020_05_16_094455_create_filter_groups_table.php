@@ -18,7 +18,7 @@ class CreateFilterGroupsTable extends Migration
             $table->string('title', 100)->unique();
             $table->index('title');
             $table->string('type', 100)->default(config('shop.filter_type')[0]);
-            $table->string('status', 100)->default(config('add.page_statuses')[0]);
+            $table->string('status', 100)->default(config('add.page_statuses')[0] ?? 'inactive');
             $table->smallInteger('sort')->unsigned()->default('500');
             $table->softDeletes();
             $table->timestamps();

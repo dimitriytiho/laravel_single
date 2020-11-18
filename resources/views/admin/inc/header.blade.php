@@ -41,24 +41,26 @@
                 </div>
             </li>
         @endif
-        <li class="nav-item dropdown">
-            <a class="nav-link" data-toggle="dropdown" href="#">
-                <i class="fas fa-user"></i>
-            </a>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                <a href="{{ route('admin.user.edit', auth()->user()->id) }}" class="dropdown-item">
-                    <div class="media">
-                        <img src="{{ auth()->user()->img }}" alt="{{ auth()->user()->name }}" class="img-size-50 mr-3 img-circle">
-                        <div class="media-body">
-                            <h3 class="dropdown-item-title">{{ auth()->user()->name }}</h3>
-                            <p class="text-sm">@lang('a.profile')</p>
-                        </div>
-                    </div>
+        @if(auth()->user()->checkPermission('Admin\User'))
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="fas fa-user"></i>
                 </a>
-                <div class="dropdown-divider"></div>
-                <a href="{{ route('admin.logout') }}" class="dropdown-item">@lang('a.exit')</a>
-            </div>
-        </li>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <a href="{{ route('admin.user.edit', auth()->user()->id) }}" class="dropdown-item">
+                        <div class="media">
+                            <img src="{{ auth()->user()->img }}" alt="{{ auth()->user()->name }}" class="img-size-50 mr-3 img-circle">
+                            <div class="media-body">
+                                <h3 class="dropdown-item-title">{{ auth()->user()->name }}</h3>
+                                <p class="text-sm">@lang('a.profile')</p>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="{{ route('admin.logout') }}" class="dropdown-item">@lang('a.exit')</a>
+                </div>
+            </li>
+        @endif
         <li class="nav-item">
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                 <i class="fas fa-expand-arrows-alt"></i>

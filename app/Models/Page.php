@@ -12,7 +12,6 @@ class Page extends App
 
 
     use SoftDeletes;
-    use HasFactory;
 
 
     // Связь один ко многим внутри модели

@@ -93,7 +93,7 @@ class Main
     {
         if ($content) {
             $scripts = [];
-            $pattern = "#<script.*?>.*?</script>#si";
+            $pattern = "^<script.*?>.*?</script>^si";
             preg_match_all($pattern, $content, $scripts);
 
             if (!empty($scripts[0])) {
