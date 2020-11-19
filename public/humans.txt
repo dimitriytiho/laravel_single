@@ -7,4 +7,4 @@ Doctype: HTML5
 Framework: Laravel
 IDE: PHPStorm, Visual Studio, Sublime Text, Photoshop, Illustrator
 Brand: OmegaKontur
-Last update: 2020-10-29
+Last update: 2020-11-19

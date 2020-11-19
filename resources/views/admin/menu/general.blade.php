@@ -51,9 +51,10 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                @if(!empty($all))
-                                    {!! $form::select('parent_id', $all, $values->parent_id ?? null, true, null, null, true, $values->id) !!}
-                                @endif
+                                <label for="parent_id">@lang('a.parent_id')</label>
+                                <select class="form-control" name="parent_id" id="parent_id" aria-invalid="false">
+                                    {!! Menu::getView('admin_select', Menu::tree($values->belong_id), '-') !!}
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-4">

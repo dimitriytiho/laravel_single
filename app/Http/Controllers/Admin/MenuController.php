@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\Admin\DbSort;
+use App\Models\Main;
 use App\Models\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -186,9 +187,9 @@ class MenuController extends AppController
         // Получаем элемент по id, если нет - будет ошибка
         $values = $this->model::findOrFail($id);
 
-        // Массив всех элементов, где ключи id, а значения title
-        $all = $this->model::pluck('title', 'id');
-        $all->prepend('parent', 0);
+
+        // Записать в реестр parent_id, для построения дерева
+        Main::set('parent_id', $values->parent_id);
 
 
         // Элементы связанные
@@ -196,7 +197,7 @@ class MenuController extends AppController
 
         $f = __FUNCTION__;
         $title = __("a.{$f}");
-        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'values', 'all', 'valuesBelong', 'currentParentId'));
+        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'values', 'valuesBelong', 'currentParentId'));
     }
 
     /**

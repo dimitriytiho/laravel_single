@@ -62,10 +62,10 @@ class DbSort
         if ($whereColumn && $whereValue) {
 
             // Если есть строка поиска
-            if ($col && in_array($col, $queryArr) && $cell) {
+            if ($col && in_array($col, $queryArr)) {
                 $values = $model::where($whereColumn, $whereValue)->where($col, 'LIKE', "%{$cell}%")->orderBy($columnSort, $order)->paginate($perPage);
 
-            // Иначе выборка всех элементов из БД
+                // Иначе выборка всех элементов из БД
             } else {
 
                 // Если есть связанная таблица

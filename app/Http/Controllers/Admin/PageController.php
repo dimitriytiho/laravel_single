@@ -143,9 +143,11 @@ class PageController extends AppController
         // Получаем элемент по id, если нет - будет ошибка
         $values = $this->model::findOrFail($id);
 
-        // Массив всех элементов, где ключи id, а значения title
-        $all = $this->model::pluck('title', 'id');
-        $all->prepend('parent', 0);
+        // Записать в реестр parent_id, для построения дерева
+        Main::set('parent_id', $values->parent_id);
+
+        // Получаем все элементы в массив, где ключи id
+        $all = $this->model::get()->keyBy('id')->toArray();
 
         // Элементы связанные
         $valuesBelong = $values->parents;

@@ -68,3 +68,10 @@ function closeMenu() {
     menuMobile.removeClass('active')
     backdrop.removeClass(backdropClassActive)
 }
+
+
+// Активный родитель для основного меню
+/*$('.menu .nav-item.parent .nav-link.active_color')
+    .closest('.nav-item.parent')
+    .children('.nav-link')
+    .addClass('active_color')*/

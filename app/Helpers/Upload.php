@@ -164,16 +164,17 @@ class Upload
     }
 
 
-    // Создаётся файл /error.php и в нём вид error из /resources/views/errors/error.blade.php
+    // Создаётся файл /public/error.php и в нём вид error из /resources/views/errors/error.blade.php
     public static function errorPage()
     {
-        $noMain = true;
+        $noShowErrorPage = true; // Эту переменную можно использовать, например чтобы на странице ошибки не показывать меню
+
         if (view()->exists('errors.error')) {
-            $r = view('errors.error')
-                ->with(compact('noMain'))
+            $view = view('errors.error')
+                ->with(compact('noShowErrorPage'))
                 ->render();
-            $file = base_path('error.php');
-            File::put($file, $r);
+
+            File::put(public_path('error.php'), $view);
         }
     }
 

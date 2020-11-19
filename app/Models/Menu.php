@@ -77,24 +77,40 @@ class Menu extends App
 
                 $menu = self::where('belong_id', $belongId)
                     ->whereStatus(config('add.page_statuses')[1] ?? 'active')
+                    ->orderBy('sort')
                     ->get()
                     ->keyBy('id')
                     ->toArray();
 
-                if (!empty($menu)) {
-                    foreach ($menu as $id => &$node) {
-
-                        if (empty($node['parent_id'])) {
-                            $tree[$id] = &$node;
-                        } else {
-                            $menu[$node['parent_id']]['child'][$id] = &$node;
-                        }
-                    }
-                }
+                $tree = self::treeOfArr($menu);
             }
 
             if ($cacheName) {
                 cache()->put($cacheName, $tree);
+            }
+        }
+        return $tree;
+    }
+
+
+    /**
+     *
+     * @return array
+     *
+     * Возвращает массив дерево, где потомки в ключе child.
+     * $arr - принимает массив, где id ключи массива.
+     */
+    public static function treeOfArr($arr)
+    {
+        $tree = [];
+        if ($arr) {
+            foreach ($arr as $id => &$node) {
+
+                if (empty($node['parent_id'])) {
+                    $tree[$id] = &$node;
+                } else {
+                    $arr[$node['parent_id']]['child'][$id] = &$node;
+                }
             }
         }
         return $tree;

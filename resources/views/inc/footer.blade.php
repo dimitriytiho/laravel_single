@@ -9,70 +9,72 @@
             </a>
             <p class="mt-3">{{ Main::site('name') }}</p>
         </div>
-        <div class="col-xl-2 col-lg-4 col-sm-6 font-weight-light">
-            <ul class="list-unstyled">
-                <li>
-                    <a href="#" class="text-white-50 d-block py-1">Menu 1 text 1</a>
-                </li>
-                <li>
-                    <a href="#" class="text-white-50 d-block py-1">Menu 1 text 2</a>
-                </li>
-                <li>
-                    <a href="#" class="text-white-50 d-block py-1">Menu 1 text 3</a>
-                </li>
-                <li>
-                    <a href="#" class="text-white-50 d-block py-1">Menu 1 text 4</a>
-                </li>
-            </ul>
-        </div>
-        <div class="col-xl-2 col-lg-4 col-sm-6 font-weight-light">
-            <ul class="list-unstyled">
-                <li>
-                    <a href="#" class="text-white-50 d-block py-1">Menu 2 text 1</a>
-                </li>
-                <li>
-                    <a href="#" class="text-white-50 d-block py-1">Menu 2 text 2</a>
-                </li>
-                <li>
-                    <a href="#" class="text-white-50 d-block py-1">Menu 2 text 3</a>
-                </li>
-                <li>
-                    <a href="#" class="text-white-50 d-block py-1">Menu 2 text 4</a>
-                </li>
-            </ul>
-        </div>
-        <div class="col-xl-2 col-lg-4 col-sm-6 font-weight-light">
-            <ul class="list-unstyled">
-                <li>
-                    <a href="#" class="text-white-50 d-block py-1">Menu 3 text 1</a>
-                </li>
-                <li>
-                    <a href="#" class="text-white-50 d-block py-1">Menu 3 text 2</a>
-                </li>
-                <li>
-                    <a href="#" class="text-white-50 d-block py-1">Menu 3 text 3</a>
-                </li>
-                <li>
-                    <a href="#" class="text-white-50 d-block py-1">Menu 3 text 4</a>
-                </li>
-            </ul>
-        </div>
-        <div class="col-xl-2 col-lg-4 col-sm-6 font-weight-light">
-            <ul class="list-unstyled">
-                <li>
-                    <a href="#" class="text-white-50 d-block py-1">Menu 4 text 1</a>
-                </li>
-                <li>
-                    <a href="#" class="text-white-50 d-block py-1">Menu 4 text 2</a>
-                </li>
-                <li>
-                    <a href="#" class="text-white-50 d-block py-1">Menu 4 text 3</a>
-                </li>
-                <li>
-                    <a href="#" class="text-white-50 d-block py-1">Menu 4 text 4</a>
-                </li>
-            </ul>
-        </div>
+        @empty($noShowErrorPage)
+            <div class="col-xl-2 col-lg-4 col-sm-6 font-weight-light">
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="#" class="text-white-50 d-block py-1">Menu 1 text 1</a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-white-50 d-block py-1">Menu 1 text 2</a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-white-50 d-block py-1">Menu 1 text 3</a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-white-50 d-block py-1">Menu 1 text 4</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xl-2 col-lg-4 col-sm-6 font-weight-light">
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="#" class="text-white-50 d-block py-1">Menu 2 text 1</a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-white-50 d-block py-1">Menu 2 text 2</a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-white-50 d-block py-1">Menu 2 text 3</a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-white-50 d-block py-1">Menu 2 text 4</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xl-2 col-lg-4 col-sm-6 font-weight-light">
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="#" class="text-white-50 d-block py-1">Menu 3 text 1</a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-white-50 d-block py-1">Menu 3 text 2</a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-white-50 d-block py-1">Menu 3 text 3</a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-white-50 d-block py-1">Menu 3 text 4</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xl-2 col-lg-4 col-sm-6 font-weight-light">
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="#" class="text-white-50 d-block py-1">Menu 4 text 1</a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-white-50 d-block py-1">Menu 4 text 2</a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-white-50 d-block py-1">Menu 4 text 3</a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-white-50 d-block py-1">Menu 4 text 4</a>
+                    </li>
+                </ul>
+            </div>
+        @endempty
         <div class="col-xl-2 col-lg-4 col-sm-6">
             <h5 class="mt-2 mb-4">{{ Main::site('tel') }}</h5>
             <p>c 10:00 до 22:00</p>
