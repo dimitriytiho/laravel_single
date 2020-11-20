@@ -41,6 +41,12 @@ if (is_file($fileAdmin = __DIR__ . '/admin.php')) {
 }
 
 
+// Shop
+if (config('add.shop') && is_file($fileShop = __DIR__ . '/shop.php')) {
+    require_once $fileShop;
+}
+
+
 // Auth
 if (config('add.auth')) {
 

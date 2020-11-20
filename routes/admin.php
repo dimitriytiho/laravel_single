@@ -33,8 +33,13 @@ Route::namespace($namespace)
     // Route export User
     Route::get('export-user', 'ImportExportController@exportUser')->name('export_user');
 
+
     // Если включен shop
     if (config('add.shop')) {
+
+        // Stop List
+        Route::get('stop-list', 'StopListController@index')->name('stop-list.index');
+        Route::post('stop-list/update', 'StopListController@update')->name('stop-list.update');
 
         // Product
         Route::get('export-product', 'ImportExportController@exportProduct')->name('export_product');
@@ -43,16 +48,19 @@ Route::namespace($namespace)
         Route::get('export-category', 'ImportExportController@exportCategory')->name('export_category');
         Route::post('import-category', 'ImportExportController@importCategory')->name('import_category');
 
-
         // Shop controllers
-        /*Route::resource('order', 'OrderController')->only(['index', 'show', 'update', 'destroy']);
+        Route::resource('order', 'OrderController')->only(['index', 'show', 'update', 'destroy']);
         Route::resource('category', 'CategoryController')->except(['show']);
-        Route::resource('product', 'ProductController')->except(['show']);*/
+        Route::resource('product', 'ProductController')->except(['show']);
 
-        // Filters
-        /*Route::resource('filter-group', 'FilterGroupController')->except(['show']);
-        Route::resource('filters', 'FilterController')->except(['show']);*/
+        // Modifiers
+        Route::resource('modifier-group', 'ModifierGroupController')->except(['show']);
+        Route::resource('modifier', 'ModifierController')->except(['show']);
+
+        // Labels
+        Route::resource('label', 'LabelController')->except(['show']);
     }
+
 
 
     // Website controllers resource

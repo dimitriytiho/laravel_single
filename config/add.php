@@ -110,6 +110,13 @@ return [
     ],
 
 
+    // Ip адреса, при которых не подключаем файл с кодами аналитики
+    'no_analytic_ips' => [
+        '217.10.46.63',
+        '109.74.143.195',
+    ],
+
+
     'namespace_models' => 'App\\Models',
     'namespace_controllers' => 'App\\Http\\Controllers',
     'namespace_helpers' => 'App\\Helpers',

@@ -204,7 +204,7 @@ Bootstrap --}}
 {{--
 
 Все счётчики для сайта поместить в этот файл --}}
-@if(config('add.env') === 'production')
+@if(config('add.env') === 'production' && !in_array(request()->ip(), config('add.no_analytic_ips') ?: []))
     @include('inc.analytics')
 @endif
 </body>
