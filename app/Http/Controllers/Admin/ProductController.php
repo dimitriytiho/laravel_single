@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\Admin\DbSort;
+use App\Helpers\Admin\Img;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
-use App\Models\Dummy;
 
-class DummyController extends AppController
+class ProductController extends AppController
 {
     public function __construct(Request $request)
     {
@@ -22,24 +23,21 @@ class DummyController extends AppController
         $route = $this->route = $request->segment(2);
         $view = $this->view = Str::snake($this->class);
 
-        // Связанная таблица, должен быть метод в моделе с названием таблицы
-        $belongTable = $this->belongTable = '';
-
         // Связанные таблицы, а также в моделе должен быть метод с название таблицы, реализующий связь
-        $relatedTables = $this->relatedTables = [
+        $this->relatedTables = [
 
             // Категории
-            //'categories',
+            'categories',
+
+            // Модификаторы
+            'modifier_groups',
+
+            // Лэйблы
+            'labels',
         ];
 
-        // Связанные таблицы, которые нельзя удалить, если есть связанные элементы, а также в моделе должен быть метод с название таблицы, реализующий связь
-        $relatedDelete = $this->relatedDelete = [
 
-            // Формы
-            //'forms',
-        ];
-
-        view()->share(compact('class', 'c','model', 'table', 'route', 'view', 'belongTable', 'relatedTables', 'relatedDelete'));
+        view()->share(compact('class', 'c','model', 'table', 'route', 'view'));
     }
 
     /**
@@ -47,11 +45,14 @@ class DummyController extends AppController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         // Поиск. Массив гет ключей для поиска
         $queryArr = [
             'title',
+            'slug',
+            'status',
+            'sort',
             'id',
         ];
 
@@ -65,7 +66,11 @@ class DummyController extends AppController
 
         // Передать поля для вывода, значение l - с переводом, t - дата
         $thead = [
+            'img' => 'img',
             'title' => null,
+            'slug' => null,
+            'status' => 'l',
+            'sort' => null,
             'id' => null,
         ];
 
@@ -96,13 +101,40 @@ class DummyController extends AppController
     public function store(Request $request)
     {
         $rules = [
-            'title' => "required|string|unique:{$this->table}|max:250",
+            'title' => 'required|string|max:250',
+            'slug' => "required|string|unique:{$this->table}|max:250",
+            'price' => 'required|numeric',
+            'old_price' => 'nullable|numeric',
         ];
         $request->validate($rules);
         $data = $request->all();
 
+        if ($request->hasFile('img')) {
+
+            // Обработка картинки
+            $data['img'] = Img::upload($request, $this->class);
+
+        } else {
+
+            // Если нет картинки
+            $data['img'] = config("admin.img{$this->class}Default");
+        }
+
+        // Приводим цену к float
+        if (!empty($data['price'])) {
+            $data['price'] = is_float($data['price']) ? $data['price'] : floatval($data['price']);
+        }
+        if (!empty($data['old_price'])) {
+            $data['old_price'] = is_float($data['old_price']) ? $data['old_price'] : floatval($data['old_price']);
+        }
+
+        // Если нет body, то ''
+        if (empty($data['body'])) {
+            $data['body'] = '';
+        }
+
         // Создаём экземкляр модели
-        $values = new Dummy();
+        $values = new Product();
 
         // Заполняем модель новыми данными
         $values->fill($data);
@@ -152,12 +184,9 @@ class DummyController extends AppController
             }
         }
 
-        // Элементы связанные
-        $valuesBelong = $values->{$this->table};
-
         $f = __FUNCTION__;
         $title = __("a.{$f}");
-        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'values', 'related', 'valuesBelong'));
+        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'values', 'related'));
     }
 
     /**
@@ -173,10 +202,38 @@ class DummyController extends AppController
         $values = $this->model::findOrFail($id);
 
         $rules = [
-            'title' => "required|string|unique:{$this->table},title,{$id}|max:250",
+            'title' => 'required|string|max:250',
+            'slug' => "required|string|unique:{$this->table},slug,{$id}|max:250",
+            'price' => 'required|numeric',
+            'old_price' => 'nullable|numeric',
         ];
         $request->validate($rules);
         $data = $request->all();
+
+        if ($request->hasFile('img')) {
+
+            // Обработка картинки
+            $data['img'] = Img::upload($request, $this->class, $values->img);
+        } else {
+
+            // Если нет картинки
+            $data['img'] = $values->img;
+        }
+
+
+
+        // Приводим цену к float
+        if (!empty($data['price'])) {
+            $data['price'] = is_float($data['price']) ? $data['price'] : floatval($data['price']);
+        }
+        if (!empty($data['old_price'])) {
+            $data['old_price'] = is_float($data['old_price']) ? $data['old_price'] : floatval($data['old_price']);
+        }
+
+        // Если нет body, то ''
+        if (empty($data['body'])) {
+            $data['body'] = '';
+        }
 
 
         // Сохраняем связи
@@ -185,7 +242,6 @@ class DummyController extends AppController
                 $values->$relatedTable()->sync($request->$relatedTable);
             }
         }
-
 
         // Заполняем модель новыми данными
         $values->fill($data);
@@ -213,17 +269,8 @@ class DummyController extends AppController
         // Получаем элемент по id, если нет - будет ошибка
         $values = $this->model::findOrFail($id);
 
-
-        // Если есть связи, то вернём ошибку
-        if (!empty($this->relatedDelete)) {
-            foreach ($this->relatedDelete as $relatedTable) {
-                if ($values->$relatedTable->count()) {
-                    return redirect()
-                        ->route("admin.{$this->route}.edit", $id)
-                        ->with('error', __('s.remove_not_possible') . ', ' . __('s.there_are_nested') . __('a.id'));
-                }
-            }
-        }
+        // Удалить картинку, кроме картинки по-умолчанию
+        Img::deleteImg($values->img, config("admin.img{$this->class}Default"));
 
 
         // Удаляем связанные элементы

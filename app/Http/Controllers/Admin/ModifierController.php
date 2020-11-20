@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\Admin\DbSort;
+use App\Models\Modifier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
-use App\Models\Dummy;
 
-class DummyController extends AppController
+class ModifierController extends AppController
 {
     public function __construct(Request $request)
     {
@@ -23,23 +22,9 @@ class DummyController extends AppController
         $view = $this->view = Str::snake($this->class);
 
         // Связанная таблица, должен быть метод в моделе с названием таблицы
-        $belongTable = $this->belongTable = '';
+        $belongTable = $this->belongTable = 'modifier_groups';
 
-        // Связанные таблицы, а также в моделе должен быть метод с название таблицы, реализующий связь
-        $relatedTables = $this->relatedTables = [
-
-            // Категории
-            //'categories',
-        ];
-
-        // Связанные таблицы, которые нельзя удалить, если есть связанные элементы, а также в моделе должен быть метод с название таблицы, реализующий связь
-        $relatedDelete = $this->relatedDelete = [
-
-            // Формы
-            //'forms',
-        ];
-
-        view()->share(compact('class', 'c','model', 'table', 'route', 'view', 'belongTable', 'relatedTables', 'relatedDelete'));
+        view()->share(compact('class', 'c','model', 'table', 'route', 'view', 'belongTable'));
     }
 
     /**
@@ -49,9 +34,33 @@ class DummyController extends AppController
      */
     public function index(Request $request)
     {
+        // Записать в куку id из привязанной таблице, если не записано
+        $currentParentId = $request->cookie("{$this->table}_id");
+        $countParent = DB::table($this->belongTable)->count();
+
+        if (!$currentParentId && $countParent) {
+            $currentParent = DB::table($this->belongTable)->first();
+
+            // Записать куку навсегда (5 лет)
+            return redirect()->back()
+                ->withCookie(cookie()->forever("{$this->table}_id", $currentParent->id)
+                );
+        }
+
+
+        $parentValues = DB::table($this->belongTable)->pluck('title', 'id');
+        $parentValues->prepend($this->belongTable, 0);
+
+
+        $values = null;
+
         // Поиск. Массив гет ключей для поиска
         $queryArr = [
             'title',
+            'price',
+            'status',
+            'sort',
+            'parent_id',
             'id',
         ];
 
@@ -60,19 +69,27 @@ class DummyController extends AppController
         $col = $get['col'] ?? null;
         $cell = $get['cell'] ?? null;
 
-        // Метод для поиска и сортировки запроса БД
-        $values = DbSort::getSearchSort($queryArr, $get, $this->table, $this->model, $this->view, $this->perPage);
+        // Если в родительской таблице нет элементов, то ничего нельзя добавить
+        if ($currentParentId) {
+
+            // Метод для поиска и сортировки запроса БД
+            $values = DbSort::getSearchSort($queryArr, $get, $this->table, $this->model, $this->view, $this->perPage, 'parent_id', $currentParentId);
+        }
 
         // Передать поля для вывода, значение l - с переводом, t - дата
         $thead = [
             'title' => null,
+            'price' => null,
+            'status' => 'l',
+            'sort' => null,
+            'parent_id' => null,
             'id' => null,
         ];
 
 
         $f = __FUNCTION__;
         $title = __("a.{$this->table}");
-        return view("{$this->viewPath}.{$this->view}.{$f}", compact('title', 'values', 'queryArr', 'col', 'cell', 'thead'));
+        return view("{$this->viewPath}.{$this->view}.{$f}", compact('title', 'parentValues', 'values', 'queryArr', 'col', 'cell', 'currentParentId', 'thead'));
     }
 
     /**
@@ -80,11 +97,25 @@ class DummyController extends AppController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        // Записать в куку id из привязанной таблице, если не записано
+        $currentParentId = $request->cookie("{$this->table}_id");
+        $parentObj = DB::table($this->belongTable);
+
+        if (!$currentParentId && $parentObj->count()) {
+            $currentParent = $parentObj->first();
+
+            // Записать куку навсегда (5 лет)
+            return redirect()->back()
+                ->withCookie(cookie()->forever("{$this->table}_id", $currentParent->id)
+                );
+        }
+        $currentParent = $parentObj->find($currentParentId);
+
         $f = __FUNCTION__;
         $title = __("a.{$f}");
-        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title'));
+        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'currentParent'));
     }
 
     /**
@@ -96,13 +127,14 @@ class DummyController extends AppController
     public function store(Request $request)
     {
         $rules = [
+            'parent_id' => 'required|integer',
             'title' => "required|string|unique:{$this->table}|max:250",
         ];
         $request->validate($rules);
         $data = $request->all();
 
         // Создаём экземкляр модели
-        $values = new Dummy();
+        $values = new Modifier();
 
         // Заполняем модель новыми данными
         $values->fill($data);
@@ -138,26 +170,25 @@ class DummyController extends AppController
      */
     public function edit($id)
     {
-        $values = $this->model::findOrFail($id);
+        // Записать в куку id из привязанной таблице, если не записано
+        $currentParentId = request()->cookie("{$this->table}_id");
+        $countParent = DB::table($this->belongTable)->count();
 
-        // Получаем данные связанных таблиц
-        $related = [];
-        if (!empty($this->relatedTables)) {
-            foreach ($this->relatedTables as $relatedTable) {
-                if (Schema::hasTable($relatedTable)) {
-                    $related[$relatedTable] = DB::table($relatedTable)
-                        ->whereNull('deleted_at')
-                        ->pluck('title', 'id');
-                }
-            }
+        if (!$currentParentId && $countParent) {
+            $currentParent = DB::table($this->belongTable)->first();
+
+            // Записать куку навсегда (5 лет)
+            return redirect()->back()
+                ->withCookie(cookie()->forever("{$this->table}_id", $currentParent->id)
+                );
         }
 
-        // Элементы связанные
-        $valuesBelong = $values->{$this->table};
+        // Получаем элемент по id, если нет - будет ошибка
+        $values = $this->model::findOrFail($id);
 
         $f = __FUNCTION__;
         $title = __("a.{$f}");
-        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'values', 'related', 'valuesBelong'));
+        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'values', 'currentParentId'));
     }
 
     /**
@@ -173,19 +204,14 @@ class DummyController extends AppController
         $values = $this->model::findOrFail($id);
 
         $rules = [
+            'parent_id' => 'required|integer',
             'title' => "required|string|unique:{$this->table},title,{$id}|max:250",
         ];
         $request->validate($rules);
+        $request->merge([
+            'default' => $request->default ? '1' : '0', // Сохранить чекбокс как 1
+        ]);
         $data = $request->all();
-
-
-        // Сохраняем связи
-        if (!empty($this->relatedTables)) {
-            foreach ($this->relatedTables as $relatedTable) {
-                $values->$relatedTable()->sync($request->$relatedTable);
-            }
-        }
-
 
         // Заполняем модель новыми данными
         $values->fill($data);
@@ -212,26 +238,6 @@ class DummyController extends AppController
     {
         // Получаем элемент по id, если нет - будет ошибка
         $values = $this->model::findOrFail($id);
-
-
-        // Если есть связи, то вернём ошибку
-        if (!empty($this->relatedDelete)) {
-            foreach ($this->relatedDelete as $relatedTable) {
-                if ($values->$relatedTable->count()) {
-                    return redirect()
-                        ->route("admin.{$this->route}.edit", $id)
-                        ->with('error', __('s.remove_not_possible') . ', ' . __('s.there_are_nested') . __('a.id'));
-                }
-            }
-        }
-
-
-        // Удаляем связанные элементы
-        if (!empty($this->relatedTables)) {
-            foreach ($this->relatedTables as $relatedTable) {
-                $values->$relatedTable()->sync([]);
-            }
-        }
 
         // Удаляем элемент
         $values->delete();

@@ -116,7 +116,7 @@ class UserController extends AppController
      */
     public function store(Request $request)
     {
-        $imagesExt = implode(config('admin.acceptedImagesExt') ?? [], ',');
+        $imagesExt = implode(config(',', 'admin.acceptedImagesExt') ?? []);
 
         $rules = [
             'name' => 'required|string|max:250',
@@ -240,7 +240,7 @@ class UserController extends AppController
         // Получаем элемент по id, если нет - будет ошибка
         $values = $this->model::findOrFail($id);
 
-        $imagesExt = implode(config('admin.acceptedImagesExt') ?? [], ',');
+        $imagesExt = implode(',', config('admin.acceptedImagesExt') ?? []);
 
         $rules = [
             'name' => 'required|string|max:250',

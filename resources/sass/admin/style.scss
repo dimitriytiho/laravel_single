@@ -35,3 +35,11 @@ label {
 .grecaptcha-badge {
     visibility: hidden;
 }
+
+
+
+@media (max-width: 380px) {
+    .g-recaptcha {
+        transform: scale(.7)
+    }
+}

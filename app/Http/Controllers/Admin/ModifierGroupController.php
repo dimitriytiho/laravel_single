@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\Admin\DbSort;
+use App\Models\ModifierGroup;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
-use App\Models\Dummy;
 
-class DummyController extends AppController
+class ModifierGroupController extends AppController
 {
     public function __construct(Request $request)
     {
@@ -22,24 +20,17 @@ class DummyController extends AppController
         $route = $this->route = $request->segment(2);
         $view = $this->view = Str::snake($this->class);
 
-        // Связанная таблица, должен быть метод в моделе с названием таблицы
-        $belongTable = $this->belongTable = '';
-
-        // Связанные таблицы, а также в моделе должен быть метод с название таблицы, реализующий связь
-        $relatedTables = $this->relatedTables = [
-
-            // Категории
-            //'categories',
-        ];
+        // Связанная таблица
+        $this->belongTable = 'modifiers';
 
         // Связанные таблицы, которые нельзя удалить, если есть связанные элементы, а также в моделе должен быть метод с название таблицы, реализующий связь
         $relatedDelete = $this->relatedDelete = [
 
-            // Формы
-            //'forms',
+            // Модификаторы
+            'modifiers',
         ];
 
-        view()->share(compact('class', 'c','model', 'table', 'route', 'view', 'belongTable', 'relatedTables', 'relatedDelete'));
+        view()->share(compact('class', 'c','model', 'table', 'route', 'view', 'relatedDelete'));
     }
 
     /**
@@ -47,11 +38,16 @@ class DummyController extends AppController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         // Поиск. Массив гет ключей для поиска
         $queryArr = [
             'title',
+            'slug',
+            'type',
+            'function',
+            'status',
+            'sort',
             'id',
         ];
 
@@ -66,6 +62,11 @@ class DummyController extends AppController
         // Передать поля для вывода, значение l - с переводом, t - дата
         $thead = [
             'title' => null,
+            'slug' => null,
+            'type' => null,
+            'function' => null,
+            'status' => 'l',
+            'sort' => null,
             'id' => null,
         ];
 
@@ -96,13 +97,14 @@ class DummyController extends AppController
     public function store(Request $request)
     {
         $rules = [
-            'title' => "required|string|unique:{$this->table}|max:250",
+            'title' => 'required|string|max:100',
+            'slug' => "required|string|unique:{$this->table}|max:100",
         ];
         $request->validate($rules);
         $data = $request->all();
 
         // Создаём экземкляр модели
-        $values = new Dummy();
+        $values = new ModifierGroup();
 
         // Заполняем модель новыми данными
         $values->fill($data);
@@ -140,24 +142,9 @@ class DummyController extends AppController
     {
         $values = $this->model::findOrFail($id);
 
-        // Получаем данные связанных таблиц
-        $related = [];
-        if (!empty($this->relatedTables)) {
-            foreach ($this->relatedTables as $relatedTable) {
-                if (Schema::hasTable($relatedTable)) {
-                    $related[$relatedTable] = DB::table($relatedTable)
-                        ->whereNull('deleted_at')
-                        ->pluck('title', 'id');
-                }
-            }
-        }
-
-        // Элементы связанные
-        $valuesBelong = $values->{$this->table};
-
         $f = __FUNCTION__;
         $title = __("a.{$f}");
-        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'values', 'related', 'valuesBelong'));
+        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'values'));
     }
 
     /**
@@ -173,19 +160,11 @@ class DummyController extends AppController
         $values = $this->model::findOrFail($id);
 
         $rules = [
-            'title' => "required|string|unique:{$this->table},title,{$id}|max:250",
+            'title' => "required|string|unique:{$this->table},title,{$id}|max:100",
+            'slug' => "required|string|unique:{$this->table},slug,{$id}|max:100",
         ];
         $request->validate($rules);
         $data = $request->all();
-
-
-        // Сохраняем связи
-        if (!empty($this->relatedTables)) {
-            foreach ($this->relatedTables as $relatedTable) {
-                $values->$relatedTable()->sync($request->$relatedTable);
-            }
-        }
-
 
         // Заполняем модель новыми данными
         $values->fill($data);
@@ -213,25 +192,13 @@ class DummyController extends AppController
         // Получаем элемент по id, если нет - будет ошибка
         $values = $this->model::findOrFail($id);
 
-
-        // Если есть связи, то вернём ошибку
-        if (!empty($this->relatedDelete)) {
-            foreach ($this->relatedDelete as $relatedTable) {
-                if ($values->$relatedTable->count()) {
-                    return redirect()
-                        ->route("admin.{$this->route}.edit", $id)
-                        ->with('error', __('s.remove_not_possible') . ', ' . __('s.there_are_nested') . __('a.id'));
-                }
-            }
+        // Если есть потомки, то ошибка
+        if ($values->{$this->belongTable}->count()) {
+            return redirect()
+                ->route("admin.{$this->route}.edit", $id)
+                ->with('error', __('s.remove_not_possible') . ', ' . __('s.there_are_nested') . __('a.id'));
         }
 
-
-        // Удаляем связанные элементы
-        if (!empty($this->relatedTables)) {
-            foreach ($this->relatedTables as $relatedTable) {
-                $values->$relatedTable()->sync([]);
-            }
-        }
 
         // Удаляем элемент
         $values->delete();
@@ -240,8 +207,19 @@ class DummyController extends AppController
         cache()->flush();
 
         // Сообщение об успехе
-        return redirect()
-            ->route("admin.{$this->route}.index")
-            ->with('success', __('s.removed_successfully', ['id' => $values->id]));
+        session()->flash('success', __('s.removed_successfully', ['id' => $values->id]));
+
+        // Если удаляется id, который записан в куку, то перезапишем в куку id другого меню
+        $cookie = request()->cookie("{$this->belongTable}_id");
+        if ($cookie == $id) {
+            $newCookie = $this->model::first();
+
+            if ($newCookie) {
+                return redirect()->route("admin.{$this->route}.index")
+                    ->withCookie(cookie()->forever("{$this->belongTable}_id", $newCookie->id));
+            }
+        }
+
+        return redirect()->route("admin.{$this->route}.index");
     }
 }
