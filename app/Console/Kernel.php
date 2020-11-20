@@ -53,7 +53,7 @@ class Kernel extends ConsoleKernel
         //$schedule->command('backup:clean')->monthlyOn(1, '02:00');
         //$schedule->command('backup:run')->monthlyOn(1, '03:00');
 
-        // Обновление веб-сайта (в 4 день месяца)
+        // Обновление веб-сайта (в 1 день месяца)
         /*$schedule->call(function () {
             Upload::getUpload();
         })->monthlyOn(1, '04:00');*/

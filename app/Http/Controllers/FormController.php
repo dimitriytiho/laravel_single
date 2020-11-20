@@ -9,9 +9,19 @@ use App\Models\UserAdmin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use App\Helpers\Str as HelpersStr;
 
 class FormController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $class = $this->class = str_replace('Controller', '', class_basename(__CLASS__));
+        $this->c = Str::lower($this->class);
+        $this->model = "{$this->namespaceModels}\\{$class}";
+        $this->table = with(new $this->model)->getTable();
+    }
 
 
     public function contactUs(Request $request)
@@ -53,8 +63,7 @@ class FormController extends Controller
 
         //$method = Str::kebab(__FUNCTION__); // Из contactUs будет contact-us
         if ($form->save()) {
-            $format = config('admin.date_format') ?? 'd.m.Y H:i';
-            $data['date'] = date($format);
+            $data['date'] = d(config('admin.date_format') ?: 'dd.MM.y HH:mm');
 
             // Письмо пользователю
             try {
@@ -73,7 +82,7 @@ class FormController extends Controller
                 $formName = Str::snake(__FUNCTION__); // Из contactUs будет contact_us
                 $template = 'table_form'; // Все данные в таблице
                 $title = __('s.Completed_form', ['name' => $formName]) . config('add.domain');
-                $email_admin = \App\Helpers\Str::strToArr(Main::site('admin_email'));
+                $email_admin = HelpersStr::strToArr(Main::site('admin_email'));
 
                 if ($email_admin) {
                     Mail::to($email_admin)

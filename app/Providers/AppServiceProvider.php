@@ -5,8 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\{File, Validator};
 use App\Libs\Registry;
-use App\Models\Main;
-use App\Models\Setting;
+use App\Models\{Main, Setting};
+//use ReCaptcha\ReCaptcha;
 
 class AppServiceProvider extends ServiceProvider
 {

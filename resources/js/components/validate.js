@@ -9,6 +9,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Настройки по-умолчанию
     $.validator.setDefaults({
 
+        errorClass: 'is-invalid',
+
+
         // Правила валидации
         rules: {
             name: {
@@ -57,10 +60,10 @@ document.addEventListener('DOMContentLoaded', function() {
             element.closest('.input-group').append(error);
         },
         highlight: function (element, errorClass, validClass) {
-            $(element).addClass('is-invalid');
+            $(element).addClass(errorClass);
         },
         unhighlight: function (element, errorClass, validClass) {
-            $(element).removeClass('is-invalid');
+            $(element).removeClass(errorClass);
         },
 
 
@@ -88,7 +91,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // Запуск валидации
-    $('.validate').validate()
+    $('form.validate').each(function(key, form) {
+        $(form).validate()
+    })
+    //$('.validate').validate()
 
 
     // Дополнительные правила для всех форм валидации
