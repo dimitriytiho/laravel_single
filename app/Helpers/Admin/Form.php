@@ -40,8 +40,7 @@ class Form
         //$value = $value ?: old($name);
 
         $placeholderStar = !$label && $required ? '*' : null;
-        $placeholderLabel = !$label && !$required || $label ? '...' : null;
-        $placeholder = ($placeholder ?: $title) . $placeholderStar . $placeholderLabel;
+        $placeholder = ($placeholder ?: $title) . $placeholderStar;
         $label = $label ? null : 'class="sr-only"';
         $label = "<label for='{$id}' {$label}>$title $star</label>";
         $labelBefore = $appendAfterInput ? $label : null;
@@ -98,8 +97,7 @@ S;
         $value = $htmlspecialchars ? e($value) : $value;
 
         $placeholderStar = !$label && $required ? '*' : null;
-        $placeholderLabel = !$label && !$required || $label ? '...' : null;
-        $placeholder = ($placeholder ?: $title) . $placeholderStar . $placeholderLabel;
+        $placeholder = ($placeholder ?: $title) . $placeholderStar;
 
         $label = $label ? null : 'class="sr-only"';
         $rows = (int)$rows;

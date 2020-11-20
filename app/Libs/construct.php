@@ -99,8 +99,7 @@ function input($name, $idForm = false, $required = true, $type = false, $value =
     $value = $value ?: old($name);
 
     $placeholderStar = !$label && $required ? '*' : null;
-    $placeholderLabel = !$label && !$required || $label ? '...' : null;
-    $placeholder = ($placeholder ?: $title) . $placeholderStar . $placeholderLabel;
+    $placeholder = ($placeholder ?: $title) . $placeholderStar;
     $label = $label ? null : 'class="sr-only"';
     $part = '';
 
@@ -145,8 +144,7 @@ function textarea($name, $idForm = false, $required = true, $value = false, $lab
     $value = $htmlspecialchars ? e($value) : $value;
 
     $placeholderStar = !$label && $required ? '*' : null;
-    $placeholderLabel = !$label && !$required || $label ? '...' : null;
-    $placeholder = ($placeholder ?: $title) . $placeholderStar . $placeholderLabel;
+    $placeholder = ($placeholder ?: $title) . $placeholderStar;
 
     $label = $label ? null : 'class="sr-only"';
     $rows = (int)$rows;

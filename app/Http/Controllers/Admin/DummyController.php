@@ -146,7 +146,7 @@ class DummyController extends AppController
             foreach ($this->relatedTables as $relatedTable) {
                 if (Schema::hasTable($relatedTable)) {
                     $related[$relatedTable] = DB::table($relatedTable)
-                        ->where('deleted_at', '=', null)
+                        ->whereNull('deleted_at')
                         ->pluck('title', 'id');
                 }
             }

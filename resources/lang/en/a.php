@@ -204,5 +204,6 @@ return [
     'on' => 'ON',
     'off' => 'OFF',
     'default' => 'Default',
+    'key' => 'Key',
 
 ];

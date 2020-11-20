@@ -193,7 +193,7 @@ class MenuController extends AppController
 
 
         // Элементы связанные
-        $valuesBelong = $values->parents;
+        $valuesBelong = $values->{$this->table};
 
         $f = __FUNCTION__;
         $title = __("a.{$f}");

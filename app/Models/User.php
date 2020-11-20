@@ -140,6 +140,28 @@ class User extends Authenticatable
     }
 
 
+    /**
+     * @return array
+     *
+     * Возвращает все id пользователей из переданных ролей.
+     * $roles - массив с id ролей.
+     */
+    public function userIdsOfRoles($roles) {
+        $ids = [];
+        if ($roles) {
+            $roles = Role::with('users')->whereIn('id', $roles)->get();
+            foreach ($roles as $key => $role) {
+                if ($role->users->count()) {
+                    foreach ($role->users as $user) {
+                        $ids[] = $user->id;
+                    }
+                }
+            }
+        }
+        return $ids;
+    }
+
+
     // Записать IP текущего пользователя.
     public function saveIp()
     {
@@ -292,7 +314,7 @@ class User extends Authenticatable
 
     /**
      *
-     * @return object
+     * @return array
      *
      * Возвращает в объкте id ролей пользователей с доступом в админку.
      *

@@ -213,7 +213,7 @@ class UserController extends AppController
             foreach ($this->relatedTables as $relatedTable) {
                 if (Schema::hasTable($relatedTable)) {
                     $related[$relatedTable] = DB::table($relatedTable)
-                        ->where('deleted_at', '=', null)
+                        ->whereNull('deleted_at')
                         ->pluck('title', 'id');
                 }
             }
@@ -262,7 +262,7 @@ class UserController extends AppController
         } else {
 
             // Если нет картинки
-            $data['img'] = config("admin.img{$this->class}Default");
+            $data['img'] = $values->img;
         }
 
         // Поле подтверждение пароля удаляется

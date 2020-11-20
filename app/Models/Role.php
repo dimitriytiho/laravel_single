@@ -107,7 +107,7 @@ class Role extends App
 
     /**
      *
-     * @return object
+     * @return array
      *
      * Возвращает в объкте id ролей пользователей с доступом в админку.
      *
@@ -119,9 +119,9 @@ class Role extends App
         $area = $area ?: (config('admin.user_areas')[2] ?? null);
         if ($area) {
             $roles = self::roles();
-            return $roles->where('area', $area)->pluck('id');
+            return $roles->where('area', $area)->pluck('id')->toArray();
         }
-        return null;
+        return [];
     }
 
 

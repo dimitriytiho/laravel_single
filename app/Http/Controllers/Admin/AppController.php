@@ -139,16 +139,16 @@ class AppController extends Controller
 
 
         // Кол-во элементов в некоторых таблицах
-        $countTable['Form'] = DB::table('forms')->count();
-        $countTable['Page'] = DB::table('pages')->where('deleted_at', '=', null)->count();
-        $countTable['User'] = DB::table('users')->where('deleted_at', '=', null)->count();
+        $countTable['Form'] = DB::table('forms')->whereNull('deleted_at')->count();
+        $countTable['Page'] = DB::table('pages')->whereNull('deleted_at')->count();
+        $countTable['User'] = DB::table('users')->whereNull('deleted_at')->count();
 
         // Для магазина
         if (config('add.shop')) {
-            $countTable['Product'] = DB::table('products')->where('deleted_at', '=', null)->count();
-            $countTable['Category'] = DB::table('categories')->where('deleted_at', '=', null)->count();
+            $countTable['Product'] = DB::table('products')->whereNull('deleted_at')->count();
+            $countTable['Category'] = DB::table('categories')->whereNull('deleted_at')->count();
 
-            $orders = DB::table('orders')->where('deleted_at', '=', null);
+            $orders = DB::table('orders')->whereNull('deleted_at');
             $countTable['Order'] = $orders->count();
             $countTable['Order_new'] = $orders->where('status', config('admin.order_statuses')[0])->count();
         }

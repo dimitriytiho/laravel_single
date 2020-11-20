@@ -59,11 +59,17 @@ class Upload extends App
         cache()->flush();
 
 
+        // Получаем id пользователей с доступом к админке
+        $user = new User();
+        $roleAdminIds = $user->roleAdminIds();
+        $userAdmin = $user->userIdsOfRoles($roleAdminIds);
+
+
         // Отправить письмо всем admins
-        if ($mailAdmins) {
+        if ($mailAdmins && $userAdmin) {
             try {
-                $roleIds = User::roleIdAdmin();
-                $emails = DB::table('users')->select('email')->whereIn('role_id', $roleIds)->get();
+
+                $emails = DB::table('users')->select('email')->whereIn('id', $userAdmin)->get();
                 $emails = $emails->toArray();
 
                 if ($emails) {

@@ -6,6 +6,7 @@ use App\Helpers\Admin\App;
 use App\Models\Main;
 use App\Models\Upload;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 
@@ -102,7 +103,7 @@ class MainController extends AppController
     {
         if ($request->ajax()) {
             return DB::table('orders')
-                ->where('deleted_at', '=', null)
+                ->whereNull('deleted_at')
                 ->where('status', config('admin.order_statuses')[0])
                 ->count();
         }

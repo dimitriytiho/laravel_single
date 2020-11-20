@@ -150,7 +150,7 @@ class PageController extends AppController
         $all = $this->model::get()->keyBy('id')->toArray();
 
         // Элементы связанные
-        $valuesBelong = $values->parents;
+        $valuesBelong = $values->{$this->table};
 
         $f = __FUNCTION__;
         $title = __("a.{$f}");
