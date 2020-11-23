@@ -41,7 +41,11 @@
             <div class="user-block">
                 <img class="img-circle img-bordered-sm" src="{{ auth()->user()->img }}" alt="user image">
                 <span class="username">
-                  <a href="{{ route('admin.user.edit', auth()->user()->id) }}">{{ auth()->user()->name }}</a>
+                  @if($isAdmin || $permission->contains('User'))
+                        <a href="{{ route('admin.user.edit', auth()->user()->id) }}">{{ auth()->user()->name }}</a>
+                    @else
+                        <span>{{ auth()->user()->name }}</span>
+                    @endif
                 </span>
                 <span class="description">@lang('a.welcome')</span>
             </div>

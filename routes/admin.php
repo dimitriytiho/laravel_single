@@ -14,7 +14,7 @@ if (!config('add.auth')) {
     Route::namespace($namespace)->name(config('add.enter'))->group(function () {
 
         $key = Upload::getKeyAdmin();
-        $keyRoute = "enter/{$key}";
+        $keyRoute = config('enter') . "/{$key}";
         Route::post($keyRoute, 'EnterController@enterPost')->name('_post');
         Route::get($keyRoute, 'EnterController@index');
 

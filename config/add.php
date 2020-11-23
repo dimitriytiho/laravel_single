@@ -129,7 +129,7 @@ return [
     'not_index_website' => env('NOT_INDEX_WEBSITE'), // Если не нужно индексировать сайт, то true, если нужно, то false
 
     'dev' => env('APP_DEV', 'OmegaKontur'),
-    'enter' => env('APP_ENTER', 'enter'),
+    'enter' => env('APP_ENTER', 'login'),
     'admin' => env('APP_ADMIN', 'dashboard'),
     'app_email' => env('APP_EMAIL'),
 
