@@ -45,7 +45,9 @@ class Menu extends App
 
             } else {
 
-                $values = self::where('belong_id', $belongId)->get();
+                $values = self::where('belong_id', $belongId)
+                    ->whereStatus(config('add.page_statuses')[1] ?? 'active')
+                    ->get();
 
                 if ($cacheName) {
                     cache()->put($cacheName, $values);
