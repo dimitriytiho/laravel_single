@@ -95,6 +95,20 @@ return [
     'imgProductGallery' => '/' . env('APP_IMG', 'img') . '/product-gallery',
     'imgPathProductGallery' => public_path() . '/' . env('APP_IMG', 'img') . '/product-gallery',
 
+    // Портфолио
+    'imgPortfolio' => '/' . env('APP_IMG', 'img') . '/portfolio',
+    'imgPathPortfolio' => public_path() . '/' . env('APP_IMG', 'img') . '/portfolio',
+    'imgPortfolioDefault' => '/' . env('APP_IMG', 'img') . '/default/no_image.jpg',
+
+    // Галерея портфолио
+    'imgPortfolioGallery' => '/' . env('APP_IMG', 'img') . '/portfolio-gallery',
+    'imgPathPortfolioGallery' => public_path() . '/' . env('APP_IMG', 'img') . '/portfolio-gallery',
+    'imgPortfolioGalleryDefault' => '/' . env('APP_IMG', 'img') . '/default/no_image.jpg',
+
+    // Размер обычной картинки
+    'imgWidth' => 800,
+    'imgHeight' => 600,
+
     // Максимальные разрешения для картинок
     'imgMaxSizeHD' => 1920,
     'imgMaxSize' => 1280,

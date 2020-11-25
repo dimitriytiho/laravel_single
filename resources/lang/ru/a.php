@@ -14,6 +14,8 @@ return [
     'en' => 'Английский',
     'ru' => 'Русский',
 
+    'portfolios' => 'Портфолио',
+    'portfolio' => 'Портфолио',
     'pages' => 'Страницы',
     'order' => 'Заказ',
     'orders' => 'Заказы',
@@ -40,6 +42,8 @@ return [
     'forums' => 'Форум',
     'forum' => 'Форум',
     'import_export' => 'Импорт экспорт',
+    'product_galleries' => 'Галерея товаров',
+    'portfolio_galleries' => 'Галерея портфолио',
 
     'name' => 'Имя',
     'description' => 'Описание',
@@ -205,5 +209,9 @@ return [
     'off' => 'Выкл',
     'default' => 'По умолчанию',
     'key' => 'Ключ',
+    'work' => 'Работа',
+    'client' => 'Клиент',
+    'term' => 'Срок',
+    'preview' => 'Предпросмотр',
 
 ];

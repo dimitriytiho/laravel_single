@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var path = URL.createObjectURL(e.target.files[0])
             if (path) {
                 $('.img_replace').attr('src', path)
+                //$(this).closest('.row').find('.this_img_replace').attr('src', path)
             }
         }
     })

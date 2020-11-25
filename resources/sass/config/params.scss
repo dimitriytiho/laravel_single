@@ -11,9 +11,6 @@ $primary-dark: darken($primary, 10%);
 $white: #fff;
 $black: #000;
 
-// Paths
-$path-fonts: '/fonts';
-
 // Bootstrap color
 //$primary: #007bff;
 //$secondary: #6c757d; // rgba(108, 117, 125, 0)
@@ -62,6 +59,40 @@ $colors: (
     'dark': $dark,
     'black': $black
 );
+
+$theme-colors: (
+    'primary': $primary,
+    'secondary': $secondary,
+    'light': $light,
+    'dark': $dark
+);
+
+
+// Отступы
+$spacer: 1rem;
+
+// Font
+//$font-family-base: 'Roboto', 'Arial', sans-serif;
+$font-size-base: .9rem; // 14.4px
+$font-size-base-sm: $font-size-base * .8;
+
+// Line-height
+$line-height-sm: 1.2;
+$line-height: 1.4;
+$line-height-lg: 1.5;
+
+// Border-radius
+$border-radius: .15rem;
+$border-radius-lg: .2rem;
+$border-radius-sm: .1rem;
+
+// Тень
+$box-shadow-sm: 0 .125rem .25rem rgba($black, .075);
+$box-shadow: 0 .5rem 1rem rgba($black, .15);
+$box-shadow-lg: 0 1rem 3rem rgba($black, .175);
+
+// Paths
+$path-fonts: '/fonts';
 
 // Тень
 $box-shadow-mini: 0 0 5px rgba($black, 0.1);

@@ -230,8 +230,16 @@ class ImgUploadController extends AppController
 
 
     /*
-     * Удаляет картинку (и webp картинку если она есть).
+     * Удаляет картинку и webp картинку если она есть.
      * В БД заменяется картинка на по-умолчанию.
+     *
+     * Передать в ссылке:
+     * &token=token - токен.
+     * &img=/img_path.jpg - путь с название картинки от public.
+     * &default=/img/default/no_image.jpg - картинка по-умолчанию.
+     * &table=products - название таблицы.
+     * &id=id - id ряда или элемента в БД, в котором картинка.
+     * &input=img - названи колонки в БД, по-умолчанию img, необязательный параметр.
      */
     public function deleteImg(Request $request) {
         $token = $request->token;
@@ -239,11 +247,12 @@ class ImgUploadController extends AppController
         $default = $request->default;
         $table = $request->table;
         $id = $request->id;
+        $input = $request->input ?: 'img';
         if ($img && $default && $table && $id && $token === csrf_token() && Schema::hasTable($table)) {
 
             DB::table($table)
-                ->where('img', $img)
-                ->update(['img' => $default]);
+                ->where($input, $img)
+                ->update([$input => $default]);
 
             Img::deleteImg($img);
         }

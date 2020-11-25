@@ -14,6 +14,8 @@ return [
     'en' => 'English',
     'ru' => 'Russian',
 
+    'portfolios' => 'Portfolios',
+    'portfolio' => 'Portfolio',
     'pages' => 'Pages',
     'order' => 'Order',
     'orders' => 'Orders',
@@ -40,6 +42,8 @@ return [
     'forums' => 'Forum',
     'forum' => 'Forum',
     'import_export' => 'Import export',
+    'product_galleries' => 'Product galleries',
+    'portfolio_galleries' => 'Portfolio galleries',
 
     'name' => 'Name',
     'description' => 'Description',
@@ -205,5 +209,10 @@ return [
     'off' => 'OFF',
     'default' => 'Default',
     'key' => 'Key',
+    'key' => 'Key',
+    'work' => 'Work',
+    'client' => 'Client',
+    'term' => 'Term',
+    'preview' => 'Preview',
 
 ];

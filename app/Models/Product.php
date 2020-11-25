@@ -25,4 +25,10 @@ class Product extends App
     {
         return $this->belongsToMany(Category::class, 'category_product');
     }
+
+    // Связь одим ко многим
+    public function product_galleries()
+    {
+        return $this->hasMany(ProductGallery::class);
+    }
 }

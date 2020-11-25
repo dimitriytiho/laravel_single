@@ -65,6 +65,8 @@ Route::namespace($namespace)
 
     // Website controllers resource
     Route::resource('form', FormController::class)->only(['index', 'show', 'destroy']);
+    Route::resource('portfolio-gallery', PortfolioGalleryController::class)->except(['show']);
+    Route::resource('portfolio', PortfolioController::class)->except(['show']);
     Route::resource('page', PageController::class)->except(['show']);
     Route::resource('user', UserController::class)->except(['show']);
     Route::resource('role', RoleController::class)->except(['show']);

@@ -27,17 +27,95 @@ class Img
      * $request - передать объкт Request.
      * $thisClass - название класса контроллера (например User).
      * $oldImage - если нужно удалить картинку, то передать путь от папки public, необязательный параметр.
+     * $imgSize - размер картинки, по-умолчанию настройка admin.imgMaxSizeSM, необязательный параметр.
+     * $imgName - name из input, по-умолчанию img необязательный параметр.
+     * $crop - если нужно обрезать картинку, то передайте true, размеры обрезание в настройках admin.imgWidth и admin.imgHeight, необязательный параметр. Переменная $imgSize не учитывается.
      */
-    public static function upload(Request $request, $thisClass, $oldImage = null)
+    public static function upload(Request $request, $thisClass, $oldImage = null, $imgSize = null, $imgName = 'img', $crop = null)
     {
-        $img = $request->file('img');
+        $img = $request->file($imgName);
         $imgExt = $img->extension();
 
         // Ресайз картинки
         $imgResize = Image::make($img->getRealPath());
-        $imgResize->resize(config('admin.imgMaxSizeSM'), config('admin.imgMaxSizeSM'), function ($constraint) {
-            $constraint->aspectRatio();
-        });
+
+
+        $width = (int)config('admin.imgWidth');
+        $height = (int)config('admin.imgHeight');
+        if ($crop && $imgResize->width() > $width || $crop && $imgResize->height() > $height) {
+
+
+            // Обрезаем картинку в соответсвии с пропорциями
+            /*if ($imgResize->width() > $imgResize->height()) {
+
+                // Определяем меньшую сторону картинки
+                $heightSide = (int)$imgResize->height();
+
+                // Определяем во сколько раз меньше
+                $rate = $imgResize->height() / $height;
+
+                // Определяем размер другой стороны для обрезки
+                $widthSide = (int)($width * $rate);
+
+                // Определяем координаты
+                $offsetX = (int)(($imgResize->width() - $widthSide) / 2);
+                $offsetY = 0;
+
+            } else {
+
+                // Определяем меньшую сторону картинки
+                $widthSide = (int)$imgResize->width();
+
+                // Определяем во сколько раз меньше
+                $rate = $imgResize->width() / $width;
+
+                // Определяем размер другой стороны для обрезки
+                $heightSide = (int)($height * $rate);
+
+                // Определяем координаты
+                $offsetX = 0;
+                $offsetY = (int)(($imgResize->height() - $heightSide) / 2);
+            }
+
+            // Обрезаем картинку в соответсвии с пропорциями
+            $imgResize->crop($widthSide, $heightSide, $offsetX, $offsetY);
+
+            // Ресайз картинку к нужному размеру
+            $imgResize->resize($width, $height, function ($constraint) {
+                $constraint->aspectRatio();
+            });*/
+
+
+            /*$width = $imgResize->width() > config('admin.imgWidth') ? config('admin.imgWidth') : $imgResize->width();
+            $height = $imgResize->height() > config('admin.imgHeight') ? config('admin.imgHeight') : $imgResize->height();*/
+
+            $width = $imgResize->width() > $width ? $width : $imgResize->width();
+            $height = $imgResize->height() > $height ? $height : $imgResize->height();
+
+            if ($imgResize->width() < $imgResize->height()) {
+                $width = $height;
+                $height = $width;
+            }
+
+            // Ресайз картинку к нужному размеру
+            $imgResize->resize($width, $height, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+
+            /*$canvas = Image::canvas(config('admin.imgWidth'), config('admin.imgHeight'));
+            $canvas->insert($imgResize, 'center');*/
+
+        } else {
+
+            $imgSize = $imgSize ?: config('admin.imgMaxSizeSM');
+            $width = $imgResize->width() > $imgSize ? $imgSize : $imgResize->width();
+            $height = $imgResize->height() > $imgSize ? $imgSize : $imgResize->height();
+
+            $imgResize->resize($width, $height, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+        }
+
 
         // Сохраняем картинку
         $ImgFolder = config("admin.img{$thisClass}") . '/' . date('Y_m');
@@ -46,15 +124,24 @@ class Img
         File::ensureDirectoryExists(public_path($ImgFolder));
 
         // Уникальное имя
-        $ImgName = "{$ImgFolder}/" . uniqid() . ".{$imgExt}";
-        $imgResize->save(public_path($ImgName));
+        $imgPath = "{$ImgFolder}/" . uniqid() . ".{$imgExt}";
+
+        // Сохраняем картинку
+        $imgResize->save(public_path($imgPath));
+        //empty($canvas) ? $imgResize->save(public_path($imgPath)) : $canvas->save(public_path($imgPath));
 
         // Удаляем картинку, которая была
         if ($oldImage && $oldImage !== config("admin.img{$thisClass}Default") && File::exists(public_path($oldImage))) {
             File::delete(public_path($oldImage));
+
+            // Удалим картинку Webp
+            $webp = self::getWebp($oldImage);
+            if ($webp !== $oldImage) {
+                File::delete(public_path($webp));
+            }
         }
 
-        return $ImgName;
+        return $imgPath;
     }
 
 
@@ -95,7 +182,7 @@ class Img
 
             // Путь к картинки Webp
             $webp = "{$info['folder_public_path']}/{$info['filename']}.webp";
-            
+
             // Если есть Webp, то возвращаем её
             if (File::isFile(public_path($webp))) {
                 return $webp;
@@ -220,13 +307,13 @@ class Img
      * Удалим с сервера картинки галереи, принадлежащии одному элементу, к примеру товару, возвращает true или false.
      * $table - название таблице, в которой названия картинок.
      * $elementName - название элемента в таблице, к примеру product_id.
-     * $elementID - id элемента, для которого картинки.
+     * $elementId - id элемента, для которого картинки.
      */
-    public static function deleteImgAll($table, $elementName, $elementID)
+    public static function deleteImgAll($table, $elementName, $elementId)
     {
-        if ($table && $elementName && $elementID && Schema::hasTable($table) && Schema::hasColumn($table, $elementName)) {
+        if ($table && $elementName && $elementId && Schema::hasTable($table) && Schema::hasColumn($table, $elementName)) {
 
-            $images = DB::table($table)->where($elementName, (int)$elementID)->pluck('img');
+            $images = DB::table($table)->where($elementName, (int)$elementId)->pluck('img');
             $images = $images->toArray();
 
             if ($images) {

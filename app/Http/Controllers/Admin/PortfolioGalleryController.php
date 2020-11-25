@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\Admin\DbSort;
 use App\Helpers\Admin\Img;
-use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use App\Models\PortfolioGallery;
 
-class ProductController extends AppController
+class PortfolioGalleryController extends AppController
 {
     public function __construct(Request $request)
     {
@@ -23,22 +23,7 @@ class ProductController extends AppController
         $route = $this->route = $request->segment(2);
         $view = $this->view = Str::snake($this->class);
 
-        // Связанные таблицы, а также в моделе должен быть метод с название таблицы, реализующий связь
-        $this->relatedTables = [
-
-            // Категории
-            'categories',
-
-            // Модификаторы
-            'modifier_groups',
-
-            // Лэйблы
-            'labels',
-
-            // Галерея
-            //'product_galleries',
-        ];
-
+        $this->belongTable = 'portfolios';
 
         view()->share(compact('class', 'c','model', 'table', 'route', 'view'));
     }
@@ -48,12 +33,11 @@ class ProductController extends AppController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         // Поиск. Массив гет ключей для поиска
         $queryArr = [
             'title',
-            'slug',
             'status',
             'sort',
             'id',
@@ -71,7 +55,6 @@ class ProductController extends AppController
         $thead = [
             'img' => 'img',
             'title' => null,
-            'slug' => null,
             'status' => 'l',
             'sort' => null,
             'id' => null,
@@ -90,9 +73,13 @@ class ProductController extends AppController
      */
     public function create()
     {
+        $parentValues = DB::table($this->belongTable)
+            ->whereNull('deleted_at')
+            ->pluck('title', 'id');
+
         $f = __FUNCTION__;
         $title = __("a.{$f}");
-        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title'));
+        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'parentValues'));
     }
 
     /**
@@ -103,19 +90,22 @@ class ProductController extends AppController
      */
     public function store(Request $request)
     {
+        $imagesExt = implode(',', config('admin.acceptedImagesExt') ?? []);
+
         $rules = [
+            'portfolio_id' => 'required|integer',
             'title' => 'required|string|max:250',
-            'slug' => "required|string|unique:{$this->table}|max:250",
-            'price' => 'required|numeric',
-            'old_price' => 'nullable|numeric',
+            'img' => "required|mimes:{$imagesExt}|max:2000",
         ];
         $request->validate($rules);
         $data = $request->all();
 
+
         if ($request->hasFile('img')) {
 
             // Обработка картинки
-            $data['img'] = Img::upload($request, $this->class);
+            $data['img'] = Img::upload($request, $this->class, null, config('admin.imgMaxSizeHD'));
+            Img::copyWebp($data['img']);
 
         } else {
 
@@ -123,21 +113,8 @@ class ProductController extends AppController
             $data['img'] = config("admin.img{$this->class}Default");
         }
 
-        // Приводим цену к float
-        if (!empty($data['price'])) {
-            $data['price'] = is_float($data['price']) ? $data['price'] : floatval($data['price']);
-        }
-        if (!empty($data['old_price'])) {
-            $data['old_price'] = is_float($data['old_price']) ? $data['old_price'] : floatval($data['old_price']);
-        }
-
-        // Если нет body, то ''
-        if (empty($data['body'])) {
-            $data['body'] = '';
-        }
-
         // Создаём экземкляр модели
-        $values = new Product();
+        $values = new PortfolioGallery();
 
         // Заполняем модель новыми данными
         $values->fill($data);
@@ -175,21 +152,13 @@ class ProductController extends AppController
     {
         $values = $this->model::findOrFail($id);
 
-        // Получаем данные связанных таблиц
-        $related = [];
-        if (!empty($this->relatedTables)) {
-            foreach ($this->relatedTables as $relatedTable) {
-                if (Schema::hasTable($relatedTable)) {
-                    $related[$relatedTable] = DB::table($relatedTable)
-                        ->whereNull('deleted_at')
-                        ->pluck('title', 'id');
-                }
-            }
-        }
+        $parentValues = DB::table($this->belongTable)
+            ->whereNull('deleted_at')
+            ->pluck('title', 'id');
 
         $f = __FUNCTION__;
         $title = __("a.{$f}");
-        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'values', 'related'));
+        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'values', 'parentValues'));
     }
 
     /**
@@ -204,47 +173,29 @@ class ProductController extends AppController
         // Получаем элемент по id, если нет - будет ошибка
         $values = $this->model::findOrFail($id);
 
+        $imagesExt = implode(',', config('admin.acceptedImagesExt') ?? []);
+
         $rules = [
+            'portfolio_id' => 'required|integer',
             'title' => 'required|string|max:250',
-            'slug' => "required|string|unique:{$this->table},slug,{$id}|max:250",
-            'price' => 'required|numeric',
-            'old_price' => 'nullable|numeric',
+            'img' => "nullable|mimes:{$imagesExt}|max:2000",
         ];
         $request->validate($rules);
         $data = $request->all();
 
+
         if ($request->hasFile('img')) {
 
             // Обработка картинки
-            $data['img'] = Img::upload($request, $this->class, $values->img);
+            $data['img'] = Img::upload($request, $this->class, $values->img, config('admin.imgMaxSizeHD'));
+            Img::copyWebp($data['img']);
+
         } else {
 
             // Если нет картинки
             $data['img'] = $values->img;
         }
 
-
-
-        // Приводим цену к float
-        if (!empty($data['price'])) {
-            $data['price'] = is_float($data['price']) ? $data['price'] : floatval($data['price']);
-        }
-        if (!empty($data['old_price'])) {
-            $data['old_price'] = is_float($data['old_price']) ? $data['old_price'] : floatval($data['old_price']);
-        }
-
-        // Если нет body, то ''
-        if (empty($data['body'])) {
-            $data['body'] = '';
-        }
-
-
-        // Сохраняем связи
-        if (!empty($this->relatedTables)) {
-            foreach ($this->relatedTables as $relatedTable) {
-                $values->$relatedTable()->sync($request->$relatedTable);
-            }
-        }
 
         // Заполняем модель новыми данными
         $values->fill($data);
@@ -271,20 +222,16 @@ class ProductController extends AppController
     {
         // Получаем элемент по id, если нет - будет ошибка
         $values = $this->model::findOrFail($id);
+        $img = $values->img ?? null;
 
-        // Удалить картинку, кроме картинки по-умолчанию
-        Img::deleteImg($values->img, config("admin.img{$this->class}Default"));
-
-
-        // Удаляем связанные элементы
-        if (!empty($this->relatedTables)) {
-            foreach ($this->relatedTables as $relatedTable) {
-                $values->$relatedTable()->sync([]);
-            }
-        }
 
         // Удаляем элемент
         $values->delete();
+
+
+        // Удалим картинку с сервера, кроме картинки по-умолчанию
+        Img::deleteImg($img, config("admin.img{$this->class}Default"));
+
 
         // Удалить все кэши
         cache()->flush();

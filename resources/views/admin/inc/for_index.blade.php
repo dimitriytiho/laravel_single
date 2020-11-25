@@ -63,7 +63,9 @@
 
                                 Если значение img, то выводим картинку --}}
                                 @case('img')
-                                    <img src="{{ asset($item->$field) }}" class="img-size-64" alt="">
+                                    @if($item->$field)
+                                        <img src="{{ asset($item->$field) }}" class="img-size-64" alt="">
+                                    @endif
                                     @break
                                 {{--
 
