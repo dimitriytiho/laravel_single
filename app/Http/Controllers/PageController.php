@@ -28,7 +28,7 @@ class PageController extends AppController
 
     public function index()
     {
-        //Mail::to('dimitriyyuliya@gmail.com')->send(new SendMail(__("{$this->lang}::a.Code"), '12345'));
+        //Mail::to('dimitriyyuliya@gmail.com')->send(new SendMail(__('a.code'), '12345'));
 
         /*$mobileDetect = new \Mobile_Detect();
         dump($mobileDetect->isMobile());
@@ -42,9 +42,10 @@ class PageController extends AppController
         $breadcrumbs = $this->breadcrumbs
             ->get();
 
+        $f = __FUNCTION__;
         $title = __('s.' . config('add.title_main'));
         $description = __('s.You_are_on_home');
-        return view("{$this->view}.index", compact('title', 'description', 'breadcrumbs'));
+        return view("{$this->view}.{$f}", compact('title', 'description', 'breadcrumbs'));
     }
 
 
@@ -80,23 +81,24 @@ class PageController extends AppController
             ->dynamic($values->id)
             ->get();
 
+        $f = __FUNCTION__;
         $title = $values->title ?? null;
         $description = $values->description ?? null;
-        return view("{$this->view}.show", compact('title', 'description', 'values', 'breadcrumbs'));
+        return view("{$this->view}.{$f}", compact('title', 'description', 'values', 'breadcrumbs'));
     }
 
 
     public function contactUs(Request $request)
     {
-        $title = __('s.contact_us');
-        $description = ' ';
-
         // Хлебные крошки
         $breadcrumbs = $this->breadcrumbs
             ->end(['contact_us' => $title])
             ->get();
 
-        return view("{$this->view}.contact_us", compact('title', 'description', 'breadcrumbs'));
+        $f = __FUNCTION__;
+        $title = __('s.contact_us');
+        $description = ' ';
+        return view("{$this->view}.{$f}", compact('title', 'description', 'breadcrumbs'));
     }
 
 

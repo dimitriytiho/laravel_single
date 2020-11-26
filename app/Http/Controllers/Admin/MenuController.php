@@ -127,7 +127,7 @@ class MenuController extends AppController
     {
         $rules = [
             'belong_id' => 'required|integer',
-            'parent_id' => 'nullable|integer',
+            'parent_id' => 'required|integer|min:0',
             'title' => 'required|string|max:100',
         ];
         $request->validate($rules);
@@ -214,7 +214,7 @@ class MenuController extends AppController
 
         $rules = [
             'belong_id' => 'required|integer',
-            'parent_id' => 'nullable|integer',
+            'parent_id' => 'required|integer|min:0',
             'title' => 'required|string|max:100',
         ];
         $request->validate($rules);

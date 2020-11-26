@@ -103,7 +103,7 @@ class OrderController extends AppController
         //$method = Str::kebab(__FUNCTION__); // Из contactUs будет contact-us
         if ($order->save()) {
             $orderId = $order->id;
-            $data['date'] = $data['date'] = d(config('admin.date_format') ?: 'dd.MM.y HH:mm');
+            $data['date'] = d(time(), config('admin.date_format') ?: 'dd.MM.y HH:mm');
 
 
             // Данные для таблицы order_products

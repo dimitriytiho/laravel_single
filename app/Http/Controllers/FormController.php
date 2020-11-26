@@ -55,15 +55,17 @@ class FormController extends Controller
 
         // Данные form
         $data['user_id'] = $userId;
-        $data['message'] = s($data['message']);
         $data['ip'] = $request->ip();
+        if (!empty($data['message'])) {
+            $data['message'] = s($data['message']);
+        }
 
         $form = new Form();
         $form->fill($data);
 
         //$method = Str::kebab(__FUNCTION__); // Из contactUs будет contact-us
         if ($form->save()) {
-            $data['date'] = d(config('admin.date_format') ?: 'dd.MM.y HH:mm');
+            $data['date'] = d(time(), config('admin.date_format') ?: 'dd.MM.y HH:mm');
 
             // Письмо пользователю
             try {

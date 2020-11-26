@@ -61,10 +61,6 @@ class PortfolioController extends AppController
         ];
 
 
-        // Id элементов, которые нельзя удалять
-        //$guardedIds = $this->model::where('parent_id', '0')->pluck('id')->toArray();
-
-
         $f = __FUNCTION__;
         $title = __("a.{$this->table}");
         return view("{$this->viewPath}.{$this->route}.{$f}", compact('title', 'values', 'queryArr', 'col', 'cell', 'thead'));
@@ -155,9 +151,6 @@ class PortfolioController extends AppController
         // Получаем элемент по id, если нет - будет ошибка
         $values = $this->model::findOrFail($id);
 
-        // Записать в реестр parent_id, для построения дерева
-        Main::set('parent_id', $values->parent_id);
-
         // Получаем все элементы в массив, где ключи id
         $all = $this->model::get()->keyBy('id')->toArray();
 
@@ -206,12 +199,6 @@ class PortfolioController extends AppController
             // Если нет картинки
             $data['img'] = $values->img;
             $data['preview'] = $values->preview;
-        }
-
-
-        // parent_id не должны быть равно id
-        if ($values->parent_id == $values->id) {
-            $values->parent_id = '0';
         }
 
         // Заполняем модель новыми данными

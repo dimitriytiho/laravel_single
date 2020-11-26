@@ -19,7 +19,7 @@
 
             {!! $form::textarea('description', $values->description ?? null, null) !!}
 
-            {!! $form::textarea('work', $values->description ?? null, null) !!}
+            {!! $form::textarea('work', $values->work ?? null, null) !!}
 
             {!! $form::textarea('body', $values->body ?? null, null, true, null, config('admin.editor'), null, 20) !!}
 

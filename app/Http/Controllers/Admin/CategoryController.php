@@ -176,7 +176,7 @@ class CategoryController extends AppController
         $rules = [
             'title' => 'required|string|max:250',
             'slug' => "required|string|unique:{$this->table},slug,{$id}|max:250",
-            'parent_id' => 'nullable|integer',
+            'parent_id' => 'required|integer|min:0',
             'img' => "nullable|mimes:{$magesExt}",
         ];
         $request->validate($rules);

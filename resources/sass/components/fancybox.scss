@@ -1,0 +1,12 @@
+@import "../config/params";
+@import "../config/mixins";
+@import "../config/blocks";
+
+
+// Через sass задать основной цвет сайта для Fancybox
+.fancybox-progress {
+    background: $primary !important;
+}
+.fancybox-thumbs__list a:before {
+    border-color: $primary !important;
+}

@@ -53,6 +53,7 @@
                             <div class="form-group">
                                 <label for="parent_id">@lang('a.parent_id')</label>
                                 <select class="form-control" name="parent_id" id="parent_id" aria-invalid="false">
+                                    <option value="0">@lang('a.parent_id')</option>
                                     {!! Menu::getView('admin_select', Menu::tree($values->belong_id), '-') !!}
                                 </select>
                             </div>
