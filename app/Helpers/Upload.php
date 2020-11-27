@@ -121,7 +121,6 @@ class Upload
         $index = config('add.not_index_website'); // Если не нужно индексировать сайт, то true, если нужно, то false
         $disallow = config('add.disallow');
 
-        $disallow[] = 'not-found';
         $disallow[] = '*.php$';
         $disallow[] = 'js/*.js$';
         $disallow[] = 'css/*.css$';

@@ -81,7 +81,7 @@ class PageController extends AppController
             ->dynamic($values->id)
             ->get();
 
-        $f = __FUNCTION__;
+        $f = Str::snake(__FUNCTION__);
         $title = $values->title ?? null;
         $description = $values->description ?? null;
         return view("{$this->view}.{$f}", compact('title', 'description', 'values', 'breadcrumbs'));
@@ -90,14 +90,15 @@ class PageController extends AppController
 
     public function contactUs(Request $request)
     {
+        $f = Str::snake(__FUNCTION__);
+        $title = __('s.contact_us');
+        $description = ' ';
+
         // Хлебные крошки
         $breadcrumbs = $this->breadcrumbs
             ->end(['contact_us' => $title])
             ->get();
 
-        $f = __FUNCTION__;
-        $title = __('s.contact_us');
-        $description = ' ';
         return view("{$this->view}.{$f}", compact('title', 'description', 'breadcrumbs'));
     }
 

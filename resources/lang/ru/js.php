@@ -12,10 +12,10 @@ return [
 
 
     // Dropzone
-    'select_file_or_drag_here' => 'Выберите файл или перетащите картинку сюда',
+    /*'select_file_or_drag_here' => 'Выберите файл или перетащите картинку сюда',
     'you_have_reached_maximum_file_upload_allowed' => 'Достигнут лимит загрузки файлов, разрешено ',
     'allowed_to_upload_files' => 'Разрешены к загрузке файлы: ',
     'upload_success' => 'Загрузка успешна',
-    'error_occurred' => 'Возникла ошибка',
+    'error_occurred' => 'Возникла ошибка',*/
 
 ];

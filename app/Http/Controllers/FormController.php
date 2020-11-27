@@ -26,6 +26,8 @@ class FormController extends Controller
 
     public function contactUs(Request $request)
     {
+        $f = Str::snake(__FUNCTION__);
+
         // Валидация
         $rules = [
             'name' => 'required|string|max:250',
@@ -81,7 +83,7 @@ class FormController extends Controller
 
             // Письмо администратору
             try {
-                $formName = Str::snake(__FUNCTION__); // Из contactUs будет contact_us
+                $formName = l($f, 's'); // Из contactUs будет contact_us
                 $template = 'table_form'; // Все данные в таблице
                 $title = __('s.Completed_form', ['name' => $formName]) . config('add.domain');
                 $email_admin = HelpersStr::strToArr(Main::site('admin_email'));

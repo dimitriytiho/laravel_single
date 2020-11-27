@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 use App\Models\Main;
 
@@ -57,7 +56,7 @@ class SearchController extends AppController
                 ->select([DB::raw("'{$this->routeSearch}' as route"), 'id', 'title', 'slug'])
                 ->whereNull('deleted_at')
                 ->where('status', $this->statusActive)
-                ->where('title', 'LIKE', "%{$query}%")
+                ->where('title', 'like', "%{$query}%")
                 ->paginate($this->perPage);
         }
 
@@ -90,7 +89,7 @@ class SearchController extends AppController
                     ->select([DB::raw("'{$this->routeSearch}' as route"), 'id', 'title', 'slug'])
                     ->whereNull('deleted_at')
                     ->where('status', $this->statusActive)
-                    ->where('title', 'LIKE', "%{$query}%")
+                    ->where('title', 'like', "%{$query}%")
                     ->limit('10')
                     ->get();
                 return $values->toJson();
