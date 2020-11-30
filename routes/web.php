@@ -64,8 +64,9 @@ if (config('add.auth')) {
         Route::post('register', 'RegisterController@register')->name('register_post');
     });
 
+    Route::get('home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
     //Auth::routes();
-    //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 }
 
 Route::namespace($namespaceControllers)->group(function () {

@@ -38,7 +38,7 @@ class Upload
     }
 
 
-    // Формирует переменые для sass из настроек, записываем в файл /resources/sass/config/_init.scss.
+    // Формирует переменые для sass из настроек, записываем в файл /resources/sass/config/_init.scss, запустить: \App\Helpers\Upload::resourceInit();
     public static function resourceInit()
     {
         $sassParams = config('add.scss');

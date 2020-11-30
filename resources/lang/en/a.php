@@ -209,10 +209,12 @@ return [
     'off' => 'OFF',
     'default' => 'Default',
     'key' => 'Key',
-    'key' => 'Key',
     'work' => 'Work',
     'client' => 'Client',
     'term' => 'Term',
     'preview' => 'Preview',
+    'admin_email' => 'Admin email',
+    'date_format' => 'Date format',
+    'change_key' => 'Change key',
 
 ];

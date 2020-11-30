@@ -22,6 +22,8 @@ class Upload extends App
      */
     public static function getKeyAdmin()
     {
+        //return '';
+        
         // Взязь из кэша
         if (cache()->has('key_for_site')) {
             return cache()->get('key_for_site');
@@ -39,7 +41,6 @@ class Upload extends App
                 return $key->key;
             }
         }
-        return '';
     }
 
 

@@ -43,40 +43,6 @@ S;
 
 
 /*
- * Возвращает картинку svg вместе с заменяющей её картинкой.
- * $img - путь с названием картинки.
- * $alt - текст для картинки.
- * $width - ширина для картинки, не забудьте написать единицы измерения, необязательный параметр.
- * $img_svg - путь с названием картинки, svg файл, если не передавать, то возьмётся $img, необязательный параметр.
- * $class - класс для тега img, необязательный параметр.
- * $id - id для тега img, необязательный параметр.
- * $classPicture - класс для тега picture, необязательный параметр.
- */
-function svg($img, $alt = null, $width = null, $img_svg = null, $class = null, $id = null, $classPicture = null) {
-    $width = $width ? "style='width: {$width};'" : null;
-    $path = pathinfo($img);
-    $path_dir = $path['dirname'] === '.' ? null : "{$path['dirname']}/";
-    $img_svg = $img_svg ?: "$path_dir{$path['filename']}.svg";
-    $id = $id ? "id='{$id}'" : null;
-    $alt = $alt ? Str::removeTag($alt) : ' ';
-    $classPicture = $classPicture ? "class='{$classPicture}'" : null;
-
-    if (is_file(config('add.imgPath') . "/{$img}") && is_file(config('add.imgPath') . "/{$img_svg}")) {
-        $img = asset(config('add.img') . "/{$img}");
-        $img_svg = asset(config('add.img') . "/{$img_svg}");
-
-        return <<<S
-<picture {$classPicture}>
-    <source srcset="{$img}" type="image/svg+xml">
-    <img src="{$img_svg}" class="img-fluid {$class}" $id alt="{$alt}" {$width}>
-</picture>
-S;
-    }
-    return false;
-}
-
-
-/*
  * Возвращает input для формы.
  * $name - передать название, перевод будет взять из /resources/lang/en/s.php.
  * $idForm - если используется несколько форм на странице, то передайте id формы, чтобы id оригинальные.
@@ -384,7 +350,7 @@ function btn($title, $class = false)
         }
 
         return <<<S
-<button type="submit" class="btn btn-primary btn-pulse {$class}">
+<button type="submit" class="btn btn-primary pulse {$class}">
     <span class="spinner-grow spinner-grow-sm mr-2 js-none" role="status" aria-hidden="true"></span>
     <span>{$title}</span>
 </button>

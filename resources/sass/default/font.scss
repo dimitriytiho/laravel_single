@@ -17,9 +17,9 @@
 @each $color, $value in $colors {
   .a-#{$color} {
       @if $color == 'black' {
-          @include for-a($value, lighten($value, 20%));
+          @include for-a($value, lighten($value, 25%));
       } @else if ($color == 'dark') {
-          @include for-a($value, lighten($value, 15%));
+          @include for-a($value, $primary);
       } @else {
           @include for-a($value, darken($value, 15%));
       }

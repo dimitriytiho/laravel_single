@@ -6,7 +6,7 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{ session()->get('back_link_site', route('index')) }}" class="brand-link">
-        <img src="{{ asset(config('add.img') . '/omegakontur/admin/touch-icon-iphone-retina.png') }}" alt="AdminLTE Logo" class="brand-image img-circle">
+        <img src="{{ asset("{$img}/omegakontur/touch-icon-iphone-retina.png") }}" alt="{{ config('add.dev') }}" class="brand-image img-circle">
         <span class="brand-text font-weight-light">@lang('a.website')</span>
     </a>
 

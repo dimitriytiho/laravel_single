@@ -3,6 +3,23 @@
 @import "../config/blocks";
 
 
+.icon_in_input {
+    position: relative;
+    input {
+        padding-right: $spacer * 2;
+    }
+    .btn {
+        position: absolute;
+        top: 0;
+        right: $spacer * .75;
+    }
+}
+
+.grecaptcha-badge {
+    visibility: hidden;
+}
+
+
 
 @media (max-width: 576px) {
     .g-recaptcha {

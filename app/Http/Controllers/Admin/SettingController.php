@@ -53,7 +53,7 @@ class SettingController extends AppController
 
         // Передать поля для вывода, значение l - с переводом, t - дата
         $thead = [
-            'title' => null,
+            'title' => 'l',
             'value' => null,
             'section' => null,
             'id' => null,

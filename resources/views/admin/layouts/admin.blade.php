@@ -15,11 +15,11 @@
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="{{ asset(config('add.img') . '/omegakontur/admin/favicon.ico') }}">
-    <link rel="apple-touch-icon" href="{{ asset(config('add.img') . '/omegakontur/admin/touch-icon-iphone.png') }}">
-    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('img/omegakontur/admin/touch-icon-ipad.png') }}">
-    <link rel="apple-touch-icon" sizes="120x120" href="{{ asset(config('add.img') . '/omegakontur/admin/touch-icon-iphone-retina.png') }}">
-    <link rel="apple-touch-icon" sizes="152x152" href="{{ asset(config('add.img') . '/omegakontur/admin/touch-icon-ipad-retina.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset(config('add.img') . '/omegakontur/favicon.ico') }}">
+    <link rel="apple-touch-icon" href="{{ asset(config('add.img') . '/omegakontur/touch-icon-iphone.png') }}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('img/omegakontur/touch-icon-ipad.png') }}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{{ asset(config('add.img') . '/omegakontur/touch-icon-iphone-retina.png') }}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{{ asset(config('add.img') . '/omegakontur/touch-icon-ipad-retina.png') }}">
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     {{--
 

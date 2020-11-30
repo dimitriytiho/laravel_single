@@ -38,8 +38,8 @@
     z-index: $z-index-normal;
     width: 2rem;
     height: 2rem;
-}
-
-.grecaptcha-badge {
-    visibility: hidden;
+    @include flex-c();
+    i {
+        font-size: 15px;
+    }
 }

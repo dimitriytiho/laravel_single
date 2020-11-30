@@ -1,6 +1,6 @@
+import '../admin/pulse'
 import './search'
 import './forms'
-import './pulse'
 import './scroll'
 import './template'
 import '../components/validate'

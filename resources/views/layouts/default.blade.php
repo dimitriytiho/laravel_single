@@ -98,7 +98,7 @@
 {{--
 
 Стрелка вверх --}}
-<div class="btn btn-primary btn-sm scale-out pulse" id="btn_up" aria-label="@lang('s.move_to_top')" title="@lang('s.move_to_top')">
+<div class="btn btn-primary pulse scale-out" id="btn_up" aria-label="@lang('s.move_to_top')">
     <i class="fas fa-arrow-up"></i>
 </div>
 {{--
