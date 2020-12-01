@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Role extends App
 {
-    use HasFactory, SoftDeletes;
+
+    use SoftDeletes;
+
 
     protected $fillable = [
         'title',
@@ -102,6 +103,19 @@ class Role extends App
     {
         $roles = self::roles();
         return empty($roles[1]) ? 0 : $roles[1]->id;
+    }
+
+
+    /**
+     *
+     * @return int
+     *
+     * Возвращает id роли Зарегистрированного пользотеля в БД.
+     */
+    public function roleUserId()
+    {
+        $roles = self::roles();
+        return empty($roles[0]) ? 0 : $roles[0]->id;
     }
 
 

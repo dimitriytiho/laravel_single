@@ -1,6 +1,17 @@
 
 document.addEventListener('DOMContentLoaded', function() {
 
+    // Select2
+    $('.select2').select2({
+        language: 'ru'
+        //theme: 'bootstrap4'
+    })
+    $('.select2_one').select2({
+        language: 'ru',
+        maximumSelectionLength: 1
+    })
+    
+
     // Bootstrap Switch
     if (document.querySelector('[data-toggle=switch]')) {
         $('[data-toggle=switch]').bootstrapSwitch()

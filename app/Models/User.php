@@ -66,6 +66,12 @@ class User extends Authenticatable
         return $this->hasMany(Order::class, 'user_id', 'id');
     }
 
+    // Связь многие ко многим
+    public function products()
+    {
+        return $this->belongsToMany(Product::class);
+    }
+
 
 
     // Меняем шаблон письма при сбросе пароля
@@ -174,6 +180,13 @@ class User extends Authenticatable
     public function saveRoleGuest()
     {
         $this->roles()->sync([$this->roleGuestId()]);
+    }
+
+
+    // Записать роль зарегистрированный пользователь для пользователя.
+    public function saveRoleUser()
+    {
+        $this->roles()->sync([$this->roleUserId()]);
     }
 
 
@@ -309,6 +322,19 @@ class User extends Authenticatable
     {
         $roles = new Role();
         return $roles->roleGuestId();
+    }
+
+
+    /**
+     *
+     * @return int
+     *
+     * Возвращает id роли Зарегистрированного пользотеля в БД.
+     */
+    public function roleUserId()
+    {
+        $roles = new Role();
+        return $roles->roleUserId();
     }
 
 

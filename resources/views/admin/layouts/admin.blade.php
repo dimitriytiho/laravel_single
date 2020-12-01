@@ -141,13 +141,6 @@ Js files --}}
         curID = '{{ auth()->user()->id ?? "" }}'
 
     {!! \App\Helpers\Locale::translationsJson() !!}
-
-
-    // Select2
-    $('.select2').select2({
-        language: 'ru'
-        //theme: 'bootstrap4'
-    })
 </script>
 <script src="{{ asset('js/append.js') }}"></script>
 {{--

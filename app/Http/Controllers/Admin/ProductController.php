@@ -23,24 +23,49 @@ class ProductController extends AppController
         $route = $this->route = $request->segment(2);
         $view = $this->view = Str::snake($this->class);
 
-        // Связанные таблицы, а также в моделе должен быть метод с название таблицы, реализующий связь
-        $this->relatedTables = [
+        // Связанные таблицы, а также в моделе должен быть метод с название таблицы, реализующий связь. Многие ко многим.
+        $relatedTables = $this->relatedTables = [
 
             // Категории
             'categories',
 
             // Модификаторы
-            'modifier_groups',
+            //'modifier_groups',
 
             // Лэйблы
-            'labels',
+            //'labels',
 
             // Галерея
             //'product_galleries',
         ];
 
 
-        view()->share(compact('class', 'c','model', 'table', 'route', 'view'));
+        // Связанные методы в моделе. Многие ко многим.
+        $relatedMethods = $this->relatedMethods = [
+
+            // Аналоги
+            //'analogues',
+
+            // Сопутствующие товары
+            //'related',
+
+        ];
+
+
+        // Связанные таблицы. Многие к одному.
+        $relatedManyToOne = $this->relatedManyToOne = [
+
+            // Производитель
+            //'manufacturers',
+
+            // Поставщик
+            //'providers',
+
+        ];
+
+
+
+        view()->share(compact('class', 'c','model', 'table', 'route', 'view', 'relatedTables', 'relatedMethods', 'relatedManyToOne'));
     }
 
     /**
@@ -116,6 +141,7 @@ class ProductController extends AppController
 
             // Обработка картинки
             $data['img'] = Img::upload($request, $this->class);
+            Img::copyWebp($data['img']);
 
         } else {
 
@@ -187,9 +213,26 @@ class ProductController extends AppController
             }
         }
 
+        // Переменная название таблицы в ней активные элементы
+        ${$this->table} = $this->model::active()->pluck('title', 'id');
+
+
+        // Связанные таблицы. Многие к одному.
+        $relatedManyToOneItems = [];
+        if (!empty($this->relatedManyToOne)) {
+            foreach ($this->relatedManyToOne as $relatedTable) {
+                if (Schema::hasTable($relatedTable)) {
+                    $relatedManyToOneItems[$relatedTable] = DB::table($relatedTable)
+                        ->whereNull('deleted_at')
+                        ->pluck('title', 'id');
+                }
+            }
+        }
+
+
         $f = __FUNCTION__;
         $title = __("a.{$f}");
-        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'values', 'related'));
+        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'values', 'related', $this->table, 'relatedManyToOneItems'));
     }
 
     /**
@@ -217,6 +260,8 @@ class ProductController extends AppController
 
             // Обработка картинки
             $data['img'] = Img::upload($request, $this->class, $values->img);
+            Img::copyWebp($data['img']);
+
         } else {
 
             // Если нет картинки
@@ -245,6 +290,14 @@ class ProductController extends AppController
                 $values->$relatedTable()->sync($request->$relatedTable);
             }
         }
+
+        // Связанные методы внутри модели. Многие ко многим.
+        if (!empty($this->relatedMethods)) {
+            foreach ($this->relatedMethods as $relatedMethod) {
+                $values->$relatedMethod()->sync($request->$relatedMethod);
+            }
+        }
+
 
         // Заполняем модель новыми данными
         $values->fill($data);
@@ -282,6 +335,14 @@ class ProductController extends AppController
                 $values->$relatedTable()->sync([]);
             }
         }
+
+        // Связанные методы внутри модели. Многие ко многим.
+        if (!empty($this->relatedMethods)) {
+            foreach ($this->relatedMethods as $relatedMethod) {
+                $values->$relatedMethod()->sync([]);
+            }
+        }
+
 
         // Удаляем элемент
         $values->delete();

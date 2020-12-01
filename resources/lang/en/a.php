@@ -216,5 +216,13 @@ return [
     'admin_email' => 'Admin email',
     'date_format' => 'Date format',
     'change_key' => 'Change key',
+    'volume' => 'Volume',
+    'units' => 'Units',
+    'discount' => 'Discount',
+    'article' => 'Article',
+    'country' => 'Country',
+    'price' => 'Price',
+    'old_price' => 'Old price',
+    'weight' => 'Weight',
 
 ];

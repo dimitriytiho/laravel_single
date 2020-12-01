@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use Illuminate\Http\Request;
 
 class ForgotPasswordController extends Controller
 {
@@ -19,4 +20,21 @@ class ForgotPasswordController extends Controller
     */
 
     use SendsPasswordResetEmails;
+
+
+    protected function validateEmail(Request $request)
+    {
+        $rules = [
+            'email' => 'required|email'
+        ];
+
+        // Если есть ключ Recaptcha и не локально запущен сайт
+        if (config('add.env') !== 'local' && config('add.recaptcha_public_key')) {
+            $rules += [
+                'g-recaptcha-response' => 'required|recaptcha',
+            ];
+        }
+
+        $request->validate($rules);
+    }
 }

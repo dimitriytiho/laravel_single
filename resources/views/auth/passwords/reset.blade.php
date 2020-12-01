@@ -1,3 +1,54 @@
+{{--
+
+Наследуем шаблон --}}
+@extends('layouts.default')
+{{--
+
+Подключается блок header --}}
+@section('header')
+    @include('inc.header')
+@endsection
+{{--
+
+
+Вывод контента
+
+--}}
+@section('content')
+    <div class="container">
+        <div class="row">
+            <div class="col text-center mt-4">
+                <h1>@lang('s.reset_password')</h1>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+
+                <form action="{{ route('password.update') }}" method="post" class="validate my-4" novalidate>
+                    @csrf
+
+                    {!! hidden('g-recaptcha-response') !!}
+                    {!! hidden('token', $token ?? null) !!}
+                    {!! input('email', 'login', true, 'email') !!}
+                    {!! input('password', 'login', true, 'password') !!}
+                    {!! input('password_confirmation', 'register', true, 'password') !!}
+                    {!! btn('submit') !!}
+
+                    {{--{!! recaptchaText('a-black mt-4') !!}--}}
+                </form>
+
+            </div>
+        </div>
+    </div>
+@endsection
+{{--
+
+Подключается блок footer --}}
+@section('footer')
+    @include('inc.footer')
+@endsection
+
+{{--
 @extends('layouts.app')
 
 @section('content')
@@ -11,7 +62,7 @@
                     <form method="POST" action="{{ route('password.update') }}">
                         @csrf
 
-                        <input type="hidden" name="token" value="{{ $token }}">
+                        <input type="hidden" name="token" value="{{ $token ?? null }}">
 
                         <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
@@ -63,3 +114,4 @@
     </div>
 </div>
 @endsection
+--}}

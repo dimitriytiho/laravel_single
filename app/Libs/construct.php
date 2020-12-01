@@ -290,12 +290,12 @@ S;
 /*
  * Возвращает скрытый input для формы.
  * $name - Передать имя input.
- * $value - Значение.
+ * $value - Значение, необязательный параметр.
  * $attrs - передайте атрибуты строкой, необязательный параметр.
  */
-function hidden($name, $value, $attrs = null)
+function hidden($name, $value = null, $attrs = null)
 {
-    return "<input type=\"hidden\" name=\"{$name}\" value='{$value}' {$attrs}>";
+    return "<input type=\"hidden\" name=\"{$name}\" value=\"{$value}\"  {$attrs}>";
 }
 
 
@@ -350,10 +350,7 @@ function btn($title, $class = false)
         }
 
         return <<<S
-<button type="submit" class="btn btn-primary pulse {$class}">
-    <span class="spinner-grow spinner-grow-sm mr-2 js-none" role="status" aria-hidden="true"></span>
-    <span>{$title}</span>
-</button>
+<button type="submit" class="btn btn-primary pulse {$class}">{$title}</button>
 S;
     }
     return false;

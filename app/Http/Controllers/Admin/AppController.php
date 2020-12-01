@@ -38,6 +38,12 @@ class AppController extends Controller
     // Связанные для удаления
     protected $relatedDelete = [];
 
+    // Связанные методы в моделе. Многие ко многим.
+    protected $relatedMethods = [];
+
+    // Связанные таблицы. Многие к одному.
+    protected $relatedManyToOne = [];
+
 
     public function __construct(Request $request)
     {

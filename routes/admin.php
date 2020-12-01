@@ -11,12 +11,14 @@ $admin = config('add.admin', 'dashboard');
 
 // Страница входа в админку. Если включена авторизация, то админы авторизируется в публичной части сайта.
 if (!config('add.auth')) {
-    Route::namespace($namespace)->name(config('add.enter'))->group(function () {
 
+
+    Route::namespace($namespace)->name(env('APP_ENTER'))->group(function () {
         $key = Upload::getKeyAdmin();
-        $keyRoute = config('enter') . "/{$key}";
-        Route::post($keyRoute, 'EnterController@enterPost')->name('_post');
+        $keyRoute = env('APP_ENTER') . "/{$key}";
+
         Route::get($keyRoute, 'EnterController@index');
+        //Route::post($keyRoute, 'EnterController@login')->name('_post');
 
     });
 }

@@ -122,7 +122,7 @@ class UserController extends AppController
             'name' => 'required|string|max:250',
             'email' => "required|string|email|unique:{$this->table},email|max:250",
             'tel' => 'nullable|tel|max:250',
-            'password' => 'required|min:6|same:password_confirmation',
+            'password' => 'required|string|min:6|same:password_confirmation',
             'img' => "nullable|mimes:{$imagesExt}", // |max:2000
             //'tel' => 'required|string|max:250',
         ];
@@ -246,7 +246,7 @@ class UserController extends AppController
             'name' => 'required|string|max:250',
             'email' => "required|string|email|unique:{$this->table},email,{$id}|max:250",
             'tel' => 'nullable|tel|max:250',
-            'password' => 'nullable|min:6|same:password_confirmation',
+            'password' => 'nullable|string|min:6|same:password_confirmation',
             'img' => "nullable|mimes:{$imagesExt}", // |max:2000
             //'tel' => 'required|string|max:250',
         ];

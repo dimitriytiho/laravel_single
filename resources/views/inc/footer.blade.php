@@ -5,9 +5,11 @@
     <div class="row bg-dark py-4 px-5 footer__content">
         <div class="col-xl-2 col-lg-4 col-sm-6">
             <a href="{{ route('index') }}" class="d-block mt-2">
-                {!! svg('logo_white.png', config('app.name'), '160px') !!}
+                <picture>
+                    <source srcset="{{ asset("{$img}/logo/logotype.svg") }}">
+                    <img src="{{ asset("{$img}/logo/logotype.png") }}" alt="{{  Main::site('name') }}">
+                </picture>
             </a>
-            <p class="mt-3">{{ Main::site('name') }}</p>
         </div>
         @empty($noShowErrorPage)
             <div class="col-xl-2 col-lg-4 col-sm-6 font-weight-light">
