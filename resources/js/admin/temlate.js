@@ -80,4 +80,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     })
 
+
+    // При клике на класс .click_submit отправляем форму-родителя
+    $('.click_submit').click(function () {
+        $(this).closest('form').submit()
+    })
+
 }, false)

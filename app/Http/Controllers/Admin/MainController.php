@@ -35,7 +35,7 @@ class MainController extends AppController
     public function locale($locale)
     {
         if (in_array($locale, config('admin.locales') ?: [])) {
-            return redirect()->back()->withCookie(config('add.name') . '_loc', $locale);
+            return redirect()->back()->withCookie(Str::slug(config('add.name')) . '_loc', $locale);
         }
         Main::getError("Invalid locale $locale", __METHOD__);
     }
@@ -55,15 +55,13 @@ class MainController extends AppController
 
     public function toChangeKey(Request $request)
     {
-        if ($request->ajax()) {
-            $key = $request->key;
-            if ($key) {
-                Upload::getNewKey($key);
-                session()->flash('success', __('a.key_success'));
-                return __('a.key_success');
-            }
+        $key = $request->key;
+        $oldKey = Upload::getKeyAdmin();
+        if ($key && $key !== $oldKey) {
+            Upload::getNewKey($key);
+            return redirect()->back()->with('success', __('a.key_success'));
         }
-        Main::getError('Request No Ajax', __METHOD__);
+        return redirect()->back()->with('error', __('s.whoops_error'));
     }
 
 

@@ -1,0 +1,13 @@
+@import "../config/params";
+@import "../config/mixins";
+@import "../config/blocks";
+
+
+// Bootstrap Switch
+.bootstrap-switch-label {
+    display: block;
+    padding-bottom: .1rem;
+}
+.bootstrap-switch.bootstrap-switch-focused {
+    box-shadow: none;
+}

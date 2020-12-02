@@ -41,6 +41,8 @@ class EnterController extends AppController
                 return redirect()->route('index');
             }*/
 
+            return $next($request);
+
         });
 
         $class = $this->class = str_replace('Controller', '', class_basename(__CLASS__));

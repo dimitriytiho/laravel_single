@@ -62,8 +62,11 @@
                     <strong><i class="fas fa-key mr-1"></i> @lang('a.change')</strong>
                 </p>
 
-                {!! $form::input('key', $key ?? null, null, null, null, null, null, [], null, null, null,
-                    $form::inputGroupAppend('fas fa-share', 'cur', 'bg-white', 'text-primary', ['data-url' => route('admin.key_to_enter'), 'id' => 'key_to_enter', 'title' => __('a.generate_link')])) !!}
+                <form method="post" action="{{ route('admin.key_to_enter') }}" id="key_to_enter2">
+                    @csrf
+                    {!! $form::input('key', $key ?? null, null, null, null, null, null, [], null, null, null,
+                    $form::inputGroupAppend('fas fa-share', 'cur click_submit', 'bg-white', 'text-primary', ['title' => __('a.generate_link')])) !!}
+                </form>
             </div>
         </section>
     @endif

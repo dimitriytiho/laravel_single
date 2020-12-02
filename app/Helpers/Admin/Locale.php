@@ -3,9 +3,7 @@
 
 namespace App\Helpers\Admin;
 
-use App\Models\Main;
-use Illuminate\Contracts\Encryption\DecryptException;
-use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Str;
 
 class Locale
 {
@@ -36,7 +34,7 @@ class Locale
         $self = new self();
         $currentLocale = $self->currentLocale;
         $locales = $self->locales;
-        $locale = $request->cookie(config('add.name') . '_loc');
+        $locale = $request->cookie(Str::slug(config('add.name')) . '_loc');
         if ($locale && $locale !== $currentLocale && in_array($locale, $locales)) {
             app()->setLocale($locale);
         }

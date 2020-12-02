@@ -21,11 +21,11 @@ mix
     		processCssUrls: false,
     	})
 
-    /*.js('resources/js/admin/index.js', 'public/js/append.js')
+    .js('resources/js/admin/index.js', 'public/js/append.js')
     .sass('resources/sass/admin/index.scss', 'public/css/append.css')
         .options({
             processCssUrls: false,
-        })*/
+        })
 ;
 
 /*mix.styles([

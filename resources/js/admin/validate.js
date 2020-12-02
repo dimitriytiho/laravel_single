@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
             password_confirmation : {
                 required: true,
                 minlength : 6,
-                equalTo : "#password"
+                equalTo : '#password'
             },
             accept: {
                 required: true

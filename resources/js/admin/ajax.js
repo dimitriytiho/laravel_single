@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // При клике на #key_to_enter создаётся новый ключ, отправляют письма все админам
-    $('#key_to_enter').click(function () {
+    /*$('#key_to_enter').click(function () {
         var self = $(this),
             url = self.data('url'),
             key = self.closest('.input-group').find('input').val()
@@ -35,14 +35,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.location.href = requestPath
 
                 // Покажем тост
-                /*$(document).Toasts('create', {
+                $(document).Toasts('create', {
                     class: 'bg-success',
                     //title: 'Toast Title',
                     //subtitle: 'Subtitle',
                     body: response
-                })*/
+                })
             }
         })
-    })
+    })*/
 
 }, false)

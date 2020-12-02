@@ -18,6 +18,10 @@ thead th {
     font-size: 1rem !important;
 }
 
+.a-dark {
+    @include for-a($dark, lighten($dark, 20%));
+}
+
 .btn_radio {
     .active.btn {
         position: relative;

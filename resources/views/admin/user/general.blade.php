@@ -64,53 +64,56 @@
 
                     @include('admin.inc.general_start')
 
-                        {!! $form::textarea('note', $values->note ?? null, null) !!}
-                        <div class="row">
-                            <div class="col-md-6">
-                                {!! $form::select('status', $statuses, $values->status ?? null) !!}
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="img">@lang('a.img')</label>
-                                    <div class="form-group mt-0">
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input" name="img" id="img">
-                                            <label class="custom-file-label" for="img">{{ $values->img ?? __('a.choose_file') }}</label>
-                                        </div>
+                    {!! $form::textarea('note', $values->note ?? null, null) !!}
+                    <div class="row">
+                        <div class="col-md-6">
+                            {!! $form::select('status', $statuses, $values->status ?? null) !!}
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="img">@lang('a.img')</label>
+                                <div class="form-group mt-0">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" name="img" id="img">
+                                        <label class="custom-file-label" for="img">{{ $values->img ?? __('a.choose_file') }}</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        {{--
+                    </div>
+                    {{--
 
-                        Связи множественные select2 --}}
-                        @if (!empty($related))
-                            @foreach ($related as $tableName => $items)
-                                {!! $form::select($tableName, $items, $values->$tableName ?? null, $tableName, null, ['data-placeholder' => __('s.choose')], true, null, true, 'w-100 select2', null, null) !!}
-                            @endforeach
-                        @endif
+                    Связи множественные select2 --}}
+                    @if (!empty($related))
+                        @foreach ($related as $tableName => $items)
+                            {!! $form::select($tableName, $items, $values->$tableName ?? null, $tableName, null, ['data-placeholder' => __('s.choose')], true, null, true, 'w-100 select2', null, null) !!}
+                        @endforeach
+                    @endif
 
-                        {!! $form::input('name', $values->name ?? null) !!}
+                    {!! $form::input('name', $values->name ?? null) !!}
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                {!! $form::input('email', $values->email ?? null, true, 'email') !!}
-                            </div>
-                            <div class="col-md-6">
-                                {!! $form::input('tel', $values->tel ?? null, null, 'tel') !!}
-                            </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            {!! $form::input('email', $values->email ?? null, true, 'email') !!}
                         </div>
-
-                        {!! $form::input('address', $values->address ?? null, null) !!}
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                {!! $form::input('password', null, null, 'password') !!}
-                            </div>
-                            <div class="col-md-6">
-                                {!! $form::input('password_confirmation', null, null, 'password') !!}
-                            </div>
+                        <div class="col-md-6">
+                            {!! $form::input('tel', $values->tel ?? null, null, 'tel') !!}
                         </div>
+                    </div>
+
+                    {!! $form::input('address', $values->address ?? null, null) !!}
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            {!! $form::input('password', null, null, 'password') !!}
+                        </div>
+                        <div class="col-md-6">
+                            {!! $form::input('password_confirmation', null, null, 'password') !!}
+                        </div>
+                    </div>
+                    @empty($values->id)
+                        {!! $form::checkbox('accept', null, true, true, 'mb-4', __('s.accept'), 'yes', 'no') !!}
+                    @endempty
                     {{--
 
                     Конец формы --}}

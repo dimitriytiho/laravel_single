@@ -197,6 +197,7 @@ return [
     'checkbox' => 'Checkbox',
     'radio' => 'Radio',
     'no' => 'No',
+    'yes' => 'Yes',
     'required' => 'Required',
 
     'asc' => 'Ascending',

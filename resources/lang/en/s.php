@@ -15,6 +15,7 @@ return [
     'page_not_found' => 'Page not found or outdated',
     'unauthorized_error' => 'Unauthorized error',
     'whoops' => 'Whoops! something went wrong... ',
+    'whoops_error' => 'Whoops! Mistake...',
     'whoops_no_page' => 'Whoops! Mistake... The fact is that the page you are looking for does not exist or is outdated. ',
     'whoops_no_server' => 'Whoops! Mistake... Something went wrong... ',
     'you_can_go' => 'You can go ',

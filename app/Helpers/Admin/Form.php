@@ -270,17 +270,17 @@ S;
      * $class - Передайте свой класс, необязательный параметр.
      * $title - Можно передать свой заголовок, например с ссылкой, необязательный параметр.
      *
-     * $onColor - передать класс цвета Bootstrap, по-умолчанию primary, необязательный параметр.
-     * $offColor - передать класс цвета Bootstrap, по-умолчанию default, необязательный параметр.
      * $onText - передать текс, по-умолчанию on, необязательный параметр.
      * $offText - передать текс, по-умолчанию off, необязательный параметр.
+     * $onColor - передать класс цвета Bootstrap, по-умолчанию primary, необязательный параметр.
+     * $offColor - передать класс цвета Bootstrap, по-умолчанию default, необязательный параметр.
      * $attr - передать строкой дополнительные атрибуты, необязательный параметр.
      * $idForm - если используется форма несколько раз на странице, то передайте id формы, чтобы у id у чекбоксова были оригинальные id.
      *
      * data-size="mini"
      * data-handle-width="100"
      */
-    public static function checkbox($name, $value = null, $required = null, $checked = null, $class = null, $title = null, $onColor = 'primary', $offColor = 'default', $onText = 'on', $offText = 'off', $attr = null, $idForm = null)
+    public static function checkbox($name, $value = null, $required = null, $checked = null, $class = null, $title = null, $onText = 'on', $offText = 'off', $onColor = 'primary', $offColor = 'default', $attr = null, $idForm = null)
     {
         $_title = l($name, 'a');
         $title = $title ?: $_title;

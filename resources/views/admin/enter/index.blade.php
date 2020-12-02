@@ -48,11 +48,7 @@
             </form>
 
             <p class="login-box-msg mt-4">
-                <small class="font-weight-light">
-                    Сайт защищен reCAPTCHA и применяются
-                    <a href="//policies.google.com/privacy" class="text-dark">Политика конфиденциальности</a> и
-                    <a href="//policies.google.com/terms" class="text-dark">Условия использования</a> Google.
-                </small>
+                {!! recaptchaText('a-dark') !!}
             </p>
             <a href="{{ route('index') }}" class="text-center d-block">@lang('s.home')</a>
         </div>
