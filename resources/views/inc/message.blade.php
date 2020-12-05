@@ -75,7 +75,7 @@
 Сообщения статусов --}}
 @if(session()->has('status'))
     <div class="container">
-        <div class="row mt-4">
+        <div class="row mt-2">
             <div class="col">
                 <div class="alert alert-info alert-dismissible fade show py-3 px-4" role="alert">
                     <span>{{ session('status') }}</span>

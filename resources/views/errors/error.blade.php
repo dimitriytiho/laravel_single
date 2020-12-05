@@ -15,9 +15,9 @@
     <main class="main text-center">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-7">
+                <div class="col-md-7 mt-0 mt-md-5">
 
-                    <i class="fas fa-cog fa-5x fa-spin text-primary my-5"></i>
+                    <i class="fas fa-cog fa-6x fa-spin text-primary py-5"></i>
 
                     <h1 class="h3 pt-4">@lang('s.Preventive_work_go')</h1>
 

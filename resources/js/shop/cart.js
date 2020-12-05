@@ -2,9 +2,6 @@ import alert from "../default/alert";
 
 document.addEventListener('DOMContentLoaded', function() {
 
-    // id модального окна
-    var modalId = 'cart_modal'
-
     // Проверяем подключен ли jQuery
     if (window.jQuery) {
 
@@ -12,15 +9,18 @@ document.addEventListener('DOMContentLoaded', function() {
         // Если есть класс .no_js, то отключаем JS
         if (!$('div').hasClass('no_js')) {
 
+            var urlCart = '/cart/'
+
+
             // Показать корзину по клику на .cart_show
             $('.cart_show').on('click', function (e) {
                 e.preventDefault()
 
                 $.ajax({
                     type: 'GET',
-                    url: '/cart/show',
+                    url: urlCart + 'show',
                     success: function (res) {
-                        showCart(res, modalId)
+                        showCart(res)
                     },
                     error: function () {
                         alert.get(translations['something_went_wrong'])
@@ -30,91 +30,132 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-            // Добавить товар в корзину по клику на .cart_plus
+            // Добавить в корзину товар по клику на .add_to_cart
+            $(document).on('click', '.add_to_cart', function (e) {
+                e.preventDefault()
+
+                var self = $(this),
+                    productId = self.data('product-id'),
+                    qty = self.closest('.product').find('input[name=qty]').val() || 1
+
+                // Проверить есть ли в корзине товар
+                if (productId) {
+                    $.ajax({
+                        type: 'GET',
+                        url: urlCart + productId + '/add',
+                        data: {qty},
+                        success: function (res) {
+
+                            if (res) {
+
+                                // Показать модальное окно
+                                showCart(res)
+
+                            } else {
+
+                                // Товар не найден
+                                alert.get(translations['something_went_wrong'])
+                            }
+                        },
+                        error: function () {
+                            alert.get(translations['something_went_wrong'])
+                        }
+                    })
+                }
+            })
+
+
+
+            // Плюсовать товар в корзине по клику на .cart_plus
             $(document).on('click', '.cart_plus', function (e) {
                 e.preventDefault()
 
-                var $this = $(this),
-                    id = $this.data('id')
+                var self = $(this),
+                    cartKey = self.data('cart-key')
 
-                if (id) {
-                    $.ajax({
-                        type: 'GET',
-                        url: '/cart/' + id + '/plus',
-                        //data: {id: id},
-                        success: function (res) {
+                $.ajax({
+                    type: 'GET',
+                    url: urlCart + cartKey + '/plus',
+                    success: function (res) {
+
+                        if (res) {
+
+                            // Показать модальное окно
+                            showCart(res)
+
+                        } else {
 
                             // Товар не найден
-                            if (!res) {
-                                alert.get(translations['something_went_wrong'])
-                            }
-
-                            showCart(res, modalId)
-                        },
-                        error: function () {
                             alert.get(translations['something_went_wrong'])
                         }
-                    })
-                }
+                    },
+                    error: function () {
+                        alert.get(translations['something_went_wrong'])
+                    }
+                })
             })
 
 
 
-            // Отминусовать товар из корзины по клику на .cart_minus
+            // Минусовать товар из корзины по клику на .cart_minus
             $(document).on('click', '.cart_minus', function (e) {
                 e.preventDefault()
 
-                var $this = $(this),
-                    id = $this.data('id')
+                var self = $(this),
+                    cartKey = self.data('cart-key')
 
-                if (id) {
-                    $.ajax({
-                        type: 'GET',
-                        url: '/cart/' + id + '/minus',
-                        //data: {id: id},
-                        success: function (res) {
+                $.ajax({
+                    type: 'GET',
+                    url: urlCart + cartKey + '/minus',
+                    //data: {cartKey: cartKey},
+                    success: function (res) {
+
+                        if (res) {
+
+                            // Показать модальное окно
+                            showCart(res)
+
+                        } else {
 
                             // Товар не найден
-                            if (!res) {
-                                alert.get(translations['something_went_wrong'])
-                            }
-
-                            showCart(res, modalId)
-                        },
-                        error: function () {
                             alert.get(translations['something_went_wrong'])
                         }
-                    })
-                }
+                    },
+                    error: function () {
+                        alert.get(translations['something_went_wrong'])
+                    }
+                })
             })
 
 
 
-            // Удалить товар из корзину по клику на .cart_destroy
-            $(document).on('click', '.cart_destroy', function (e) {
+            // Удалить товар из корзину по клику на .cart_remove
+            $(document).on('click', '.cart_remove', function (e) {
                 e.preventDefault()
 
-                var $this = $(this),
-                    id = $this.data('id')
+                var self = $(this),
+                    cartKey = self.data('cart-key')
 
-                if (id) {
-                    $.ajax({
-                        type: 'GET',
-                        url: '/cart/' + id + '/destroy',
-                        success: function (res) {
+                $.ajax({
+                    type: 'GET',
+                    url: urlCart + cartKey + '/remove',
+                    success: function (res) {
+
+                        if (res) {
+
+                            // Показать модальное окно
+                            showCart(res)
+
+                        } else {
 
                             // Товар не найден
-                            if (!res) {
-                                alert.get(translations['something_went_wrong'])
-                            }
-
-                            showCart(res, modalId)
-                        },
-                        error: function () {
                             alert.get(translations['something_went_wrong'])
                         }
-                    })
-                }
+                    },
+                    error: function () {
+                        alert.get(translations['something_went_wrong'])
+                    }
+                })
             })
 
         }
@@ -122,70 +163,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
         // Функция показа корзины, принимает содержимое корзины, в ответе на ajax
-        function showCart(cart, modalId) {
-            //var modalInstance = new BSN.Modal('#' + modalId)
+        function showCart(cart, modalId = 'cart_modal') {
 
             // Вставим в модальное окно содержимое корзины
             $('#' + modalId + ' .modal-body').html(cart)
 
             // Открыть модальное окно
             $('#' + modalId).modal()
-            //modalInstance.show()
 
             var cartQty = $('#cart_modal_qty').text(),
                 cartQtyClass = $('.cart_count_qty'),
-                cartSum = $('#cart_modal_sum').text()
+                cartSum = $('#cart_modal_sum').html(),
+                cartSumClass = $('.cart_count_sum')
 
-            // Вставляем кол-во из корзины в кнопку вызова
-            cartQtyClass.text(cartQty)
+            /*if (cartQty) {
 
-            // Если нет кол-ва, то скрываем круг для кол-ва
-            if (!cartQty) {
+                // Вставляем кол-во из корзины в кнопку вызова
+                cartQtyClass.text(cartQty)
+            } else {
+
+                // Если нет кол-ва, то скрываем круг для кол-ва
                 cartQtyClass.css('opacity', '0')
-            }
+            }*/
 
-            // Вставляем сумму из корзины в кнопку вызова
-            //$('.cart_count_sum').text(cartSum ? cartSum + ' ₽' : '')
+
+            if (cartSum) {
+
+                // Вставляем сумму из корзины в кнопку вызова
+                cartSumClass.html(cartSum)
+
+            } else {
+
+                // Если нет сумму
+                cartSumClass.text(translations['cart'])
+            }
         }
 
-
-
-        var addToCart = 'add_to_cart'
-
-        // Добавить в корзину товар
-        $(document).on('click', '.' + addToCart, function (e) {
-            e.preventDefault()
-
-            var modal = $('#' + addToCart),
-                self = $(this),
-                url = self.data('url'),
-                id = self.data('id'),
-                title = self.data('title')
-
-            // Проверить есть ли в корзине товар
-            if (url && id) {
-                $.ajax({
-                    type: 'POST',
-                    url: url,
-                    data: {_token: _token},
-                    success: function (res) {
-
-                        // Товар не найден
-                        if (!res) {
-                            alert.get(translations['something_went_wrong'])
-                        }
-
-                        // Открыть модальное окно
-                        //modal.find('.modal-title').text(title)
-                        modal.find('.modal-body').html(res)
-                        modal.modal()
-                    },
-                    error: function () {
-                        alert.get(translations['something_went_wrong'])
-                    }
-                })
-            }
-        })
     }
 
 

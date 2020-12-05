@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Home;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -12,19 +12,15 @@ class HomeController extends AppController
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
-        parent::__construct();
-
-        $this->middleware('auth');
+        parent::__construct($request);
 
         $class = $this->class = str_replace('Controller', '', class_basename(__CLASS__));
         $c = $this->c = Str::lower($this->class);
-        $model = $this->model = $this->userModel;
-        $table = $this->table = with(new $model)->getTable();
         $view = $this->view = Str::snake($this->c);
 
-        view()->share(compact('class', 'c', 'model', 'table', 'view'));
+        view()->share(compact('class', 'c', 'view'));
     }
 
     /**
@@ -34,6 +30,7 @@ class HomeController extends AppController
      */
     public function index()
     {
-        return view('home.index');
+        $f = Str::snake(__FUNCTION__);
+        return view("{$this->viewPath}.{$this->view}_{$f}");
     }
 }

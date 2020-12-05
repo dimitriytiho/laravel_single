@@ -5,6 +5,7 @@ namespace App\Helpers;
 
 
 use App\Exports\ProductsExport;
+use App\Helpers\Admin\App;
 
 class ImportExport
 {
@@ -64,7 +65,7 @@ class ImportExport
         где 1 - это обязательное поле.
         По-умолчанию он берётся из модели \App\Helpers\ProductsExport, необязательное поле.
      */
-    public static function arrColumnsRequired($row, $arrColumns = [], $date = true) {
+    public static function arrColumnsRequired($row, $arrColumns = [], $date = true, $slugName = null, $titleKey = null) {
 
         /*$self = new self();
         $intColumns = $self->intColumns;*/
@@ -72,6 +73,11 @@ class ImportExport
         if ($row && $arrColumns) {
             $key = 0;
             foreach ($arrColumns as $value => $required) {
+
+                // Если поле Slug и его нет, то сделаем его из title
+                if ($slugName && $titleKey && $slugName === $value && !$row[$key]) {
+                    $row[$key] = App::cyrillicToLatin($row[$titleKey]);
+                }
 
                 // Пропускаем если обязательного поля нет
                 if ($required && !$row[$key]) {

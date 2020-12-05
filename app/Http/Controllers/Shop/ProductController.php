@@ -26,16 +26,16 @@ class ProductController extends AppController
 
     public function show($slug)
     {
-        // Если пользователь админ, то будут показываться неактивные страницы
-        if (auth()->check() && auth()->user()->Admin()) {
-            $values = $this->model::with('labels')
-                ->where('slug', $slug)
+        // Если пользователя есть разрешение к админскому классу, то будут показываться неактивные страницы
+        if (checkPermission($this->class)) {
+
+            $values = $this->model::whereSlug($slug)
                 ->firstOrFail();
 
         } else {
-            $values = $this->model::with('labels')
-                ->where('slug', $slug)
-                ->where('status', $this->statusActive)
+
+            $values = $this->model::whereSlug($slug)
+                ->active()
                 ->firstOrFail();
         }
 
@@ -56,14 +56,14 @@ class ProductController extends AppController
         Main::set('view', $this->view);
 
         // Хлебные крошки
-        $categoryId = $values->category[0]->id ?? null;
+        $categoryId = $values->categories[0]->id ?? null;
         $breadcrumbs = $this->breadcrumbs
             ->values('categories')
             ->end([
                 route($this->route, $values->slug) => $values->title
             ])
             ->dynamic($categoryId, 'category')
-            //->add([[route('catalog') => 'catalog']])
+            ->add([[route('catalog') => 'catalog']])
             ->get();
 
         $title = $values->title ?? null;

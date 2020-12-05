@@ -47,7 +47,7 @@ $('.click_add_active').click(function() {
     $(this).parent().addClass('active')
 })
 
-// При клике в любом месте убираем класс .active у блока с классом .click_remove_active
+// При клике в любом месте убираем класс .active у блока с классом .remove_active
 document.body.onclick = function(e) {
     const blockClass = 'remove_active',
         blocks = document.querySelectorAll('.' + blockClass),

@@ -9,6 +9,7 @@ return [
     */
 
     'something_went_wrong' => 'Что-то пошло не так, попробуйте позже...',
+    'cart' => 'Корзина',
 
 
     // Dropzone

@@ -5,19 +5,23 @@
 .search_js {
     position: relative;
     &__child {
+        display: none;
         position: absolute;
         top: 2.7rem;
-        width: 18rem;
+        width: 24rem;
         background-color: $white;
         box-shadow: $box-shadow-lg;
         z-index: $z-index-min - 9;
         &--link {
-            padding: .8rem 1.6rem;
+            padding: .4rem 1.6rem;
             display: block;
             @include transition();
             &:hover {
                 background-color: $gray-100;
             }
+        }
+        &.active {
+            display: block;
         }
     }
 }

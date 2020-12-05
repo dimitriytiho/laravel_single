@@ -34,11 +34,14 @@ class ModifierController extends AppController
      */
     public function index(Request $request)
     {
-        // Записать в куку id из привязанной таблице, если не записано
-        $currentParentId = $request->cookie("{$this->table}_id");
-        $countParent = DB::table($this->belongTable)->count();
+        // Получаем меню родителя из куки
+        $currentParentId = request()->cookie("{$this->table}_id");
+        if ($currentParentId) {
+            $currentParent = DB::table($this->belongTable)->find($currentParentId);
 
-        if (!$currentParentId && $countParent) {
+        } else {
+
+            // Записать в куку id из привязанной таблице, если не записано
             $currentParent = DB::table($this->belongTable)->first();
 
             // Записать куку навсегда (5 лет)
@@ -89,7 +92,7 @@ class ModifierController extends AppController
 
         $f = __FUNCTION__;
         $title = __("a.{$this->table}");
-        return view("{$this->viewPath}.{$this->view}.{$f}", compact('title', 'parentValues', 'values', 'queryArr', 'col', 'cell', 'currentParentId', 'thead'));
+        return view("{$this->viewPath}.{$this->view}.{$f}", compact('title', 'parentValues', 'values', 'queryArr', 'col', 'cell', 'currentParent', 'thead'));
     }
 
     /**
@@ -99,19 +102,21 @@ class ModifierController extends AppController
      */
     public function create(Request $request)
     {
-        // Записать в куку id из привязанной таблице, если не записано
-        $currentParentId = $request->cookie("{$this->table}_id");
-        $parentObj = DB::table($this->belongTable);
+        // Получаем меню родителя из куки
+        $currentParentId = request()->cookie("{$this->table}_id");
+        if ($currentParentId) {
+            $currentParent = DB::table($this->belongTable)->find($currentParentId);
 
-        if (!$currentParentId && $parentObj->count()) {
-            $currentParent = $parentObj->first();
+        } else {
+
+            // Записать в куку id из привязанной таблице, если не записано
+            $currentParent = DB::table($this->belongTable)->first();
 
             // Записать куку навсегда (5 лет)
             return redirect()->back()
                 ->withCookie(cookie()->forever("{$this->table}_id", $currentParent->id)
                 );
         }
-        $currentParent = $parentObj->find($currentParentId);
 
         $f = __FUNCTION__;
         $title = __("a.{$f}");
@@ -170,11 +175,14 @@ class ModifierController extends AppController
      */
     public function edit($id)
     {
-        // Записать в куку id из привязанной таблице, если не записано
+        // Получаем меню родителя из куки
         $currentParentId = request()->cookie("{$this->table}_id");
-        $countParent = DB::table($this->belongTable)->count();
+        if ($currentParentId) {
+            $currentParent = DB::table($this->belongTable)->find($currentParentId);
 
-        if (!$currentParentId && $countParent) {
+        } else {
+
+            // Записать в куку id из привязанной таблице, если не записано
             $currentParent = DB::table($this->belongTable)->first();
 
             // Записать куку навсегда (5 лет)
@@ -188,7 +196,7 @@ class ModifierController extends AppController
 
         $f = __FUNCTION__;
         $title = __("a.{$f}");
-        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'values', 'currentParentId'));
+        return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'values', 'currentParent'));
     }
 
     /**

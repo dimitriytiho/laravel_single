@@ -41,7 +41,7 @@ class SearchController extends AppController
             // Если используется несколько таблиц, то добавить SQL запрос
             /*$unionProducts = DB::table('products')
                 ->select([DB::raw("'product'"), 'id', 'title', 'slug'])
-                ->where('status', $this->statusActive)
+                ->whereStatus($this->statusActive)
                 ->where('title', 'LIKE', "%{$query}%");*/
 
 
@@ -55,7 +55,7 @@ class SearchController extends AppController
 
                 ->select([DB::raw("'{$this->routeSearch}' as route"), 'id', 'title', 'slug'])
                 ->whereNull('deleted_at')
-                ->where('status', $this->statusActive)
+                ->whereStatus($this->statusActive)
                 ->where('title', 'like', "%{$query}%")
                 ->paginate($this->perPage);
         }
@@ -75,7 +75,7 @@ class SearchController extends AppController
                 // Если используется несколько таблиц, то добавить SQL запрос
                 /*$unionProducts = DB::table('products')
                     ->select([DB::raw("'product'"), 'id', 'title', 'slug'])
-                    ->where('status', $this->statusActive)
+                    ->whereStatus($this->statusActive)
                     ->where('title', 'LIKE', "%{$query}%");*/
 
 
@@ -88,7 +88,7 @@ class SearchController extends AppController
 
                     ->select([DB::raw("'{$this->routeSearch}' as route"), 'id', 'title', 'slug'])
                     ->whereNull('deleted_at')
-                    ->where('status', $this->statusActive)
+                    ->whereStatus($this->statusActive)
                     ->where('title', 'like', "%{$query}%")
                     ->limit('10')
                     ->get();

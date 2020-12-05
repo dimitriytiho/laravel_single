@@ -75,22 +75,32 @@ class Cart extends App
         if (!empty($product->id)) {
 
             // Добавляем модификаторы к товару
-            if ($modifiers) {
-                $product = self::modifiers($product, $modifiers);
-            }
+            $product = self::modifiers($product, $modifiers);
 
             // Добавляем к товару кол-во и сумму с модификаторами
             $product->sum = $product->price + ($product->modifiers_sum ?? 0);
             $product->qty = $qty;
 
-            // Получаем кол-во в массиве корзины
-            $nextKeyProduct = session()->has('cart.products') ? count(session()->get('cart.products')) : 0;
+            // Если товара нет в корзине
+            $keyProductInCart = self::checkDuplicate($product);
+            if ($keyProductInCart === false) {
 
-            // Сохраняем в сессию товар
-            session()->put("cart.products.{$nextKeyProduct}", $product);
+                // Получаем кол-во в массиве корзины
+                $nextKeyProduct = session()->has('cart.products') ? count(session()->get('cart.products')) + 1 : 1;
 
-            // Добавим в корзину сумму и кол-во
-            self::cartPlus($product->sum, $qty);
+                // Сохраняем в сессию товар
+                session()->put("cart.products.{$nextKeyProduct}", $product);
+
+                // Добавим в корзину сумму и кол-во
+                self::cartPlus($product->sum, $qty);
+
+
+            // Если товар уже есть в корзине
+            } else {
+
+                self::plus($keyProductInCart, $qty);
+
+            }
             return true;
         }
         return false;
@@ -146,7 +156,7 @@ class Cart extends App
 
             // Если передаваемое кол-во товара меньше имеющегося, то удаляем и пересчитываем корзину
             if ($product->qty <= 0) {
-                self::destroy($product);
+                self::remove($keyProductInCart);
                 return true;
             }
 
@@ -166,9 +176,8 @@ class Cart extends App
      * Метод удаляем товар(ы) и меняем общее кол-во и общую сумму в корзине.
      * $keyProductInCart - ключ товара в массиве корзины.
      */
-    public static function destroy($keyProductInCart)
+    public static function remove(int $keyProductInCart)
     {
-        $keyProductInCart = (int)$keyProductInCart;
         if (session()->has("cart.products.{$keyProductInCart}")) {
 
             // Если в сессии cart.products больше одно элемента, то удаляем элемент
@@ -248,6 +257,23 @@ class Cart extends App
             session()->put('cart.sum', $sum);
             session()->put('cart.qty', $qty);
             return true;
+        }
+        return false;
+    }
+
+
+    /*
+     * Проверяет, если ли в корзине передаваемый товар, возвращает ключ дубрирующего товара или false.
+     * $product - объект товара.
+     */
+    private static function checkDuplicate($product)
+    {
+        if(!empty($product->id) && session()->has('cart.products')) {
+            foreach (session('cart.products') as $key => $cartProduct) {
+                if ($product->id == $cartProduct->id) {
+                    return $key;
+                }
+            }
         }
         return false;
     }

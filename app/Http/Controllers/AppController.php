@@ -13,13 +13,14 @@ class AppController extends Controller
 {
     protected $namespaceModels;
     protected $namespaceHelpers;
-    
+
     protected $statusActive;
     protected $perPage;
     protected $breadcrumbs;
-    
+
     protected $userTable = 'users';
     protected $userModel = 'App\\Models\\User';
+    protected $viewPath;
 
 
     public function __construct()

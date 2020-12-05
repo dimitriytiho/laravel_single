@@ -131,7 +131,7 @@ class ImportExportController extends AppController
                         if (!array_diff($row, $arrEmpty)) continue;
 
                         // Формируем данные
-                        $values = ImportExport::arrColumnsRequired($row, $arrColumns);
+                        $values = ImportExport::arrColumnsRequired($row, $arrColumns, true, 'slug', 1);
 
                         // Проверяем уникальную колонку в таблице на уникальность
                         if (!empty($unique) && isset($values[$unique])) {

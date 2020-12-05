@@ -65,7 +65,7 @@
                 <form method="post" action="{{ route('admin.key_to_enter') }}" id="key_to_enter2">
                     @csrf
                     {!! $form::input('key', $key ?? null, null, null, null, null, null, [], null, null, null,
-                    $form::inputGroupAppend('fas fa-share', 'cur click_submit', 'bg-white', 'text-primary', ['title' => __('a.generate_link')])) !!}
+                    $form::inputGroupAppend('fas fa-share', 'cur click_submit', 'bg-white', 'text-primary', ['title' => __('s.to_change_key')])) !!}
                 </form>
             </div>
         </section>

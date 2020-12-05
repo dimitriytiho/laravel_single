@@ -6,7 +6,7 @@
                     <label for="parent_values" class="sr-only"></label>
                     <select class="custom-select custom-select-sm select_change" id="parent_values" data-url="{{ route('admin.get_cookie') }}" data-key="{{ $table }}_id">
                         @foreach($parentValues as $id => $title)
-                            <option value="{{ $id }}" @if($currentParentId == $id) selected @endif>{{ l($title, 'a') }}</option>
+                            <option value="{{ $id }}" @if(!empty($currentParent) && $currentParent->id == $id) selected @endif>{{ l($title, 'a') }}</option>
                         @endforeach
                     </select>
                 </div>

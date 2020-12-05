@@ -195,9 +195,7 @@ class Upload
             $r .= $part . PHP_EOL . PHP_EOL;
         }
 
-        $r .= 'addDefaultCharset utf-8' . PHP_EOL . PHP_EOL;
-        $r .= 'ErrorDocument 404 /not-found' . PHP_EOL;
-        $r .= 'ErrorDocument 403 /not-found' . PHP_EOL;
+        $r .= 'addDefaultCharset utf-8' . PHP_EOL;
         $r .= 'ErrorDocument 500 /error.php' . PHP_EOL . PHP_EOL;
         $r .= 'RewriteEngine On' . PHP_EOL . PHP_EOL;
 

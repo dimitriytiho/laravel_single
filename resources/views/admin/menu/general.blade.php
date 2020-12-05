@@ -5,7 +5,7 @@
 
 --}}
 @section('content')
-    @if(!empty($currentParentId))
+    @if(!empty($currentParent))
         <div class="card">
             @include('admin.inc.belong_check')
             <div class="card-body">

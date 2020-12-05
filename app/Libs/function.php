@@ -174,3 +174,19 @@ function priceFormat($price, $currency = '&#8381;') {
     }
     return '';
 }
+
+
+/**
+ *
+ * @return bool
+ *
+ * Проверяет разрешен ли пользователю переданый элемент, возвращает true или false.
+ * Если роль admin, то всегда разрешено.
+ * Разрешения в формате User.
+ *
+ * $class - название класса.
+ * $admin - добавляем к названию класс Admin\, если не надо, то передать null, необязательный параметр.
+ */
+function checkPermission($class, $admin = true) {
+    return auth()->check() && auth()->user()->checkPermission(($admin ? 'Admin\\' : null) . $class);
+}

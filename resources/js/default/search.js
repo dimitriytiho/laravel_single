@@ -25,10 +25,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         let html = ''
 
                         res.forEach(function (el) {
-                            html += `<a href="${el.slug}" class="search_js__child--link">${el.title}</a>`
+                            html += `<a href="${path}/${el.route}/${el.slug}" class="search_js__child--link">${el.title}</a>`
                         })
 
-                        child.html(html)
+                        child.html(html).addClass('active')
                     }
                 }/*,
                 error: function () {

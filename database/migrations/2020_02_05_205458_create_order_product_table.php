@@ -24,6 +24,7 @@ class CreateOrderProductTable extends Migration
             $table->float('discount')->nullable();
             $table->smallInteger('qty')->unsigned()->default('1');
             $table->float('sum');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

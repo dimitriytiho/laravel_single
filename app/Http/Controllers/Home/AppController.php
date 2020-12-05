@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Shop;
+namespace App\Http\Controllers\Home;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\View;
 use App\Http\Controllers\AppController as App;
 
 class AppController extends App
@@ -12,8 +11,9 @@ class AppController extends App
     {
         parent::__construct();
 
-        $viewPath = $this->viewPath = 'shop';
+        $this->middleware('auth');
 
-        View::share(compact('viewPath'));
+        $viewPath = $this->viewPath = 'home';
+        view()->share(compact('viewPath'));
     }
 }

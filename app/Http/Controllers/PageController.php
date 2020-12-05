@@ -51,12 +51,17 @@ class PageController extends AppController
 
     public function show($slug)
     {
-        // Если пользователь админ, то будут показываться неактивные страницы
-        if (auth()->check() && auth()->user()->Admin()) {
-            $values = $this->model::where('slug', $slug)->firstOrFail();
+        // Если пользователя есть разрешение к админскому классу, то будут показываться неактивные страницы
+        if (checkPermission($this->class)) {
+
+            $values = $this->model::whereSlug($slug)
+                ->firstOrFail();
 
         } else {
-            $values = $this->model::where('slug', $slug)->active()->firstOrFail();
+
+            $values = $this->model::whereSlug($slug)
+                ->active()
+                ->firstOrFail();
         }
 
 

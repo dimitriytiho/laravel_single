@@ -236,6 +236,8 @@ return [
     'banned' => 'Banned',
     'old_price' => 'Old price',
     'section' => 'Section',
+    'product_not_found' => 'Product not found...',
+    'comment' => 'Comment',
 
     'login' => 'Login',
     'register' => 'Register',

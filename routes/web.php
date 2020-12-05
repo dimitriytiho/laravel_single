@@ -51,20 +51,25 @@ if (config('add.shop') && is_file($fileShop = __DIR__ . '/shop.php')) {
 if (config('add.auth')) {
 
     Route::namespace("{$namespaceControllers}\\Auth")->group(function () {
-        Route::get('login', 'LoginController@showLoginForm')->name('login');
-        Route::post('login', 'LoginController@login')->name('login_post');
-        Route::get('logout', 'LoginController@logout')->name('logout');
-        Route::post('password/confirm', 'ConfirmPasswordController@confirm')->name('password.confirm_post');
-        Route::get('password/confirm', 'ConfirmPasswordController@confirm')->name('password.confirm');
-        Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-        Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');
-        Route::post('password/reset', 'ResetPasswordController@reset')->name('password.update');
-        Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
-        Route::get('register', 'RegisterController@showRegistrationForm')->name('register');
-        Route::post('register', 'RegisterController@register')->name('register_post');
+        Route::get('auth/login', 'LoginController@showLoginForm')->name('login');
+        Route::post('auth/login', 'LoginController@login')->name('login_post');
+        Route::get('auth/logout', 'LoginController@logout')->name('logout');
+        Route::post('auth/password/confirm', 'ConfirmPasswordController@confirm')->name('password.confirm_post');
+        Route::get('auth/password/confirm', 'ConfirmPasswordController@confirm')->name('password.confirm');
+        Route::post('auth/password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+        Route::get('auth/password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');
+        Route::post('auth/password/reset', 'ResetPasswordController@reset')->name('password.update');
+        Route::get('auth/password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
+        Route::get('auth/register', 'RegisterController@showRegistrationForm')->name('register');
+        Route::post('auth/register', 'RegisterController@register')->name('register_post');
     });
 
-    Route::get('home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+    // Личный кабинет
+    Route::namespace("{$namespaceControllers}\\Home")->name('home.')->group(function () {
+        Route::get('/home', 'HomeController@index')->name('index');
+    });
+    //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     //Auth::routes();
 }

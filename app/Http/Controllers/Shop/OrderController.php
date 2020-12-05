@@ -7,6 +7,7 @@ use App\Models\Main;
 use App\Models\Order;
 use App\Models\UserAdmin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
@@ -62,11 +63,11 @@ class OrderController extends AppController
         }
 
         // Данные в корзине
-        $cart = session()->has('cart') ? session()->get('cart') : [];
+        $cart = session()->has('cart') ? session('cart') : [];
 
         // Данные для таблицы orders
-        $qty = session()->has('cart.qty') ? (int)session()->get('cart.qty') : null;
-        $sum = session()->has('cart.sum') ? session()->get('cart.sum') : null;
+        $qty = session()->has('cart.qty') ? (int)session('cart.qty') : null;
+        $sum = session()->has('cart.sum') ? (float)session('cart.sum') : null;
         $dataOrder['user_id'] = $userId;
 
         if (!empty($data['message'])) {
@@ -76,7 +77,7 @@ class OrderController extends AppController
         $deliveryBase = config('shop.delivery')[0]['title'] ?? null;
         $dataOrder['delivery'] = !empty($data['delivery']) ? s($data['delivery']) : $deliveryBase;
         if (!empty($data['delivery_sum']) && (int)$data['delivery_sum']) {
-            $dataOrder['delivery_sum'] = s($data['delivery_sum']);
+            $dataOrder['delivery_sum'] = (int)$data['delivery_sum'];
 
             // Если приходит доставка, то прибавим её к сумме, т.к. она подставляется через JS
             $sum = $sum + $dataOrder['delivery_sum'];
@@ -87,10 +88,6 @@ class OrderController extends AppController
         if (!empty($data['discount_code'])) {
             $dataOrder['discount_code'] = s($data['discount_code']);
         }
-
-        $dataOrder['payment'] = !empty(config('shop.payment')[0]['title'])
-            ? $data['payment']
-            : config('shop.payment')[0]['title'];
 
         $dataOrder['qty'] = $qty;
         $dataOrder['sum'] = $sum;
@@ -118,13 +115,14 @@ class OrderController extends AppController
                     $products[$i]['discount'] = !empty($product->discount) ? $product->discount : null;
                     $products[$i]['qty'] = (int)$product->qty;
                     $products[$i]['sum'] = $product->price * (int)$product->qty;
+                    $products[$i]['created_at'] = $products[$i]['updated_at'] = Carbon::now();
 
                     // Модификаторы
-                    if (!empty($product->modifiers) && is_array($product->modifiers)) {
+                    /*if (!empty($product->modifiers) && is_array($product->modifiers)) {
                         $products[$i]['modifiers'] = serialize($product->modifiers);
                     } else {
                         $products[$i]['modifiers'] = null;
-                    }
+                    }*/
                     $i++;
                 }
 
@@ -185,7 +183,12 @@ class OrderController extends AppController
 
 
             // ЕСЛИ ПОЛЬЗОВАТЕЛЬ ВЫБРАЛ ОПЛАТУ ОНЛАЙН
-            if (!empty($data['payment']) && !empty(config('shop.payment')[3]['title']) && config('shop.payment')[3]['title'] === $data['payment']) {
+            /*if (
+                !empty($data['payment'])
+                && !empty(config('shop.payment')[3]['title'])
+                && config('shop.payment')[3]['title'] === $data['payment']
+            ) {
+
                 $url = config('add.url');
                 $resPayment = Order::getPaymentSberbank($order);
 
@@ -204,7 +207,7 @@ class OrderController extends AppController
                 }
 
                 return redirect()->route('error_payment');
-            }
+            }*/
 
 
             // Сообщение об успехе

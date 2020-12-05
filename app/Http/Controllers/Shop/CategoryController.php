@@ -34,17 +34,15 @@ class CategoryController extends AppController
     // Страница Каталог
     public function index(Request $request)
     {
-        // Если пользователь админ, то будут показываться неактивные страницы
-        if (auth()->check() && auth()->user()->Admin()) {
+        // Если пользователя есть разрешение к админскому классу, то будут показываться неактивные страницы
+        if (checkPermission('Product')) {
 
-            $products = Product::limit($this->limit)
-                ->paginate();
+            $products = Product::paginate($this->perPage);
 
         } else {
 
-            $products = Product::where('status', $this->statusActive)
-                ->limit($this->limit)
-                ->paginate();
+            $products = Product::active()
+                ->paginate($this->perPage);
 
         }
 
@@ -61,20 +59,21 @@ class CategoryController extends AppController
 
     public function show($slug, Request $request)
     {
-        // Если пользователь админ, то будут показываться неактивные страницы
-        if (auth()->check() && auth()->user()->Admin()) {
+        // Если пользователя есть разрешение к админскому классу, то будут показываться неактивные страницы
+        if (checkPermission($this->class)) {
 
             $values = $this->model::with('products')
-                ->where('slug', $slug)
+                ->whereSlug($slug)
                 ->firstOrFail();
 
         } else {
 
             $values = $this->model::with('products')
-                ->where('slug', $slug)
-                ->where('status', $this->statusActive)
+                ->whereSlug($slug)
+                ->active()
                 ->firstOrFail();
         }
+
 
         $products = new Paginator($values->products, $values->products->count(), $this->perPage);
 
@@ -99,7 +98,7 @@ class CategoryController extends AppController
         $breadcrumbs = $this->breadcrumbs
             ->values($this->table)
             ->dynamic($values->id, 'category')
-            //->add([[route('catalog') => 'catalog']])
+            ->add([[route('catalog') => 'catalog']])
             ->get();
 
 
