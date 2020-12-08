@@ -23,17 +23,17 @@
                             <a href="{{ route('product', $cartProduct->slug) }}">{{ $cartProduct->title }}</a>
                         </td>
                         <td>
-                            <a href="{{ route('cart_minus', $key) }}" class="btn cart_minus" data-cart-key="{{ $key }}">
+                            <a href="{{ route('cart_minus', $key) }}" class="btn cart_minus one_click" data-cart-key="{{ $key }}">
                                 <i class="fas fa-minus" title="@lang('s.minus')"></i>
                             </a>
                             <span class="cart_modal_product_qty">{{ $cartProduct->qty }}</span>
-                            <a href="{{ route('cart_plus', $key) }}" class="btn cart_plus" data-cart-key="{{ $key }}">
+                            <a href="{{ route('cart_plus', $key) }}" class="btn cart_plus one_click" data-cart-key="{{ $key }}">
                                 <i class="fas fa-plus" title="@lang('s.plus')"></i>
                             </a>
                         </td>
                         <td>{{ $cartProduct->sum * $cartProduct->qty }}</td>
                         <td class="w-3">
-                            <a href="{{ route('cart_remove', $key) }}" aria-label="@lang('s.Close')" class="cart_remove" data-cart-key="{{ $key }}" aria-hidden="true">
+                            <a href="{{ route('cart_remove', $key) }}" aria-label="@lang('s.Close')" class="cart_remove one_click" data-cart-key="{{ $key }}" aria-hidden="true">
                                 <i class="fas fa-times"></i>
                             </a>
                         </td>

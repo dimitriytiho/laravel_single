@@ -12,7 +12,14 @@
 
 .w-3 {
     width: 3rem;
-  }
+}
+.img_mini {
+    max-width: 64px;
+    max-height: 64px;
+    width: auto;
+    height: auto;
+    margin-right: $spacer;
+}
 .h-12 {
     height: 12rem;
 }

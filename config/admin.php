@@ -63,6 +63,7 @@ return [
         'new', // Должен быть первый new статус, т.е. новый
         'in_process',
         'completed',
+        'canceled',
     ],
 
 

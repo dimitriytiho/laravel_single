@@ -21,19 +21,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 success: function(res) {
                     if (res) {
-                        res = JSON.parse(res)
-                        let html = ''
-
-                        res.forEach(function (el) {
-                            html += `<a href="${path}/${el.route}/${el.slug}" class="search_js__child--link">${el.title}</a>`
-                        })
-
-                        child.html(html).addClass('active')
+                        child.html(res).addClass('active')
                     }
-                }/*,
-                error: function () {
-                    console.log('error')
-                }*/
+                }
             })
         }
     })

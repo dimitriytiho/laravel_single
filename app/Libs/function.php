@@ -6,10 +6,10 @@ use App\Helpers\Admin\Img;
 
 /*
  * Возвращает распечатку массива.
- * $admin - передать true, для показа только админам.
  * $die - передать true, чтобы завершить работу скрипта.
+ * $admin - передать true, для показа только админам.
  */
-function du($arr, $admin = false, $die = false) {
+function du($arr, $die = false, $admin = false) {
 
     if ($admin && admin()) {
         echo '<pre>' . PHP_EOL . print_r($arr, true) . PHP_EOL . '</pre>';
@@ -31,7 +31,23 @@ function du($arr, $admin = false, $die = false) {
  */
 function admin()
 {
-    return auth()->check() && auth()->user()->Admin();
+    return auth()->check() && auth()->user()->isAdmin();
+}
+
+
+/**
+ *
+ * @return bool
+ *
+ * Проверяет разрешен ли пользователю переданый элемент, возвращает true или false.
+ * Если роль admin, то всегда разрешено.
+ * Разрешения в формате User.
+ *
+ * $class - название класса.
+ * $admin - добавляем к названию класс Admin\, если не надо, то передать null, необязательный параметр.
+ */
+function checkPermission($class, $admin = true) {
+    return auth()->check() && auth()->user()->checkPermission(($admin ? 'Admin\\' : null) . $class);
 }
 
 
@@ -173,20 +189,4 @@ function priceFormat($price, $currency = '&#8381;') {
         return number_format(intval($price), 0, ',', '&nbsp;') . $currency;
     }
     return '';
-}
-
-
-/**
- *
- * @return bool
- *
- * Проверяет разрешен ли пользователю переданый элемент, возвращает true или false.
- * Если роль admin, то всегда разрешено.
- * Разрешения в формате User.
- *
- * $class - название класса.
- * $admin - добавляем к названию класс Admin\, если не надо, то передать null, необязательный параметр.
- */
-function checkPermission($class, $admin = true) {
-    return auth()->check() && auth()->user()->checkPermission(($admin ? 'Admin\\' : null) . $class);
 }

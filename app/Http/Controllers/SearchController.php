@@ -10,10 +10,10 @@ use App\Models\Main;
 class SearchController extends AppController
 {
     // Pages используется по-умолчанию
-    private $tableSearch = 'pages';
+    private $tableSearch = 'products';
 
     // Page используется по-умолчанию
-    private $routeSearch = 'page';
+    private $routeSearch = 'product';
 
 
 
@@ -51,9 +51,6 @@ class SearchController extends AppController
                 //->union($unionProducts)
 
 
-
-
-                ->select([DB::raw("'{$this->routeSearch}' as route"), 'id', 'title', 'slug'])
                 ->whereNull('deleted_at')
                 ->whereStatus($this->statusActive)
                 ->where('title', 'like', "%{$query}%")
@@ -86,17 +83,22 @@ class SearchController extends AppController
 
 
 
-                    ->select([DB::raw("'{$this->routeSearch}' as route"), 'id', 'title', 'slug'])
+                    ->select('id', 'title', 'slug', 'img')
+                    ->addSelect(DB::raw("'{$this->routeSearch}' as route"))
                     ->whereNull('deleted_at')
                     ->whereStatus($this->statusActive)
                     ->where('title', 'like', "%{$query}%")
                     ->limit('10')
                     ->get();
-                return $values->toJson();
+
+                if ($values->count()) {
+                    $res = view('inc.search_item', compact('values'))->render();
+                }
+
+                return $res ?? '';
             }
             die;
         }
         Main::getError('Request', __METHOD__);
     }
 }
-

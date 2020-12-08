@@ -22,7 +22,8 @@
                     <h1>{{ $title }}</h1>
                 </div>
             </div>
-            @include('inc.products')
+            {{--@include('inc.products')--}}
+            @include('inc.categories')
         </div>
     </main>
 @endsection

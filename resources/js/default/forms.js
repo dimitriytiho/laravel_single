@@ -5,7 +5,7 @@
  * При клике на ссылку или кнопку с классом .one_click
  * Отключается кнопка (добавляется класс disabled).
  */
-$('.one_click').click(function () {
+$(document).on('click', '.one_click', function(e) {
     $(this)
         .attr('disabled', true)
         .addClass('disabled')
@@ -16,7 +16,7 @@ $('.one_click').click(function () {
  * При клике на ссылку или кнопку с классом .spinner_click
  * Отключается кнопка (добавляется класс disabled) и включается спинер.
  */
-$('.spinner_click').click(function () {
+$(document).on('click', '.spinner_click', function(e) {
     $(this)
         .attr('disabled', true)
         .addClass('disabled')

@@ -8,7 +8,8 @@
         display: none;
         position: absolute;
         top: 2.7rem;
-        width: 24rem;
+        width: 32rem;
+        padding: 0 $spacer;
         background-color: $white;
         box-shadow: $box-shadow-lg;
         z-index: $z-index-min - 9;
@@ -22,6 +23,16 @@
         }
         &.active {
             display: block;
+        }
+    }
+}
+
+
+
+@media (max-width: 576px) {
+    .search_js {
+        &__child {
+            width: 18rem;
         }
     }
 }

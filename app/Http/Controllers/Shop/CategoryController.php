@@ -35,16 +35,28 @@ class CategoryController extends AppController
     public function index(Request $request)
     {
         // Если пользователя есть разрешение к админскому классу, то будут показываться неактивные страницы
-        if (checkPermission('Product')) {
+        if (checkPermission($this->class)) {
 
-            $products = Product::paginate($this->perPage);
-
+            $values = $this->model::with('products')
+                ->paginate($this->perPage);
         } else {
 
-            $products = Product::active()
+            $values = $this->model::with('products')
+                ->active()
                 ->paginate($this->perPage);
 
         }
+
+        // Если пользователя есть разрешение к админскому классу, то будут показываться неактивные страницы
+        /*if (checkPermission('Product')) {
+
+            $values = Product::paginate($this->perPage);
+        } else {
+
+            $values = Product::active()
+                ->paginate($this->perPage);
+
+        }*/
 
         $title = __('s.catalog');
 
@@ -53,7 +65,7 @@ class CategoryController extends AppController
             ->end(['catalog' => $title])
             ->get();
 
-        return view("{$this->viewPath}.{$this->view}_index", compact('title', 'products', 'breadcrumbs'));
+        return view("{$this->viewPath}.{$this->view}_index", compact('title', 'breadcrumbs', 'values'));
     }
 
 
@@ -62,49 +74,49 @@ class CategoryController extends AppController
         // Если пользователя есть разрешение к админскому классу, то будут показываться неактивные страницы
         if (checkPermission($this->class)) {
 
-            $values = $this->model::with('products')
+            $categories = $this->model::with('products')
                 ->whereSlug($slug)
                 ->firstOrFail();
 
         } else {
 
-            $values = $this->model::with('products')
+            $categories = $this->model::with('products')
                 ->whereSlug($slug)
                 ->active()
                 ->firstOrFail();
         }
 
 
-        $products = new Paginator($values->products, $values->products->count(), $this->perPage);
+        $values = new Paginator($categories->products, $categories->products->count(), $this->perPage);
 
 
         /*
          * Если есть подключаемые файлы (текст в контенте ##!!!inc_name, а сам файл в /resources/views/inc), то они автоматически подключатся.
          * Если нужны данные из БД, то в моделе сделать метод, в котором получить данные и вывести их, в подключаемом файле.
-         * Дополнительно, в этот файл передаются данные страницы $values.
+         * Дополнительно, в этот файл передаются данные страницы $categories.
          */
-        $values->body = Main::inc($values->body, $values);
+        $categories->body = Main::inc($categories->body, $categories);
 
         // Использовать скрипты в контенте, они будут перенесены вниз страницы.
-        $values->body = Main::getDownScript($values->body);
+        $categories->body = Main::getDownScript($categories->body);
 
 
         // Передаём в контейнер id и view элемента
-        Main::set('id', $values->id);
+        Main::set('id', $categories->id);
         Main::set('view', $this->view);
 
 
         // Хлебные крошки
         $breadcrumbs = $this->breadcrumbs
             ->values($this->table)
-            ->dynamic($values->id, 'category')
+            ->dynamic($categories->id, 'category')
             ->add([[route('catalog') => 'catalog']])
             ->get();
 
 
-        $title = $values->title ?? null;
-        $description = $values->description ?? null;
-        return view("{$this->viewPath}.{$this->view}_show", compact('title', 'description', 'values', 'products', 'breadcrumbs'));
+        $title = $categories->title ?? null;
+        $description = $categories->description ?? null;
+        return view("{$this->viewPath}.{$this->view}_show", compact('title', 'description', 'categories', 'values', 'breadcrumbs'));
     }
 
 

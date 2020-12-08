@@ -114,7 +114,7 @@ class OrderController extends AppController
                     $products[$i]['message'] = !empty($product->message) ? $product->message : null;
                     $products[$i]['discount'] = !empty($product->discount) ? $product->discount : null;
                     $products[$i]['qty'] = (int)$product->qty;
-                    $products[$i]['sum'] = $product->price * (int)$product->qty;
+                    $products[$i]['price'] = (float)$product->price;
                     $products[$i]['created_at'] = $products[$i]['updated_at'] = Carbon::now();
 
                     // Модификаторы

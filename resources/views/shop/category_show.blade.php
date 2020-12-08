@@ -15,23 +15,21 @@
 
 --}}
 @section('content')
-    @if($values)
-        <main class="main">
-            <div class="container">
-                <div class="row">
-                    <div class="col text-center">
-                        <h1>{{ $title }}</h1>
-                    </div>
-                </div>
-                @include('inc.products')
-                <div class="row">
-                    <div class="col my-4">
-                        {!! $values->body !!}
-                    </div>
+    <main class="main">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <h1>{{ $title }}</h1>
                 </div>
             </div>
-        </main>
-    @endif
+            @include('inc.products')
+            <div class="row">
+                <div class="col mt-4 mb">
+                    {!! $categories->body !!}
+                </div>
+            </div>
+        </div>
+    </main>
 @endsection
 {{--
 

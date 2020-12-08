@@ -154,12 +154,12 @@ jquery-validation --}}
 <script src="{{ asset('lte/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('lte/plugins/jquery-validation/localization/messages_ru.min.js') }}"></script>
 
-@if(!request()->is('/'))
+{{--@if(!request()->is('/'))--}}
     {{--
 
     Подсказки Bootstrap --}}
-    <script src="//cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous" defer></script>
-@endif
+    {{--<script src="//cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous" defer></script>--}}
+{{--@endif--}}
 {{--
 
 Bootstrap --}}
@@ -204,7 +204,7 @@ Bootstrap --}}
 {{--
 
 Все счётчики для сайта поместить в этот файл --}}
-@if(config('add.env') === 'production' && !in_array(request()->ip(), config('add.no_analytic_ips') ?: []))
+@if(config('add.env') === 'production' && !admin())
     @include('inc.analytics')
 @endif
 </body>

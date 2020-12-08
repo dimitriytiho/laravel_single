@@ -24,21 +24,20 @@
             </div>
 
             <div class="row">
-                <div class="col my-4">
+                <div class="col mt-4">
                     <form class="form-inline my-2 my-lg-0 search_js" autocomplete="off">
                         <input type="text" class="form-control mr-sm-2 search_js__input" name="s" placeholder="@lang('a.search')" aria-label="Search" value="{{ $searchQuery }}">
-                        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">@lang('a.search')</button>
-                        <div class="search_js__child remove_active"></div>
+                        <button class="btn btn-primary pulse my-2 my-sm-0" type="submit">@lang('a.search')</button>
+                        <div class="search_js__child a-black remove_active"></div>
                     </form>
                 </div>
             </div>
 
-            @if($values)
-                <div class="row mt-4">
+            @if($values->count())
+                @include('inc.products')
+                {{--<div class="row a-black">
                     <div class="col-12">
-                        @foreach($values as $key => $value)
-                            <a href="{{ route($value->route, $value->slug) }}" class="d-block my-2">{{ $value->title }}</a>
-                        @endforeach
+                        @include('inc.search_item')
                     </div>
                     <div class="col-12 mt-4">
                         <p class="font-weight-light text-center text-secondary mt-3">{{ __('a.shown') . $values->count() . __('a.of') .  $values->total()}}</p>
@@ -46,7 +45,7 @@
                     <div class="col-12 d-flex justify-content-center mb-4">
                         <div>{{ $values->appends(['s' => s(request()->query('s'))])->links() }}</div>
                     </div>
-                </div>
+                </div>--}}
             @else
                 <div class="row">
                     <div class="col my-4">

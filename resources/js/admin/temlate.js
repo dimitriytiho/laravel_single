@@ -11,14 +11,18 @@ document.addEventListener('DOMContentLoaded', function() {
         var self = $(this),
             url = self.data('url'),
             val = self.val(),
-            key = self.data('key')
+            key = self.data('key') || '',
+            id = self.data('id') || ''
 
         if (key) {
             key = '&key=' + key
         }
+        if (id) {
+            id = '&id=' + id
+        }
 
         if (url && val) {
-            window.location = url + '?val=' + val + key
+            window.location = url + '?val=' + val + key + id
         }
     })
 
