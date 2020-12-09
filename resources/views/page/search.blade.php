@@ -33,7 +33,7 @@
                 </div>
             </div>
 
-            @if($values->count())
+            @if($values && $values->count())
                 @include('inc.products')
                 {{--<div class="row a-black">
                     <div class="col-12">
@@ -48,7 +48,7 @@
                 </div>--}}
             @else
                 <div class="row">
-                    <div class="col my-4">
+                    <div class="col my-5">
                         <h5>@lang('s.nothing_found')</h5>
                     </div>
                 </div>

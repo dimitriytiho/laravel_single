@@ -51,4 +51,20 @@ class App extends Model
                 ->orderBy('sort');
         }]);
     }
+
+
+    // Записываем в БД популярность, т.е. прибавляем 1, когда пользователь открывает элемент, только один раз, используем сессию, вызов $values->savePopular;.
+    protected function getSavePopularAttribute()
+    {
+        // Если в сессии нет текущего элемента, то прибавим популяность
+        if (isset($this->slug) && isset($this->popular) && !session()->has('popular.' . $this->getTable() . '.' . $this->slug)) {
+
+            $this->popular++;
+            $this->save();
+
+            // Записать в сессию страницу посещения на весь сеанс, чтобы каждый раз не прибавлять
+            session()->put('popular.' . $this->getTable() . '.' . $this->slug, $this->popular);
+        }
+        return $this;
+    }
 }

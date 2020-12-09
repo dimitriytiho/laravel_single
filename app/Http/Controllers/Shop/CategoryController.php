@@ -84,6 +84,8 @@ class CategoryController extends AppController
                 ->whereSlug($slug)
                 ->active()
                 ->firstOrFail();
+
+            //$categories->savePopular; // Прибавляем популяность
         }
 
 

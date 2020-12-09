@@ -27,6 +27,7 @@ class CreateProductsTable extends Migration
             $table->text('description')->nullable();
             $table->text('body')->nullable();
             $table->string('img')->nullable()->default(config('admin.imgProductDefault'));
+            $table->integer('popular')->unsigned()->default('0');
             $table->softDeletes();
             $table->timestamps();
         });

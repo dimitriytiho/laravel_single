@@ -37,6 +37,8 @@ class ProductController extends AppController
             $values = $this->model::whereSlug($slug)
                 ->active()
                 ->firstOrFail();
+
+            //$values->savePopular; // Прибавляем популяность
         }
 
 
