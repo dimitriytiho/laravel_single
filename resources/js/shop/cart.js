@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 var self = $(this),
                     productId = self.data('product-id'),
-                    qty = self.closest('.product').find('input[name=qty]').val() || 1
+                    qty = self.closest('.product').find('input[name=qty]').val() || self.closest('.product_show').find('input[name=qty]').val() || 1
 
                 // Проверить есть ли в корзине товар
                 if (productId) {

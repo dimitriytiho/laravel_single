@@ -299,6 +299,16 @@ class ProductController extends AppController
         }
 
 
+        // Связанные таблицы. Многие к одному.
+        if (!empty($this->relatedManyToOne)) {
+            foreach ($this->relatedManyToOne as $relatedMethod) {
+                if (key_exists($relatedMethod, $data) && !empty($data[$relatedMethod][0])) {
+                    $data[Str::singular($relatedMethod) . '_id'] = $data[$relatedMethod][0];
+                }
+            }
+        }
+
+
         // Заполняем модель новыми данными
         $values->fill($data);
 

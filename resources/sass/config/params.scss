@@ -90,13 +90,11 @@ $border-radius-sm: .1rem;
 $box-shadow-sm: 0 .125rem .25rem rgba($black, .075);
 $box-shadow: 0 .5rem 1rem rgba($black, .15);
 $box-shadow-lg: 0 1rem 3rem rgba($black, .175);
+$box-shadow-mini: 0 0 1px rgba(0, 0, 0, .125), 0 1px 3px rgba(0, 0, 0, .2);
+$box-shadow-text: 0 0 3px rgba($black, 0.8);
 
 // Paths
 $path-fonts: '/fonts';
-
-// Тень
-$box-shadow-mini: 0 0 5px rgba($black, 0.1);
-$box-shadow-text: 0 0 3px rgba($black, 0.8);
 
 // Затемнее фона
 $backdrop: rgba(0, 0, 0, .55);

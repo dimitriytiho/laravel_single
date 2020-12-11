@@ -60,6 +60,7 @@ return [
     'updated_at' => 'Updated',
     'active' => 'Active',
     'inactive' => 'Inactive',
+    'removed' => 'Removed',
     'denied' => 'Denied',
     'more_info' => 'More info',
     'welcome' => 'Welcome',

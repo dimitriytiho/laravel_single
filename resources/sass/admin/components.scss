@@ -1,7 +1,5 @@
-@import "../config/params";
 @import "../config/mixins";
-@import "../config/blocks";
-
+@import "params";
 
 // Bootstrap Switch
 .bootstrap-switch-label {
@@ -10,4 +8,8 @@
 }
 .bootstrap-switch.bootstrap-switch-focused {
     box-shadow: none;
+}
+
+.daterangepicker td.active, .daterangepicker td.active:hover {
+    background-color: $primary;
 }

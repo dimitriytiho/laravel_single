@@ -35,7 +35,13 @@ class CartController extends AppController
         //session()->forget('cart');
 
         $title = __('s.cart');
-        return view("{$this->viewPath}.{$this->view}_index", compact('title', 'noBtnModal'));
+
+        // Хлебные крошки
+        $breadcrumbs = $this->breadcrumbs
+            ->end(['cart' => $title])
+            ->get();
+
+        return view("{$this->viewPath}.{$this->view}_index", compact('title', 'breadcrumbs', 'noBtnModal'));
     }
 
 

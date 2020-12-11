@@ -1,5 +1,5 @@
-@import "params";
 @import "../config/mixins";
+@import "params";
 
 
 .js-none {
@@ -20,6 +20,14 @@ thead th {
 
 .a-dark {
     @include for-a($dark, lighten($dark, 20%));
+}
+
+.img_sm {
+    max-width: 96px;
+    max-height: 96px;
+    width: auto;
+    height: auto;
+    margin-right: $spacer;
 }
 
 .btn_radio {

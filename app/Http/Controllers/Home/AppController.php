@@ -11,8 +11,6 @@ class AppController extends App
     {
         parent::__construct();
 
-        $this->middleware('auth');
-
         $viewPath = $this->viewPath = 'home';
         view()->share(compact('viewPath'));
     }

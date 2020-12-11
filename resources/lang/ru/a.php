@@ -60,6 +60,7 @@ return [
     'updated_at' => 'Обновлено',
     'active' => 'Активно',
     'inactive' => 'Черновик',
+    'removed' => 'Удалено',
     'denied' => 'Отказано',
     'more_info' => 'Подробнее',
     'welcome' => 'Добро пожаловать',

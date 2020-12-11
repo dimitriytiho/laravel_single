@@ -13,3 +13,10 @@
         </div>
     </div>
 @endsection
+{{--
+
+
+Этот код будет выведен в head --}}
+@section('css')
+    <link rel="stylesheet" href="{{ asset('vendor/file-manager/css/file-manager.css') }}">
+@endsection

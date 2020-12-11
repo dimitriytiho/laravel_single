@@ -56,7 +56,7 @@ S;
  */
 function input($name, $idForm = false, $required = true, $type = false, $value = false, $label = false, $placeholder = false, $class = false, $attrs = false)
 {
-    $title = l($name, 's');
+    $title = $placeholder ?: l($name, 's');
     $id = $idForm ? "{$idForm}_{$name}" : $name;
 
     $required = $required ? 'required' : null;
@@ -65,7 +65,7 @@ function input($name, $idForm = false, $required = true, $type = false, $value =
     $value = $value ?: old($name);
 
     $placeholderStar = !$label && $required ? '*' : null;
-    $placeholder = ($placeholder ?: $title) . $placeholderStar;
+    $placeholder = $title . $placeholderStar;
     $label = $label ? null : 'class="sr-only"';
     $part = '';
 
@@ -98,11 +98,10 @@ S;
  * $attrs - передайте атрибуты строкой или в массиве ['id' => 'test', 'data-id' => 'dataTest', 'novalidate' => ''], необязательный параметр.
  * $rows - кол-во рядов, по-умолчанию 3, необязательный параметр.
  * $htmlspecialchars - $value обёртываем в функцию htmlspecialchars, передайте false, если не надо.
- * $lang - передать свой перевод для label и placeholder, необязательный параметр.
  */
-function textarea($name, $idForm = false, $required = true, $value = false, $label = false, $placeholder = false, $class = false, $attrs = false, $rows = 3, $htmlspecialchars = true, $lang = null)
+function textarea($name, $idForm = false, $required = true, $value = false, $label = false, $placeholder = false, $class = false, $attrs = false, $rows = 3, $htmlspecialchars = true)
 {
-    $title = $lang ?: l($name, 's');
+    $title = $placeholder ?: l($name, 's');
     $id = $idForm ? "{$idForm}_{$name}" : $name;
     $required = $required ? 'required' : null;
     $star = $required ? '<sup>*</sup>' : null;
@@ -110,7 +109,7 @@ function textarea($name, $idForm = false, $required = true, $value = false, $lab
     $value = $htmlspecialchars ? e($value) : $value;
 
     $placeholderStar = !$label && $required ? '*' : null;
-    $placeholder = ($placeholder ?: $title) . $placeholderStar;
+    $placeholder = $title . $placeholderStar;
 
     $label = $label ? null : 'class="sr-only"';
     $rows = (int)$rows;

@@ -13,7 +13,7 @@
                 <div class="card card-primary card-outline">
                     <div class="card-body box-profile">
                         <div class="text-center">
-                            <img class="profile-user-img img-fluid img-circle img_replace" src="{{ asset($values->img) }}" alt="{{ $values->name }}">
+                            <img class="profile-user-img img_sm img-circle img_replace" src="{{ asset($values->img) }}" alt="{{ $values->name }}">
                             {{--
 
                             Удаление картинки --}}
@@ -72,11 +72,9 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="img">@lang('a.img')</label>
-                                <div class="form-group mt-0">
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" name="img" id="img">
-                                        <label class="custom-file-label" for="img">{{ $values->img ?? __('a.choose_file') }}</label>
-                                    </div>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" name="img" id="img">
+                                    <label class="custom-file-label" for="img">{{ $values->img ?? __('a.choose_file') }}</label>
                                 </div>
                             </div>
                         </div>
@@ -133,7 +131,7 @@
         <script>
             document.addEventListener('DOMContentLoaded', function() {
 
-                // Удаляем не подходящии правила валидации
+                // Удаляем неподходящии правила валидации
                 $('#password').rules('remove')
                 $('#password_confirmation').rules('remove')
 

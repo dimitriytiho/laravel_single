@@ -25,7 +25,8 @@ if (!config('add.auth')) {
 
 // Роуты для админки
 Route::namespace($namespace)
-    ->prefix($admin)->name('admin.')
+    ->prefix($admin)
+    ->name('admin.')
     ->middleware(['auth', 'admin'])
     ->group(function () {
 

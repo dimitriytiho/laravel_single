@@ -99,7 +99,7 @@ return [
     'no_users_now' => 'Сейчас на сайте нет пользователей.',
     'now_on_the_site' => 'сейчас на сайте',
     'successfully_changed' => 'Успешно изменено.',
-    'change_personal_info' => 'Изменить личные данные',
+    'personal_info' => 'Личные данные',
 
     'home' => 'Главная',
     'back' => 'Назад',
@@ -249,6 +249,8 @@ return [
     'not_receive_email' => 'Если вы не получили это письмо:',
     'request_another' => 'Кликните, чтобы запросить ещё раз',
     'account' => 'Личный кабинет',
+    'browser_details' => 'Сведения о браузере',
+    'information' => 'Информация',
 
     'reply' => 'Ответить',
     'write' => 'Написать',

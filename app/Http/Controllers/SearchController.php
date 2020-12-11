@@ -58,7 +58,13 @@ class SearchController extends AppController
         }
 
         $title = __('a.search');
-        return view("page.{$this->view}", compact('title', 'values'));
+
+        // Хлебные крошки
+        $breadcrumbs = $this->breadcrumbs
+            ->end(['search' => $title])
+            ->get();
+
+        return view("page.{$this->view}", compact('title', 'values', 'breadcrumbs'));
     }
 
 

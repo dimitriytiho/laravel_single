@@ -39,10 +39,9 @@
     <link rel="stylesheet" href="{{ asset('lte/plugins/bootstrap-switch/css/bootstrap4/bootstrap-switch.min.css') }}">
     {{--
 
-    Для файлового менеджера --}}
-    @if($pathSegment === 'files')
-        <link rel="stylesheet" href="{{ asset('vendor/file-manager/css/file-manager.css') }}">
-    @endif
+
+    Вывод css из видов --}}
+    @yield('css')
     <link rel="stylesheet" href="{{ asset('css/append.css') }}">
     <title>{{ $title ?? Main::site('name') }}</title>
     <meta name="description" content=" " />

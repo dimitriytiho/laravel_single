@@ -11,6 +11,11 @@ return [
     // Таблица товаров
     'product_table' => 'products',
 
+    // Свойства товара
+    'properties' => [
+        //'article' => [],
+    ],
+
     // Поля товара для отображения в корзине
     'cart_elements' => [
         'id',

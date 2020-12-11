@@ -66,8 +66,14 @@ if (config('add.auth')) {
 
 
     // Личный кабинет
-    Route::namespace("{$namespaceControllers}\\Home")->name('home.')->group(function () {
-        Route::get('/home', 'HomeController@index')->name('index');
+    Route::namespace("{$namespaceControllers}\\Home")
+        ->prefix('home')
+        ->name('home.')
+        ->middleware('auth')
+        ->group(function () {
+
+        Route::get('/', 'HomeController@index')->name('index');
+
     });
     //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

@@ -29,16 +29,16 @@ class ProductController extends AppController
         // Если пользователя есть разрешение к админскому классу, то будут показываться неактивные страницы
         if (checkPermission($this->class)) {
 
-            $values = $this->model::whereSlug($slug)
+            $product = $this->model::whereSlug($slug)
                 ->firstOrFail();
 
         } else {
 
-            $values = $this->model::whereSlug($slug)
+            $product = $this->model::whereSlug($slug)
                 ->active()
                 ->firstOrFail();
 
-            //$values->savePopular; // Прибавляем популяность
+            $product->savePopular; // Прибавляем популяность
         }
 
 
@@ -47,22 +47,22 @@ class ProductController extends AppController
          * Если нужны данные из БД, то в моделе сделать метод, в котором получить данные и вывести их, в подключаемом файле.
          * Дополнительно, в этот файл передаются данные страницы $values.
          */
-        $values->body = Main::inc($values->body, $values);
+        $product->body = Main::inc($product->body, $product);
 
         // Использовать скрипты в контенте, они будут перенесены вниз страницы.
-        $values->body = Main::getDownScript($values->body);
+        $product->body = Main::getDownScript($product->body);
 
 
         // Передаём в контейнер id и view элемента
-        Main::set('id', $values->id);
+        Main::set('id', $product->id);
         Main::set('view', $this->view);
 
         // Хлебные крошки
-        $categoryId = $values->categories[0]->id ?? null;
+        $categoryId = $product->categories[0]->id ?? null;
         $breadcrumbs = $this->breadcrumbs
             ->values('categories')
             ->end([
-                route($this->route, $values->slug) => $values->title
+                route($this->route, $product->slug) => $product->title
             ])
             ->dynamic($categoryId, 'category')
             ->add([[route('catalog') => 'catalog']])
@@ -70,6 +70,6 @@ class ProductController extends AppController
 
         $title = $values->title ?? null;
         $description = $values->description ?? null;
-        return view("{$this->viewPath}.{$this->c}_show", compact('title', 'description', 'values', 'breadcrumbs'));
+        return view("{$this->viewPath}.{$this->c}_show", compact('title', 'description', 'product', 'breadcrumbs'));
     }
 }

@@ -31,7 +31,7 @@
                                 <i class="fas fa-plus" title="@lang('s.plus')"></i>
                             </a>
                         </td>
-                        <td>{{ $cartProduct->sum * $cartProduct->qty }}</td>
+                        <td>{!! priceFormat($cartProduct->sum * $cartProduct->qty) !!}</td>
                         <td class="w-3">
                             <a href="{{ route('cart_remove', $key) }}" aria-label="@lang('s.Close')" class="cart_remove one_click" data-cart-key="{{ $key }}" aria-hidden="true">
                                 <i class="fas fa-times"></i>
