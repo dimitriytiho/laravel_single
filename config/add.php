@@ -78,7 +78,7 @@ return [
     // Перечислить те страницы, которые не нужно индексировать
     'disallow' => [
         'search',
-        'search/*',
+        'search?*',
         //'success-page',
     ],
 

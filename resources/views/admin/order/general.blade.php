@@ -12,8 +12,8 @@
                 @csrf
                 <div class="row">
                     @if(config('admin.order_statuses'))
-                        <div class="col">
-                            <div class="btn-group btn-group-toggle btn_radio mt-3" data-toggle="buttons">
+                        <div class="col-md-6">
+                            <div class="btn-group btn-group-toggle btn_radio mt-3 flex-wrap" data-toggle="buttons">
                                 @foreach(config('admin.order_statuses') as $status)
                                     <label class="btn btn-{{ \App\Models\Order::orderStatusColorClass($status) }} @if($status === $values->status) active @endif">
                                         <input type="radio" name="status" id="{{ $status }}" value="{{ $status }}" @if($status === $values->status) checked @endif>@lang("s.{$status}")
@@ -22,7 +22,7 @@
                             </div>
                         </div>
                     @endif
-                    <div class="col">
+                    <div class="col-md-6 mt-4 mt-md-2">
                         {!! $form::textarea('note', $values->note ?? null, null, null) !!}
                     </div>
                 </div>

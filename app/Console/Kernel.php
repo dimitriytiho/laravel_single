@@ -49,14 +49,15 @@ class Kernel extends ConsoleKernel
         })->hourlyAt(1);*/
 
 
-        // Резервное копирование веб-сайта
-        //$schedule->command('backup:clean')->monthlyOn(1, '02:00');
-        //$schedule->command('backup:run')->monthlyOn(1, '03:00');
 
-        // Обновление веб-сайта (в 1 день месяца)
-        /*$schedule->call(function () {
+        // Резервное копирование веб-сайта
+        /*$schedule->command('backup:clean')->monthlyOn(7, '02:00');
+        $schedule->command('backup:run')->monthlyOn(7, '03:00');
+
+        // Обновление веб-сайта (в 7 день месяца)
+        $schedule->call(function () {
             Upload::getUpload();
-        })->monthlyOn(1, '04:00');*/
+        })->monthlyOn(7, '04:00');*/
     }
 
     /**

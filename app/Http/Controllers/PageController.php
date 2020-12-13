@@ -39,13 +39,12 @@ class PageController extends AppController
 
 
         // Хлебные крошки
-        $breadcrumbs = $this->breadcrumbs
-            ->get();
+        //$breadcrumbs = $this->breadcrumbs->get();
 
         $f = __FUNCTION__;
         $title = __('s.' . config('add.title_main'));
-        $description = __('s.You_are_on_home');
-        return view("{$this->view}.{$f}", compact('title', 'description', 'breadcrumbs'));
+        //$description = __('s.You_are_on_home');
+        return view("{$this->view}.{$f}", compact('title'));
     }
 
 

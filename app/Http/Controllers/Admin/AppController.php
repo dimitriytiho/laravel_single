@@ -156,7 +156,7 @@ class AppController extends Controller
 
             $orders = DB::table('orders')->whereNull('deleted_at');
             $countTable['Order'] = $orders->count();
-            $countTable['Order_new'] = $orders->where('status', config('admin.order_statuses')[0])->count();
+            $countTable['Order_new'] = $orders->where('status', config('admin.order_statuses')[0] ?? 'new')->count();
         }
 
         view()->share(compact('imgRequestName', 'imgUploadID', 'namespaceHelpers', 'construct', 'form', 'dbSort', 'countTable', 'statusActive'));

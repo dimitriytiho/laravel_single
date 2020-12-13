@@ -30,12 +30,28 @@ class FormController extends Controller
 
         // Валидация
         $rules = [
-            'name' => 'required|string|max:250',
-            'tel' => "required|tel|max:250",
-            'email' => 'required|string|email|max:250',
             'message' => 'required', 'string',
-            'accept' => 'accepted',
         ];
+
+        // Если пользователь авторизован, то добавляем его данные
+        if (auth()->check()) {
+
+            $request->merge([
+                'name' => auth()->user()->name,
+                'tel' => auth()->user()->tel,
+                'email' => auth()->user()->email,
+                'accept' => auth()->user()->accept,
+            ]);
+
+        } else {
+
+            $rules = [
+                'name' => 'required|string|max:250',
+                'tel' => 'required|tel|max:250',
+                'email' => 'required|string|email|max:250',
+                'accept' => 'accepted',
+            ];
+        }
 
         // Если есть ключ Recaptcha и не локально запущен сайт
         if (config('add.env') !== 'local' && config('add.recaptcha_public_key')) {

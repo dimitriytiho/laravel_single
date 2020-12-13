@@ -6,9 +6,9 @@
 {{--
 
 Подключается блок header --}}
-@section('header')
+{{--@section('header')
     @include('inc.header')
-@endsection
+@endsection--}}
 
 {{-- Вывод контента --}}
 @section('content')
@@ -32,6 +32,8 @@
 {{--
 
 Подключается блок footer --}}
+{{--
 @section('footer')
     @include('inc.footer')
 @endsection
+--}}

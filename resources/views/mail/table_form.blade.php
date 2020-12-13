@@ -2,7 +2,11 @@
     <table style="border: 1px solid #ddd; border-collapse: collapse; width: 100%;">
         <tbody>
         @foreach($values as $k => $v)
-            @if('_token' === $k || 'g-recaptcha-response' === $k)
+            @if(
+                '_token' === $k
+                || 'g-recaptcha-response' === $k
+                || 'accept' === $k
+            )
                 @continue
             @endif
             <tr style="text-align: left;">

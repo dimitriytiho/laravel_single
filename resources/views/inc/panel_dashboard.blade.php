@@ -1,4 +1,4 @@
-@if(!$isMobile && auth()->check() && auth()->user()->Admin())
+@if(empty($noShowErrorPage) && !$isMobile && auth()->check() && auth()->user()->Admin())
 
     <div class="panel-dashboard">
         <a href="{{ session()->get('back_link_admin', route('admin.main')) }}" class="panel-dashboard__icons" title="@lang('a.Dashboard')">
