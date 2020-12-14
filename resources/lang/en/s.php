@@ -256,5 +256,6 @@ return [
     'text' => 'Text',
     'function' => 'Function',
     'weight' => 'Weight',
+    'action_is_not_available' => 'This action is not available.',
 
 ];

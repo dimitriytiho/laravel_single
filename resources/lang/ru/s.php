@@ -257,5 +257,6 @@ return [
     'text' => 'Текст',
     'function' => 'Функция',
     'weight' => 'Вес',
+    'action_is_not_available' => 'Данное действие недоступно.',
 
 ];

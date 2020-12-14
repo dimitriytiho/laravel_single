@@ -146,7 +146,9 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'img'                   => 'Image',
+    ],
 
 
     'recaptcha' => 'The :attribute answer is invalid.',
