@@ -14,6 +14,9 @@ class Telegram
      * Name_bot - название бота
      * Узнать id написать боту @username, в ответе будет id
      *
+     * Можно добавить бота в группу и после открыть https://api.telegram.org/bot<YourBOTToken>/getUpdates
+     * В ответе найти новое id для бота, сохранить его в файл .env
+     *
      * Открыть чат @Name или можно добавить в группу
      */
 

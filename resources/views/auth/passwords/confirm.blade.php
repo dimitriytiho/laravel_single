@@ -1,3 +1,4 @@
+@section('titleSeo')@lang('s.password_confirmation')@endsection
 {{--
 
 Наследуем шаблон --}}

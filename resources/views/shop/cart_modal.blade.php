@@ -12,6 +12,12 @@
             </thead>--}}
             <tbody>
             @if(session()->has('cart.products'))
+                <tr class="d-table-row d-sm-none">
+                    <td colspan="5">
+                        <i class="fas fa-hand-point-up fa-lg pr-2"></i>
+                        <i class="fas fa-arrows-alt-h fa-lg text-black-50"></i>
+                    </td>
+                </tr>
                 @foreach(session('cart.products') as $key => $cartProduct)
                     <tr>
                         <td>
@@ -19,10 +25,10 @@
                                 <img src="{{ asset($cartProduct->img) }}" class="w-5" alt="{{ $cartProduct->title }}">
                             </a>
                         </td>
-                        <td>
+                        <td class="min-w240">
                             <a href="{{ route('product', $cartProduct->slug) }}">{{ $cartProduct->title }}</a>
                         </td>
-                        <td>
+                        <td class="min-w150">
                             <a href="{{ route('cart_minus', $key) }}" class="btn cart_minus one_click" data-cart-key="{{ $key }}">
                                 <i class="fas fa-minus" title="@lang('s.minus')"></i>
                             </a>
@@ -31,7 +37,7 @@
                                 <i class="fas fa-plus" title="@lang('s.plus')"></i>
                             </a>
                         </td>
-                        <td>{!! priceFormat($cartProduct->sum * $cartProduct->qty) !!}</td>
+                        <td class="min-w100">{!! priceFormat($cartProduct->sum * $cartProduct->qty) !!}</td>
                         <td class="w-3">
                             <a href="{{ route('cart_remove', $key) }}" aria-label="@lang('s.Close')" class="cart_remove one_click" data-cart-key="{{ $key }}" aria-hidden="true">
                                 <i class="fas fa-times"></i>

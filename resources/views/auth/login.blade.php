@@ -1,3 +1,4 @@
+@section('titleSeo')@lang('s.login')@endsection
 {{--
 
 Наследуем шаблон --}}

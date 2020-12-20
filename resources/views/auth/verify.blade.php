@@ -1,3 +1,4 @@
+@section('titleSeo')@lang('s.verify_email')@endsection
 {{--
 
 Наследуем шаблон --}}

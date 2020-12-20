@@ -113,7 +113,7 @@ class ImportExportController extends AppController
         for ($column = 0; $column < 256; $column++) {
             $arrEmpty[$column] = null;
         }
-        str_replace('', '', '');
+
         if ($data->count() > 0) {
             foreach ($data->toArray() as $arrValue) {
 
@@ -171,7 +171,7 @@ class ImportExportController extends AppController
         }
 
         // Обновляем ряды в БД
-        $messageUpdate = 0;
+        $messageUpdate = null;
         if (!empty($uploadData)) {
 
             foreach ($uploadData as $id => $values) {
@@ -184,7 +184,7 @@ class ImportExportController extends AppController
         }
 
         // Вставляем ряды в БД
-        $messageInsert = 0;
+        $messageInsert = null;
         if (!empty($insertData)) {
 
             DB::table($table)->insert($insertData);
@@ -231,7 +231,7 @@ class ImportExportController extends AppController
         for ($column = 0; $column < 256; $column++) {
             $arrEmpty[$column] = null;
         }
-        str_replace('', '', '');
+
         if ($data->count() > 0) {
             foreach ($data->toArray() as $arrValue) {
 
@@ -289,7 +289,7 @@ class ImportExportController extends AppController
         }
 
         // Обновляем ряды в БД
-        $messageUpdate = 0;
+        $messageUpdate = null;
         if (!empty($uploadData)) {
 
             foreach ($uploadData as $id => $values) {
@@ -302,7 +302,7 @@ class ImportExportController extends AppController
         }
 
         // Вставляем ряды в БД
-        $messageInsert = 0;
+        $messageInsert = null;
         if (!empty($insertData)) {
 
             DB::table($table)->insert($insertData);

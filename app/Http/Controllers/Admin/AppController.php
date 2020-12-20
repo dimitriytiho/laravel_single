@@ -93,7 +93,7 @@ class AppController extends Controller
                     if (!$permission->contains($currentController)) {
 
                         // Запишем ошибку, выбросим исключение
-                        Main::getError(' Permission Controller for ' . auth()->user()->email, __METHOD__, true, 'error');
+                        Main::getError('AppController Permission ' . auth()->user()->email, __METHOD__, true, 'error');
 
                     } /*else {
 

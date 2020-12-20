@@ -21,11 +21,11 @@ $info: #17a2b8;
 //$light: #f8f9fa;
 //$dark: #343a40;
 
-$primary-light: lighten($primary, 40%);
+$primary-light: lighten($primary, 20%);
 $secondary-light: lighten($secondary, 43%);
 $success-light: lighten($success, 50%);
 $danger-light: lighten($danger, 38%);
-$warning-light: lighten($warning, 40%);
+$warning-light: lighten($warning, 15%);
 $info-light: lighten($info, 50%);
 $light-light: #fdfdfe;
 $dark-light: lighten($dark, 15%);

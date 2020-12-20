@@ -1,3 +1,4 @@
+@section('titleSeo')@lang('s.register')@endsection
 {{--
 
 Наследуем шаблон --}}

@@ -1,3 +1,4 @@
+@section('titleSeo')@lang('s.reset_password')@endsection
 {{--
 
 Наследуем шаблон --}}
