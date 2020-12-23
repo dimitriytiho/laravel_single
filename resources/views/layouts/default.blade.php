@@ -8,8 +8,12 @@
 
 Основной шаблон по-умолчанию --}}
 <!doctype html>
-<html lang="{{ app()->getLocale() }}" class="no-js">
+<html lang="{{ app()->getLocale() }}" class="no-js" data-color="{{ config('add.scss')['primary'] ?? '#ccc' }}">
 <head>
+    {{--
+
+    Preloader --}}
+    <script src="{{ asset('js/preloader.min.js') }}"></script>
     <meta charset="utf-8">
     {{--
 

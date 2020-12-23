@@ -23,7 +23,7 @@ class Form
      */
     public static function input($name, $value = null, $required = true, $type = null, $label = true, $placeholder = null, $class = null, $attrs = [], $classInput = null, $id = null, $idForm = null, $appendAfterInput = null)
     {
-        $title = l($name, 'a');
+        $title = $placeholder ?: l($name, 'a');
         $id = $idForm ? "{$idForm}_{$id}" : $id;
         $id = $id ?: $name;
 
@@ -40,7 +40,7 @@ class Form
         //$value = $value ?: old($name);
 
         $placeholderStar = !$label && $required ? '*' : null;
-        $placeholder = ($placeholder ?: $title) . $placeholderStar;
+        $placeholder = $title . $placeholderStar;
         $label = $label ? null : 'class="sr-only"';
         $label = "<label for='{$id}' {$label}>$title $star</label>";
         $labelBefore = $appendAfterInput ? $label : null;
@@ -87,7 +87,7 @@ S;
      */
     public static function textarea($name, $value = null, $required = true, $label = true, $placeholder = null, $class = null, $attrs = [], $rows = 3, $id = null, $idForm = null, $htmlspecialchars = true)
     {
-        $title = l($name, 'a');
+        $title = $placeholder ?: l($name, 'a');
         $id = $idForm ? "{$idForm}_{$id}" : $id;
         $id = $id ?: $name;
 
@@ -97,7 +97,7 @@ S;
         $value = $htmlspecialchars ? e($value) : $value;
 
         $placeholderStar = !$label && $required ? '*' : null;
-        $placeholder = ($placeholder ?: $title) . $placeholderStar;
+        $placeholder = $title . $placeholderStar;
 
         $label = $label ? null : 'class="sr-only"';
         $rows = (int)$rows;
