@@ -8,8 +8,9 @@
 
 Основной шаблон по-умолчанию --}}
 <!doctype html>
-<html lang="{{ app()->getLocale() }}" class="no-js" data-color="{{ config('add.scss')['primary'] ?? '#ccc' }}">
+<html lang="{{ app()->getLocale() }}" class="no-js">
 <head>
+    <meta name="theme-color" content="{{ config('add.scss')['primary'] ?? '#ccc' }}">
     {{--
 
     Preloader --}}

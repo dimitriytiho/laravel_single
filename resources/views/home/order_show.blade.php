@@ -73,7 +73,7 @@
                                             </th>
                                             <td>{{ $products[$order->product_id]['title'] }}</td>
                                             <td>{{ $order->qty }}<small> {{ $products[$order->product_id]['units'] }}</small></td>
-                                            <td>{!! priceFormat($order->price) !!}</td>
+                                            <td>{!! priceFormat($products[$order->product_id]['price']) !!}</td>
                                         </tr>
                                     @endisset
                                 @endforeach

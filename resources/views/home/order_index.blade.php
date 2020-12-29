@@ -41,8 +41,8 @@
                                 @foreach($values as $key => $item)
                                     <tr>
                                         <th scope="row">
-                                            <a href="{{ route('home.order_show', $item->id) }}" class="btn btn-primary btn-sm mr-1 pulse" title="@lang('a.edit')">
-                                                <i class="fas fa-pencil-alt"></i>
+                                            <a href="{{ route('home.order_show', $item->id) }}" class="btn btn-primary btn-sm mr-1 pulse" title="@lang('a.view')">
+                                                <i class="fas fa-eye"></i>
                                             </a>
                                         </th>
                                         <td>{{ $item->id }}</td>

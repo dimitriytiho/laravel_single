@@ -56,4 +56,11 @@ class LoginController extends Controller
 
         $request->validate($rules);
     }
+
+
+    // Редирект при разлогирование
+    /*protected function loggedOut(Request $request)
+    {
+        return redirect()->route('home.index');
+    }*/
 }

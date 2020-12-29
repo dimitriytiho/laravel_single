@@ -1,10 +1,10 @@
 /*
- * В тег html добавить код цвета:
- * <html lang="ru" data-color="#777">
+ * В тегах head до подключения preloader.min.js добавить метатег:
+ * <meta name="theme-color" content="#777">
  */
 document.write('<div id="preloader"></div>')
 var preloader = document.getElementById('preloader'),
-    color = document.querySelector('html').dataset.color || '#555'
+    color = document.querySelector('meta[name="theme-color"]') && document.querySelector('meta[name="theme-color"]').getAttribute('content') || '#555'
 
 if (preloader) {
     preloader.style.position = 'absolute'
