@@ -38,7 +38,7 @@ label {
 
 
 
-@media (max-width: 380px) {
+@media (max-width: $ss) {
     .g-recaptcha {
         transform: scale(.7)
     }

@@ -66,7 +66,41 @@ document.body.onclick = function(e) {
 document.addEventListener('DOMContentLoaded', function() {
 
     // Одинаковая высота блоков, задать класс у элементов .height-math
-    func.getHeight('height-math')
+    //func.getHeight('height-math')
+
+
+    /*
+     * Один col fluid, другой нет.
+     * Bootstrap container fluid one side.
+     *
+     * В колонку Bootstrap добавить класс .col_const_left или .col_const_right.
+     */
+    /*var clientWidth = document.body.clientWidth,
+        container = document.querySelector('.container')
+    if (clientWidth && container) {
+        var containerWidth = container.offsetWidth
+
+        // Если ширина клиента больше контейнера Bootstrap
+        if (clientWidth > containerWidth) {
+            var difference = clientWidth - containerWidth
+
+            // Меняем стили
+            $('.col_const_left')
+                .css({
+                    marginLeft: difference / 2,
+                    maxWidth: (containerWidth / 2) + 'px'
+                })
+                .siblings('div').css('paddingRight', 0)
+
+            $('.col_const_right')
+                .css({
+                    marginRight: difference / 2,
+                    maxWidth: (containerWidth / 2) + 'px'
+                })
+                .siblings('div').css('paddingLeft', 0)
+        }
+    }*/
+
 
 }, false)
 

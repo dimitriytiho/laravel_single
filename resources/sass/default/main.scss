@@ -5,6 +5,9 @@
 html {
     scroll-behavior: smooth; // Делает плавный скрол к якорю
 }
+:target {
+    scroll-margin-top: $spacer;
+}
 html, body {
     height: 100%;
 }

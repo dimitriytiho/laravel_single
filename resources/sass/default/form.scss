@@ -20,14 +20,14 @@
 
 
 
-@media (max-width: 576px) {
+@media (max-width: $sm) {
     .g-recaptcha {
         transform: scale(.8);
         transform-origin: left center;
     }
 }
 
-@media (max-width: 380px) {
+@media (max-width: $ss) {
     .g-recaptcha {
         transform: scale(.7);
     }

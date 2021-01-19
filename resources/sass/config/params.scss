@@ -48,23 +48,23 @@ $gray-800: #343a40;
 $gray-900: #212529; // dark
 
 $colors: (
-    'white': $white,
-    'primary': $primary,
-    'secondary': $secondary,
-    'success': $success,
-    'info': $info,
-    'warning' : $warning,
-    'danger': $danger,
-    'light': $light,
-    'dark': $dark,
-    'black': $black
+    white: $white,
+    primary: $primary,
+    secondary: $secondary,
+    success: $success,
+    info: $info,
+    warning : $warning,
+    danger: $danger,
+    light: $light,
+    dark: $dark,
+    black: $black
 );
 
 $theme-colors: (
-    'primary': $primary,
-    'secondary': $secondary,
-    'light': $light,
-    'dark': $dark
+    primary: $primary,
+    secondary: $secondary,
+    light: $light,
+    dark: $dark
 );
 
 
@@ -110,3 +110,18 @@ $animate-offset: 70px;
 
 // Every
 $letter-spacing: 5px;
+
+// Точки остановы
+$xs: 0;
+$ss: 379px;
+$sm: 576px;
+$md: 768px;
+$lg: 992px;
+$xl: 1200px;
+$grid-breakpoints: (
+    xs: $xs,
+    sm: $sm,
+    md: $md,
+    lg: $lg,
+    xl: $xl
+);
