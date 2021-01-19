@@ -78,26 +78,50 @@ document.addEventListener('DOMContentLoaded', function() {
     /*var clientWidth = document.body.clientWidth,
         container = document.querySelector('.container')
     if (clientWidth && container) {
-        var containerWidth = container.offsetWidth
+        var containerWidth = container.offsetWidth,
+            mobileVersion = 991
 
-        // Если ширина клиента больше контейнера Bootstrap
-        if (clientWidth > containerWidth) {
-            var difference = clientWidth - containerWidth
+        // Desktop версии
+        if (clientWidth > mobileVersion) {
+
+            // Если ширина клиента больше контейнера Bootstrap
+            if (clientWidth > containerWidth) {
+                var difference = clientWidth - containerWidth
+
+                // Меняем стили
+                $('.col_const_left')
+                    .css({
+                        marginLeft: difference / 2,
+                        maxWidth: (containerWidth / 2) + 'px'
+                    })
+                    .siblings('div').css('paddingRight', 0)
+
+                $('.col_const_right')
+                    .css({
+                        marginRight: difference / 2,
+                        maxWidth: (containerWidth / 2) + 'px'
+                    })
+                    .siblings('div').css('paddingLeft', 0)
+            }
+
+        // Мобильная версии
+        } else {
 
             // Меняем стили
             $('.col_const_left')
                 .css({
-                    marginLeft: difference / 2,
-                    maxWidth: (containerWidth / 2) + 'px'
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                    maxWidth: containerWidth + 'px'
                 })
-                .siblings('div').css('paddingRight', 0)
 
             $('.col_const_right')
                 .css({
-                    marginRight: difference / 2,
-                    maxWidth: (containerWidth / 2) + 'px'
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                    maxWidth: containerWidth + 'px'
                 })
-                .siblings('div').css('paddingLeft', 0)
+
         }
     }*/
 
