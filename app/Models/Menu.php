@@ -47,6 +47,7 @@ class Menu extends App
 
                 $values = self::where('belong_id', $belongId)
                     ->whereStatus(config('add.page_statuses')[1] ?? 'active')
+                    ->orderBy('sort')
                     ->get();
 
                 if ($cacheName) {
