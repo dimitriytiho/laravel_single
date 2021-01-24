@@ -16,7 +16,7 @@ $(document).on('click', '.one_click', function(e) {
  * При клике на ссылку или кнопку с классом .spinner_click
  * Отключается кнопка (добавляется класс disabled) и включается спинер.
  */
-$(document).on('click', '.spinner_click', function(e) {
+$(document).on('click', '.spinner_click', function() {
     $(this)
         .attr('disabled', true)
         .addClass('disabled')
@@ -29,7 +29,7 @@ $(document).on('click', '.spinner_click', function(e) {
  * Отключается кнопка и включается спинер в кнопке отправки.
  * Внимание, спинер будет крутиться до перезагрузки страницы.
  */
-$('.spinner_submit').click(function () {
+$(document).on('submit', '.spinner_submit', function() {
     $(this)
         .find('[type=submit]')
         .attr('disabled', true)
