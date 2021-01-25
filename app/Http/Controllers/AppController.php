@@ -62,8 +62,10 @@ class AppController extends Controller
             return $next($request);
         });
 
+
         // Удалить все кэши
         //cache()->flush();
+
 
         // Передаём в виды
         view()->share(compact('namespaceHelpers', 'namespaceModels', 'statusActive', 'searchQuery'));
