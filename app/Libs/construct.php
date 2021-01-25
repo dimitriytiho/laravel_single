@@ -326,8 +326,8 @@ function recaptchaText($class = false)
     return <<<S
 <div class="font-weight-light small no-wrap {$class}">
     Сайт защищен reCAPTCHA и применяются
-    <a href="//policies.google.com/privacy" target="_blank">Политика конфиденциальности</a> и
-    <a href="//policies.google.com/terms" target="_blank">Условия использования</a> Google.
+    <a href="//policies.google.com/privacy" rel="noindex nofollow noopener" target="_blank">Политика конфиденциальности</a> и
+    <a href="//policies.google.com/terms" rel="noindex nofollow noopener" target="_blank">Условия использования</a> Google.
 </div>
 S;
 }
