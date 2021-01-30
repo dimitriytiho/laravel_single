@@ -85,8 +85,8 @@ class Cart extends App
             $keyProductInCart = self::checkDuplicate($product);
             if ($keyProductInCart === false) {
 
-                // Получаем кол-во в массиве корзины
-                $nextKeyProduct = session()->has('cart.products') ? count(session()->get('cart.products')) + 1 : 1;
+                // Получаем последний ключ в массиве корзины и + 1
+                $nextKeyProduct = session()->has('cart.products') ? array_key_last(session()->get('cart.products')) + 1 : 1;
 
                 // Сохраняем в сессию товар
                 session()->put("cart.products.{$nextKeyProduct}", $product);
