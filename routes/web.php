@@ -73,8 +73,13 @@ if (config('add.auth')) {
         ->group(function () {
 
         Route::get('/', 'HomeController@index')->name('index');
+            Route::get('user', 'UserController@index')->name('user_index');
+            Route::post('user/edit', 'UserController@edit')->name('user_edit');
+            Route::get('order', 'OrderController@index')->name('order_index');
+            Route::get('{id}/order', 'OrderController@show')->name('order_show');
 
-    });
+
+        });
     //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     //Auth::routes();

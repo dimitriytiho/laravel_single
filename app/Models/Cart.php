@@ -75,15 +75,20 @@ class Cart extends App
         if (!empty($product->id)) {
 
             // Добавляем модификаторы к товару
-            $product = self::modifiers($product, $modifiers);
+            if ($modifiers) {
+                $product = self::modifiers($product, $modifiers);
+            }
 
             // Добавляем к товару кол-во и сумму с модификаторами
             $product->sum = $product->price + ($product->modifiers_sum ?? 0);
             $product->qty = $qty;
 
-            // Если товара нет в корзине
-            $keyProductInCart = self::checkDuplicate($product);
-            if ($keyProductInCart === false) {
+            // Если товар уже есть в корзине, то плюсуем его
+            if ($productInCartKey = self::productInCart($product)) {
+
+                self::plus($productInCartKey, $qty);
+
+            } else {
 
                 // Получаем последний ключ в массиве корзины и + 1
                 $nextKeyProduct = session()->has('cart.products') ? array_key_last(session()->get('cart.products')) + 1 : 1;
@@ -93,14 +98,8 @@ class Cart extends App
 
                 // Добавим в корзину сумму и кол-во
                 self::cartPlus($product->sum, $qty);
-
-
-            // Если товар уже есть в корзине
-            } else {
-
-                self::plus($keyProductInCart, $qty);
-
             }
+
             return true;
         }
         return false;
@@ -191,7 +190,7 @@ class Cart extends App
                 // Удаляем из сессии товар(ы)
                 session()->forget("cart.products.{$keyProductInCart}");
 
-            // Если в сессии cart один элемент, то удаляем всю сессию cart
+                // Если в сессии cart один элемент, то удаляем всю сессию cart
             } else {
                 session()->forget('cart');
             }
@@ -262,23 +261,6 @@ class Cart extends App
     }
 
 
-    /*
-     * Проверяет, если ли в корзине передаваемый товар, возвращает ключ дубрирующего товара или false.
-     * $product - объект товара.
-     */
-    private static function checkDuplicate($product)
-    {
-        if(!empty($product->id) && session()->has('cart.products')) {
-            foreach (session('cart.products') as $key => $cartProduct) {
-                if ($product->id == $cartProduct->id) {
-                    return $key;
-                }
-            }
-        }
-        return false;
-    }
-
-
     /**
      *
      * @return object
@@ -332,6 +314,56 @@ class Cart extends App
             $product->modifiers_sum = $sum;
         }
         return $product;
+    }
+
+
+    /**
+     *
+     * @return int
+     *
+     * Возвращает номер в корзине или null.
+     * Проверяет есть ли этот товар в корзине, с этим же модификаторами.
+     * $product - объект товара.
+     */
+    private static function productInCart($product)
+    {
+        if (session()->has('cart.products') && $product) {
+            $cart = session()->get('cart.products');
+            foreach ($cart as $key => $productInCart) {
+
+                // Если id переданного товара равно id товара в корзине
+                if ($product->id == $productInCart->id) {
+
+                    // Если есть модификаторы
+                    if (!empty($product->modifiers)) {
+
+                        // Если кол-во модификаторов в переданном товаре такое же как у товара в корзине и модификаторы равны
+                        if (
+                            count($product->modifiers) === count($productInCart->modifiers)
+                            && strcasecmp(serialize($product->modifiers), serialize($productInCart->modifiers)) == 0
+                        ) {
+                            return $key;
+
+                            /*foreach ($product->modifiers as $k => $modifier) {
+
+                                // Если модификатор в переданном товаре такой же как у товара в корзине
+                                if (
+                                    !empty($modifier)
+                                    && !empty($productInCart->modifiers[$k])
+                                    && serialize($modifier) === serialize($productInCart->modifiers[$k])
+                                ) {
+                                    return $key;
+                                }
+                                return null;
+                            }*/
+                        }
+                        return null;
+                    }
+                    return $key;
+                }
+            }
+        }
+        return null;
     }
 
 

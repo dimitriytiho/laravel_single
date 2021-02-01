@@ -52,7 +52,7 @@
                     </div>
                 </a>
             </div>
-            <div class="col px-2 a-black">
+            {{--<div class="col px-2 a-black">
                 <a href="{{ route('home.category_index') }}" class="info-box">
                     <div class="info-box-icon bg-success">
                         <i class="fas fa-sitemap text-white"></i>
@@ -61,8 +61,8 @@
                         <div class="info-box-text">История категорий</div>
                     </div>
                 </a>
-            </div>
-            <div class="col px-2 a-black">
+            </div>--}}
+            {{--<div class="col px-2 a-black">
                 <a href="{{ route('home.product_index') }}" class="info-box">
                     <div class="info-box-icon bg-warning">
                         <i class="fas fas fa-boxes text-dark"></i>
@@ -71,7 +71,7 @@
                         <div class="info-box-text">История товаров</div>
                     </div>
                 </a>
-            </div>
+            </div>--}}
             <div class="col px-2 a-black">
                 <a href="{{ route('home.user_index') }}" class="info-box">
                     <div class="info-box-icon bg-danger">
@@ -102,7 +102,7 @@
                             <td class="font-weight-light min-w100">@lang('s.date')</td>
                             <td>{{ $date }}</td>
                         </tr>
-                        <tr>
+                        {{--<tr>
                             <td class="font-weight-light min-w100">Ip</td>
                             <td>{{ $ip }}</td>
                         </tr>
@@ -112,7 +112,7 @@
                                 <div>{{ $agent }}</div>
                                 <div>{{ $accept }}</div>
                             </td>
-                        </tr>
+                        </tr>--}}
                         </tbody>
                     </table>
                 </div>

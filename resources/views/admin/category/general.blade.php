@@ -23,10 +23,10 @@
 
             @isset($values->id)
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         {!! $form::select('status', config('add.page_statuses'), $values->status ?? null) !!}
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="parent_id">@lang('a.parent_id')</label>
                             <select class="form-control" name="parent_id" id="parent_id" aria-invalid="false">
@@ -35,8 +35,11 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3 col-6">
                         {!! $form::input('sort', $values->sort ?? null, null) !!}
+                    </div>
+                    <div class="col-md-3 col-6">
+                        {!! $form::checkbox('hide', $values->hide ?? null) !!}
                     </div>
                 </div>
                 {{--

@@ -55,16 +55,22 @@ function checkPermission($class, $admin = true) {
  *
  * @return string
  *
- * Возвращается переводную фразу, если её нет, то строку.
+ * Возвращается переводную фразу, если её нет, то входную строку.
  * $str - строка для перевода.
- * $fileLang - имя файла с переводом (без .php), по-умолчанию t(t.php), необязательный параметр.
+ * $fileLang - имя файла с переводом (без .php), необязательный параметр (Сначала ищет в s.php, потом в этом файле).
  */
-function l($str, $fileLang = 't')
+function l($str, $fileLang = null)
 {
-    if ($str && $fileLang) {
-        return \Lang::has("{$fileLang}.{$str}") ? __("{$fileLang}.{$str}") : $str;
+    if ($str) {
+
+        if (\Lang::has("s.{$str}")) {
+            return __("s.{$str}");
+
+        } elseif ($fileLang && \Lang::has("{$fileLang}.{$str}")) {
+            return __("{$fileLang}.{$str}");
+        }
     }
-    return '';
+    return $str;
 }
 
 
@@ -81,7 +87,7 @@ function r($routeName, $parameter = null)
     if ($routeName && \Route::has($routeName)) {
         return $parameter ? route($routeName, $parameter) : route($routeName);
     }
-    return '';
+    return null;
 }
 
 
@@ -116,7 +122,7 @@ function d($date, $format = null) {
         );
         return $formatter->format($date);
     }
-    return '';
+    return null;
 }
 
 
@@ -188,5 +194,5 @@ function priceFormat($price, $currency = '&#8381;') {
         $currency = "&nbsp;<small>{$currency}</small>";
         return number_format(intval($price), 0, ',', '&nbsp;') . $currency;
     }
-    return '';
+    return null;
 }

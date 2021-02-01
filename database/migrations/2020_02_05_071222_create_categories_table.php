@@ -25,6 +25,7 @@ class CreateCategoriesTable extends Migration
             $table->text('body')->nullable();
             $table->string('img')->nullable()->default(config('admin.imgProductDefault'));
             $table->bigInteger('popular')->unsigned()->default('0');
+            $table->enum('hide', ['0', '1'])->default('0');
             $table->softDeletes();
             $table->timestamps();
         });

@@ -198,6 +198,9 @@ class CategoryController extends AppController
             $values->parent_id = '0';
         }
 
+        // Поле скрыть
+        $data['hide'] = empty($data['hide']) ? '0' : '1';
+
         // Заполняем модель новыми данными
         $values->fill($data);
 
