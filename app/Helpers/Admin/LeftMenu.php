@@ -50,13 +50,6 @@ class LeftMenu
     {
         $menu = $menu ?: self::getMenu();
         $arr = [];
-
-        $leftMenuArr = Menu::where('belong_id', 1)
-            ->active()
-            ->orderBy('sort')
-            ->get()
-            ->keyBy('id')
-            ->toArray();
         if ($menu) {
             foreach ($menu as $key => $item) {
 
