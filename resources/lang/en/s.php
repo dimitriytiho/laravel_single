@@ -76,6 +76,7 @@ return [
     'wonderful' => 'Wonderful',
     'completed' => 'Completed',
     'in_process' => 'In process',
+    'canceled' => 'Canceled',
 
     'top' => 'Top',
     'bottom' => 'Bottom',
@@ -171,7 +172,6 @@ return [
     'cart_empty' => 'The cart is still empty...',
     'delivery' => 'Delivery',
     'delivery_sum' => 'Delivery sum',
-    'pickup' => 'Pickup',
     'discount' => 'Discount',
     'discount_code' => 'Discount code',
     'qty' => 'Quantity',
@@ -250,6 +250,7 @@ return [
     'account' => 'Account',
     'browser_details' => 'Browser details',
     'information' => 'Information',
+    'continue_as' => 'Continue as:',
 
     'reply' => 'Reply',
     'write' => 'To write',
@@ -257,5 +258,16 @@ return [
     'function' => 'Function',
     'weight' => 'Weight',
     'action_is_not_available' => 'This action is not available.',
+    'courier' => 'Courier',
+    'pickup' => "I'll take it myself",
+    'cash_courier' => 'Cash',
+    'plastic_card' => 'By card upon receipt',
+    'plastic_courier' => 'By plastic card to the courier',
+    'plastic_site' => 'Online',
+    'entrance' => 'Entrance',
+    'apartment' => 'Apartment',
+    'intercom' => 'Intercom',
+    'floor' => 'Floor',
+    'score' => 'Score',
 
 ];

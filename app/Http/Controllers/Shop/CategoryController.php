@@ -37,11 +37,11 @@ class CategoryController extends AppController
         // Если пользователя есть разрешение к админскому классу, то будут показываться неактивные страницы
         if (checkPermission($this->class)) {
 
-            $values = $this->model::with('products')
+            $cats = $this->model::with('products')
                 ->paginate($this->perPage);
         } else {
 
-            $values = $this->model::with('products')
+            $cats = $this->model::with('products')
                 ->active()
                 ->paginate($this->perPage);
 
@@ -50,10 +50,10 @@ class CategoryController extends AppController
         // Если пользователя есть разрешение к админскому классу, то будут показываться неактивные страницы
         /*if (checkPermission('Product')) {
 
-            $values = Product::paginate($this->perPage);
+            $products = Product::paginate($this->perPage);
         } else {
 
-            $values = Product::active()
+            $products = Product::active()
                 ->paginate($this->perPage);
 
         }*/
@@ -65,7 +65,7 @@ class CategoryController extends AppController
             ->end(['catalog' => $title])
             ->get();
 
-        return view("{$this->viewPath}.{$this->view}_index", compact('title', 'breadcrumbs', 'values'));
+        return view("{$this->viewPath}.{$this->view}_index", compact('title', 'breadcrumbs', 'cats'));
     }
 
 
@@ -85,11 +85,11 @@ class CategoryController extends AppController
                 ->active()
                 ->firstOrFail();
 
-            //$categories->savePopular; // Прибавляем популяность
+            $categories->savePopular; // Прибавляем популяность
         }
 
 
-        $values = new Paginator($categories->products, $categories->products->count(), $this->perPage);
+        $products = new Paginator($categories->products, $categories->products->count(), $this->perPage);
 
 
         /*
@@ -118,7 +118,7 @@ class CategoryController extends AppController
 
         $title = $categories->title ?? null;
         $description = $categories->description ?? null;
-        return view("{$this->viewPath}.{$this->view}_show", compact('title', 'description', 'categories', 'values', 'breadcrumbs'));
+        return view("{$this->viewPath}.{$this->view}_show", compact('title', 'description', 'categories', 'products', 'breadcrumbs'));
     }
 
 

@@ -13,11 +13,14 @@
             @include('admin.inc.general_start')
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     {!! $form::input('title', $values->title ?? null) !!}
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     {!! $form::input('icon', $values->icon ?? null) !!}
+                </div>
+                <div class="col-md-4">
+                    {!! $form::input('discount', $values->discount ?? null, null, 'number', true, null, null, ['step' => '0.01', 'min' => '0']) !!}
                 </div>
             </div>
 

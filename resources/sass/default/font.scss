@@ -13,6 +13,10 @@
     font-size: $font-size-base-sm !important;
 }
 
+.p {
+    font-size: $font-size-base !important;
+}
+
 // Цвет ссылок .a-color
 @each $color, $value in $colors {
   .a-#{$color} {

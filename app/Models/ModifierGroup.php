@@ -28,6 +28,6 @@ class ModifierGroup extends App
     // Связь многие ко многим
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'modifier_products');
+        return $this->belongsToMany(Product::class);
     }
 }

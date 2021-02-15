@@ -17,6 +17,9 @@
 
             {!! $form::input('title', $values->title ?? null) !!}
 
+            {!! $form::input('slug', $values->slug ?? null, true, null, true, null, null, [], null, null, null,
+                $form::inputGroupAppend('fas fa-sync', 'cur get_slug', 'bg-white', 'text-primary', ['data-url' => route('admin.get_slug'), 'data-src' => 'title', 'title' => __('a.generate_link')])) !!}
+
             {!! $form::textarea('description', $values->description ?? null, null) !!}
 
             <div class="row">
@@ -30,7 +33,7 @@
                 @endisset
 
                 <div class="col-xl-2 col-md-6">
-                    {!! $form::input('price', $values->price ?? null, null) !!}
+                    {!! $form::input('price', $values->price ?? null, null, 'number', true, null, null, ['step' => '0.01', 'min' => '0']) !!}
                 </div>
                 <div class="col-xl-2 col-md-6">
                     {!! $form::checkbox('default', $values->default ?? null) !!}

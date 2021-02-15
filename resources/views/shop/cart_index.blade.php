@@ -64,3 +64,29 @@
 @section('footer')
     @include('inc.footer')
 @endsection
+{{--
+
+Модальное окно предложение авторизации --}}
+{!! modal('guest', __('s.continue_as'), 'modal-dark') !!}
+<div class="row mt-5 mb-4 no-wrap">
+    <div class="col-6">
+        <a href="{{ route('login') }}" class="btn btn-primary">@lang('a.user')</a>
+    </div>
+    <div class="col-6 text-right">
+        <button class="btn btn-outline-primary mr-2" data-dismiss="modal">@lang('a.guest')</button>
+    </div>
+</div>
+{!! modalEnd() !!}
+
+@section('js')
+    @if(session()->has('cart.products'))
+        <script>
+            {{--
+
+            Вызов модального окна предложение авторизации --}}
+            if (!auth) {
+                $('#guest').modal()
+            }
+        </script>
+    @endif
+@endsection

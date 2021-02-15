@@ -23,6 +23,8 @@ class ModifierController extends AppController
 
         // Связанная таблица, должен быть метод в моделе с названием таблицы
         $belongTable = $this->belongTable = 'modifier_groups';
+        // Связанный маршрут
+        $this->belongRoute = 'filter-group';
 
         view()->share(compact('class', 'c','model', 'table', 'route', 'view', 'belongTable'));
     }
@@ -43,6 +45,13 @@ class ModifierController extends AppController
 
             // Записать в куку id из привязанной таблице, если не записано
             $currentParent = DB::table($this->belongTable)->first();
+
+            // Если нет родительский элементов, то предлагаем создать их
+            if (!$currentParent) {
+                return redirect()
+                    ->route("admin.{$this->belongRoute}.create")
+                    ->with('info', __('a.create_parent_element'));
+            }
 
             // Записать куку навсегда (5 лет)
             return redirect()->back()

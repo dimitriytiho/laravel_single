@@ -34,10 +34,6 @@ class UserController extends AppController
     public function index()
     {
         $values = $this->model::findOrFail(auth()->user()->id);
-
-        // Дата рождения
-        $values->date_of_birth = $values->date_of_birth ? Date::timestampToJust($values->date_of_birth) : null;
-
         $f = Str::snake(__FUNCTION__);
         $title = __('s.personal_info');
 
@@ -66,7 +62,7 @@ class UserController extends AppController
         $rules = [
             'name' => 'required|string|max:250',
             'email' => "required|string|email|unique:{$this->table},email,{$id}|max:250",
-            'tel' => 'nullable|tel|max:250',
+            'tel' => 'required|tel|max:250',
             'password' => 'nullable|string|min:6|same:password_confirmation',
             'img' => "nullable|mimes:{$imagesExt}|max:2000",
         ];
@@ -81,7 +77,7 @@ class UserController extends AppController
         $request->validate($rules);
 
         // Дата рождения
-        $request->date_of_birth = Date::justToTimestamp($request->date_of_birth);
+        $request->date_of_birth = Date::toTimestamp($request->date_of_birth);
 
         $data = $request->all();
 

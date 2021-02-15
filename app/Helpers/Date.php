@@ -3,6 +3,8 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Carbon;
+
 
 class Date
 {
@@ -27,6 +29,38 @@ class Date
             11 => 'November',
             12 => 'December',
         ];
+    }
+
+
+    /**
+     *
+     * @return string
+     *
+     * Возвращает время в формате Timestamp: 2020-12-10 00:00:00, принимает дату сторокой, практически в любом формате.
+     */
+    public static function toTimestamp($date)
+    {
+        if ($date) {
+            return Carbon::create($date)->toDateTimeString();
+        }
+        return null;
+    }
+
+
+    /**
+     *
+     * @return string
+     *
+     * Возвращает время в формате: 10.12.2020 или любом другом, принимает дату в 2020-12-10 00:00:00
+     * $format - возращаемый формат, по-умолчанию 10.12.2020.
+     */
+    public static function timestampTo($timestamp, $format = 'd.m.Y')
+    {
+        if ($timestamp && $timestamp != '0000-00-00 00:00:00' && $format) {
+            $dt = Carbon::createFromFormat('Y-m-d H:i:s', $timestamp);
+            return $dt->format($format); // $dt->translatedFormat('d F Y, l'); // С переводом
+        }
+        return null;
     }
 
 
@@ -117,22 +151,22 @@ class Date
      * @return array
      *
      * Возвращает в массиве года, от минимального до текущего.
-     * $min_year - от какого года начинать.
-     * $max_year - необязательный параметр, каким годом заканчивать, по-умолчанию текущий.
+     * $minYear - от какого года начинать.
+     * $maxYear - необязательный параметр, каким годом заканчивать, по-умолчанию текущий.
      */
-    public static function loopDate($min_year, $max_year = null)
+    public static function listYear(int $minYear, int $maxYear = null)
     {
-        if ($min_year) {
-            $min_year = substr((int)$min_year, 0, 4);
-            $max_year = $max_year ?: date('Y');
-            $max_year = substr((int)$max_year, 0, 4);
-            if ($min_year > $max_year) {
+        if ($minYear) {
+            $minYear = substr($minYear, 0, 4);
+            $maxYear = $maxYear ?: date('Y');
+            $maxYear = substr($maxYear, 0, 4);
+            if ($minYear > $maxYear) {
                 return [];
             }
 
-            while ($min_year <= $max_year) {
-                $year[] = $min_year;
-                $min_year++;
+            while ($minYear <= $maxYear) {
+                $year[] = $minYear;
+                $minYear++;
             }
             return array_reverse($year);
         }

@@ -34,10 +34,10 @@ return [
         'range',
     ],
 
-    // Виды доставки
-    'delivery' => [
-        'courier', // Курьером
-        'pickup', // Самовывоз
+    // Типы модификаторов
+    'modifier_type' => [
+        'checkbox', // Первое значение по-умолчанию
+        'radio',
     ],
 
 
@@ -45,6 +45,63 @@ return [
     'units' => [
         'гр', // Первое значение по-умолчанию
         'мл',
+    ],
+
+
+    // Дополнение к адресу
+    'add_address' => [
+        'entrance', // Подъезд
+        'apartment', // Квартира
+        'intercom', // Домофон
+        'floor', // Этаж
+    ],
+
+    // Виды доставки
+    'delivery' => [
+
+        // Самовывоз (должен быть первый в этом массиве!)
+        0 => [
+            'title' => 'pickup',
+            'icon' => 'fas fa-street-view',
+        ],
+
+        // Курьером (должен быть вторым в этом массиве!)
+        1 => [
+            'title' => 'courier',
+            'icon' => 'fas fa-running',
+        ],
+    ],
+
+    // Виды оплаты
+    'payment' => [
+
+        // Наличными (должен быть первый в этом массиве!)
+        0 => [
+            'title' => 'cash_courier',
+            'icon' => 'fas fa-money-bill',
+            'class' => '',
+        ],
+
+        // Пластиковой картой (должен быть второй в этом массиве!)
+        1 => [
+            'title' => 'plastic_card',
+            'icon' => 'far fa-credit-card',
+            'class' => '',
+        ],
+
+        // Пластиковой картой курьеру (должен быть третий в этом массиве!)
+        2 => [
+            'title' => 'plastic_courier',
+            'icon' => 'far fa-credit-card', // fas fa-id-card-alt
+            'class' => 'js-none',
+        ],
+
+        // Пластиковой картой на сайте (должна быть четвёртой в этом массиве!)
+        3 => [
+            'title' => 'plastic_site',
+            'icon' => 'far fa-credit-card',
+            'class' => '',
+        ],
     ],
 
 

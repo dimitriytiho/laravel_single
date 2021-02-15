@@ -37,6 +37,23 @@ class AppController extends Controller
         // Пагинация Bootstrap
         //Paginator::useBootstrap();
 
+
+        // Если пользователь зашёл по UTM метке, то сохраним её в сессию utm
+        if ($utmSource = request()->query('utm_source')) {
+            session()->put('utm.source', $utmSource);
+            $get = request()->query();
+            foreach ($get as $name => $value) {
+                if (Str::is('utm*', $name)) {
+                    $utm[$name] = $value;
+                }
+            }
+            if (!empty($utm)) {
+                $utm = serialize($utm);
+                session()->put('utm.all', $utm);
+            }
+        }
+
+
         // Строка поиска
         $searchQuery = s(request()->query('s')) ?: Main::get('search_query');
 

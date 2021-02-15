@@ -88,7 +88,14 @@
                         @endforeach
                     @endif
 
-                    {!! $form::input('name', $values->name ?? null) !!}
+                    <div class="row">
+                        <div class="col-md-6">
+                            {!! $form::input('name', $values->name ?? null) !!}
+                        </div>
+                        <div class="col-md-6">
+                            {!! $form::input('score', $values->score ?? null, null, 'number', true, null, null, ['step' => '0.01', 'min' => '0']) !!}
+                        </div>
+                    </div>
 
                     <div class="row">
                         <div class="col-md-6">
@@ -100,6 +107,16 @@
                     </div>
 
                     {!! $form::input('address', $values->address ?? null, null) !!}
+
+                    <div class="row">
+                        @if(config('shop.add_address'))
+                            @foreach(config('shop.add_address') as $item)
+                                <div class="col-md-3 col-6">
+                                    {!! $form::input($item, $values->$item ?? null, null, null, true, l($item, 's')) !!}
+                                </div>
+                            @endforeach
+                        @endif
+                    </div>
 
                     <div class="row">
                         <div class="col-md-6">

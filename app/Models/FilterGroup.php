@@ -14,8 +14,8 @@ class FilterGroup extends App
 
 
     // Связь один к многим
-    public function filterValue()
+    public function filters()
     {
-        return $this->hasMany(Filter::class);
+        return $this->hasMany(Filter::class, 'parent_id');
     }
 }

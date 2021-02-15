@@ -95,8 +95,12 @@
                     <table class="table no-wrap">
                         <tbody>
                         <tr>
-                            <td class="font-weight-light border-0 min-w100">@lang('s.time')</td>
-                            <td class="border-0" id="clock">{{ $time }}</td>
+                            <td class="font-weight-light border-0 min-w100">@lang('s.score')</td>
+                            <td class="border-0">{{ auth()->user()->score }}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-light min-w100">@lang('s.time')</td>
+                            <td id="clock">{{ $time }}</td>
                         </tr>
                         <tr>
                             <td class="font-weight-light min-w100">@lang('s.date')</td>

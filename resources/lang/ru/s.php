@@ -77,6 +77,7 @@ return [
     'wonderful' => 'Замечательный',
     'completed' => 'Завершён',
     'in_process' => 'В процессе',
+    'canceled' => 'Отменён',
 
     'top' => 'Сверху',
     'bottom' => 'Снизу',
@@ -171,7 +172,6 @@ return [
     'cart_empty' => 'Корзина пока пуста...',
     'delivery' => 'Доставка',
     'delivery_sum' => 'Сумма доставки',
-    'pickup' => 'Самовывоз',
     'discount' => 'Скидка',
     'discount_code' => 'Код скидки',
     'qty' => 'Кол-во',
@@ -252,11 +252,16 @@ return [
     'browser_details' => 'Сведения о браузере',
     'information' => 'Информация',
 
-    'reply' => 'Ответить',
-    'write' => 'Написать',
-    'text' => 'Текст',
-    'function' => 'Функция',
-    'weight' => 'Вес',
-    'action_is_not_available' => 'Данное действие недоступно.',
+    'courier' => 'Курьером',
+    'pickup' => 'Заберу сам',
+    'cash_courier' => 'Наличными',
+    'plastic_card' => 'Картой',
+    'plastic_courier' => 'Картой',
+    'plastic_site' => 'Онлайн',
+    'entrance' => 'Подъезд',
+    'apartment' => 'Квартира',
+    'intercom' => 'Домофон',
+    'floor' => 'Этаж',
+    'score' => 'Счёт',
 
 ];

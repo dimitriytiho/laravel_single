@@ -28,6 +28,12 @@ thead th {
     width: auto;
     height: auto;
     margin-right: $spacer;
+    &_text {
+        padding-top: 5px;
+        max-width: 96px;
+        height: 21px;
+        overflow: hidden;
+    }
 }
 
 .btn_radio {

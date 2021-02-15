@@ -49,6 +49,14 @@ class Upload
             }
             $p .= "\$path-img: '" . config('add.img', 'img') . "';\n";
 
+            $breakpointsParams = config('add.breakpoints');
+            if ($breakpointsParams) {
+                foreach ($breakpointsParams as $k => $v) {
+                    $v = $v ? "{$v}px" : $v;
+                    $p .= "\${$k}: {$v};\n";
+                }
+            }
+
             // Записываем файл _init.scss
             $fileSassInit = resource_path('sass/config/_init.scss');
             if (File::exists(($fileSassInit))) {

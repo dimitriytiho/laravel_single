@@ -1,0 +1,54 @@
+@import "../config/mixins";
+@import "../config/blocks";
+
+
+$categoryHeight: 19rem;
+
+
+.category {
+    padding: 0;
+    &_item {
+        display: block;
+        height: $categoryHeight;
+        background-color: $white;
+        border: 1px solid $light;
+        @include transition();
+        &:hover {
+            position: relative;
+            z-index: $z-index-min - 9;
+            box-shadow: $box-shadow;
+        }
+        &__img {
+            height: $categoryHeight * .7;
+            @include flex-c();
+            &--img {
+                display: block;
+                width: auto;
+                height: auto;
+                max-width: 100%;
+                max-height: $categoryHeight * .64;
+            }
+        }
+        &__text {
+            text-align: center;
+            padding: 0 $spacer * .5;
+            &--title {
+                height: 40px;
+                margin-bottom: 2px;
+                overflow: hidden;
+            }
+        }
+    }
+}
+
+
+
+@media (max-width: $lg) {
+    .category {
+        &_item {
+            &:hover {
+                box-shadow: none;
+            }
+        }
+    }
+}

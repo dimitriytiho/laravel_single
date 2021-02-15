@@ -23,6 +23,7 @@ class ChangeUsersTable extends Migration
             //$table->foreign('role_id')->references('id')->on('roles');
             $table->string('status', 100)->default(config('admin.user_statuses')[0])->after('password');
             $table->text('note')->nullable()->after('status');
+            $table->float('score')->unsigned()->default('0');
             $table->string('ip', 100)->nullable()->after('note');
             $table->string('img')->default(config('admin.imgUserDefault'))->after('ip');
             $table->enum('accept', ['0', '1'])->default('0')->after('ip');

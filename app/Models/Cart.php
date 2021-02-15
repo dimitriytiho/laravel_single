@@ -339,7 +339,8 @@ class Cart extends App
 
                         // Если кол-во модификаторов в переданном товаре такое же как у товара в корзине и модификаторы равны
                         if (
-                            count($product->modifiers) === count($productInCart->modifiers)
+                            !empty($productInCart->modifiers)
+                            && count($product->modifiers) === count($productInCart->modifiers)
                             && strcasecmp(serialize($product->modifiers), serialize($productInCart->modifiers)) == 0
                         ) {
                             return $key;

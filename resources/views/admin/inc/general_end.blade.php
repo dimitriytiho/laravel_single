@@ -45,6 +45,7 @@
 
 @if(
     isset($values->id)
+    && Route::has("admin.{$route}.destroy")
     && !('user' === $c && $values->noAdminEditAdmin())
     && empty($relatedTableCount)
     && empty($disabledDelete)

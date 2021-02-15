@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Shop;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\View;
 use App\Http\Controllers\AppController as App;
 
 class AppController extends App
@@ -14,6 +13,6 @@ class AppController extends App
 
         $viewPath = $this->viewPath = 'shop';
 
-        View::share(compact('viewPath'));
+        view()->share(compact('viewPath'));
     }
 }

@@ -1,0 +1,160 @@
+@import "../config/mixins";
+@import "../config/blocks";
+
+.product {
+    padding: 0;
+    &_card {
+        height: 22.2rem;
+        border-color: $light;
+        border-radius: 0;
+        @include transition();
+        &:hover {
+            position: relative;
+            z-index: $z-index-min - 9;
+            box-shadow: $box-shadow;
+            .product_card_body_hide {
+                display: block;
+            }
+        }
+        &__img {
+            height: 12.5rem;
+            @include flex-c();
+            &--img {
+                display: block;
+                width: auto;
+                height: auto;
+                max-width: 100%;
+                max-height: 12.1rem;
+            }
+        }
+        &_body {
+            padding-top: $spacer * .5;
+            text-align: center;
+            &__title {
+                margin-bottom: $spacer * .2;
+                font-size: $font-size-base * 1.1;
+                height: 3.5rem;
+                overflow: hidden;
+            }
+            &__article {
+                height: 1.25rem;
+                color: $secondary;
+                &--span {
+                    font-weight: $font-weight-bold;
+                }
+            }
+            &__price {
+                @include flex-c();
+                &--now {
+                    padding-right: $spacer * .5;
+                    font-weight: $font-weight-bold;
+                    font-size: $font-size-base * 1.4;
+                }
+                &--old {
+                    height: 21px;
+                    display: inline-block;
+                    position: relative;
+                    color: $danger;
+                    &:after {
+                        content: '';
+                        display: inline-block;
+                        position: absolute;
+                        top: 45%;
+                        left: 0;
+                        width: 100%;
+                        height: 1px;
+                        transform: rotate(-10deg);
+                        background-color: $danger;
+                    }
+                }
+            }
+            &_hide {
+                display: none;
+                position: absolute;
+                left: 0;
+                right: 0;
+                background-color: $white;
+                box-shadow: $box-shadow;
+                &:after {
+                    content: '';
+                    position: absolute;
+                    top: -6px;
+                    left: 0;
+                    width: 100%;
+                    height: 10px;
+                    background-color: $white;
+                }
+            }
+            &__qty {
+                display: inline-block;
+                margin-top: $spacer;
+                background-color: $light;
+                border-radius: $border-radius-sm;
+                &--minus {
+                    padding-left: $spacer;
+                }
+                &--input {
+                    border-color: $light;
+                }
+                &--plus {
+                    padding-right: $spacer;
+                }
+            }
+            &__btn {
+                margin-top: $spacer;
+                margin-bottom: $spacer * 1.5;
+                .btn {
+                    padding-right: 2.5rem;
+                    padding-left: 2.5rem;
+                }
+            }
+        }
+    }
+}
+
+.product_show {
+    &_img {
+        width: 100%;
+        height: 360px;
+        border-radius: $border-radius;
+        @include bg-img();
+    }
+    &_cart {
+        margin-top: -3px;
+    }
+    .product_card_body__old {
+        margin-top: 12px;
+        margin-right: $spacer;
+    }
+}
+
+
+
+@media (max-width: $lg) {
+    .product {
+        &_card {
+            height: 29rem;
+            &:hover {
+                box-shadow: none;
+            }
+            &_body {
+                &_hide {
+                    display: block;
+                    position: static;
+                    box-shadow: none;
+                    &:after {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: $sm) {
+    .product_show {
+        &_img {
+            height: 220px;
+        }
+    }
+}

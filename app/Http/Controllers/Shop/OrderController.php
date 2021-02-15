@@ -91,6 +91,8 @@ class OrderController extends AppController
 
         $dataOrder['qty'] = $qty;
         $dataOrder['sum'] = $sum;
+        $dataOrder['user_source'] = session()->get('utm.source');
+        $dataOrder['user_utm'] = session()->get('utm.all');
         $dataOrder['ip'] = $request->ip();
 
 
@@ -99,6 +101,10 @@ class OrderController extends AppController
 
         //$method = Str::kebab(__FUNCTION__); // Из contactUs будет contact-us
         if ($order->save()) {
+
+            // Удалим сессию utm
+            session()->forget('utm');
+
             $orderId = $order->id;
             $data['date'] = d(time(), config('admin.date_format') ?: 'dd.MM.y HH:mm');
 
@@ -211,7 +217,7 @@ class OrderController extends AppController
 
 
             // Сообщение об успехе
-            return redirect()->route('index')->with('success', __('s.order_successfully'));
+            return redirect()->route('success_page')->with('success', __('s.order_successfully'));
         }
     }
 

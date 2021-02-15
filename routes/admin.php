@@ -43,32 +43,49 @@ Route::namespace($namespace)
         Route::get('stop-list', 'StopListController@index')->name('stop-list.index');
         Route::post('stop-list/update', 'StopListController@update')->name('stop-list.update');
 
-        // Product
+        // Shop controllers
         Route::get('export-product', 'ImportExportController@exportProduct')->name('export_product');
         Route::post('import-product', 'ImportExportController@importProduct')->name('import_product');
+
         // Category
         Route::get('export-category', 'ImportExportController@exportCategory')->name('export_category');
         Route::post('import-category', 'ImportExportController@importCategory')->name('import_category');
 
-        // Shop controllers
-        Route::resource('order', 'OrderController')->only(['index', 'show', 'update', 'destroy']);
-        Route::resource('category', 'CategoryController')->except(['show']);
-        Route::resource('product', 'ProductController')->except(['show']);
+        // Product
+        Route::resource('order', OrderController::class)->only(['index', 'show', 'update', 'destroy']);
+        Route::resource('category', CategoryController::class)->except(['show']);
+        Route::resource('product', ProductController::class)->except(['show']);
+        Route::resource('product-gallery', ProductGalleryController::class)->except(['show']);
+
+        // Filters
+        Route::resource('filter-group', FilterGroupController::class)->except(['show']);
+        Route::resource('filter', FilterController::class)->except(['show']);
 
         // Modifiers
-        Route::resource('modifier-group', 'ModifierGroupController')->except(['show']);
-        Route::resource('modifier', 'ModifierController')->except(['show']);
+        Route::resource('modifier-group', ModifierGroupController::class)->except(['show']);
+        Route::resource('modifier', ModifierController::class)->except(['show']);
 
         // Labels
-        Route::resource('label', 'LabelController')->except(['show']);
+        Route::resource('label', LabelController::class)->except(['show']);
+
+        // Brands
+        Route::resource('brand', BrandController::class)->except(['show']);
+
+        // Codes
+        Route::resource('code', CodeController::class)->except(['show']);
+
+        // Colors
+        Route::resource('color', ColorController::class)->except(['show']);
+        Route::resource('color-product', ColorProductController::class)->only(['edit', 'update']);
+
+        // Promos
+        Route::resource('promo', PromoController::class)->except(['show']);
     }
 
 
 
     // Website controllers resource
     Route::resource('form', FormController::class)->only(['index', 'show', 'destroy']);
-    Route::resource('portfolio-gallery', PortfolioGalleryController::class)->except(['show']);
-    Route::resource('portfolio', PortfolioController::class)->except(['show']);
     Route::resource('page', PageController::class)->except(['show']);
     Route::resource('user', UserController::class)->except(['show']);
     Route::resource('role', RoleController::class)->except(['show']);
@@ -76,8 +93,10 @@ Route::namespace($namespace)
     Route::resource('menu', MenuController::class)->except(['show']);
     Route::resource('setting', SettingController::class)->except(['show']);
     Route::resource('translate', TranslateController::class)->except(['show']);
-    //Route::resource('form', FormController::class);
-    //Route::resource('form', 'FormController);
+
+    // Portfolio
+    Route::resource('portfolio-gallery', PortfolioGalleryController::class)->except(['show']);
+    Route::resource('portfolio', PortfolioController::class)->except(['show']);
 
 
     // Website add controllers
@@ -96,7 +115,7 @@ Route::namespace($namespace)
     Route::get('logout', 'UserController@logout')->name('logout');
 
     // Add routes post
-    //Route::post('new-order', 'MainController@newOrder')->name('new_order');
+    Route::post('new-order', 'MainController@newOrder')->name('new_order');
     Route::post('get-slug', 'MainController@getSlug')->name('get_slug');
     Route::post('img-remove', 'ImgUploadController@remove')->name('img_remove');
     Route::post('img-upload', 'ImgUploadController@upload')->name('img_upload');

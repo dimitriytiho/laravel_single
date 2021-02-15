@@ -1,6 +1,6 @@
-@if($values->isNotEmpty())
-    <div class="row categories mt-4 mb">
-        @foreach ($values as $item)
+@if($cats->isNotEmpty())
+    <div class="row categories mt-4 mb {{ request()->is('/') ? 'slick-slider slider_simple slick_slider_arrow arrow_hide slick_slider_dots' : null }}">
+        @foreach ($cats as $item)
             <div class="col-xl-3 col-lg-4 col-md-6 a-black category">
                 <a href="{{ route('category', $item->slug) }}" class="category_item">
                     <div class="category_item__img">
@@ -17,9 +17,9 @@
 
 
         Пагинация --}}
-        @if(method_exists($values, 'links'))
+        @if(method_exists($cats, 'links'))
             <div class="col-12 mt-2 mb-5">
-                <div class="d-flex justify-content-center">{{ $values->links() }}</div>
+                <div class="d-flex justify-content-center">{{ $cats->links() }}</div>
             </div>
         @endif
     </div>

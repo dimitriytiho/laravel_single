@@ -41,21 +41,9 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row justify-content-end">
                             <div class="col-md-6">
                                 {!! input('name', 'user_edit', true, false, $values->name, true) !!}
-                            </div>
-                            <div class="col-md-6">
-                                {!! input('surname', 'user_edit', false, false, $values->surname, true, __('a.surname')) !!}
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                {!! input('patronymic', 'user_edit', false, false, $values->patronymic, true, __('a.patronymic')) !!}
-                            </div>
-                            <div class="col-md-6">
-                                {!! input('date_of_birth', 'user_edit', false, false, $values->date_of_birth, true, __('a.date_of_birth')) !!}
                             </div>
                         </div>
 
@@ -64,19 +52,21 @@
                                 {!! input('email', 'user_edit', true, 'email', $values->email, true) !!}
                             </div>
                             <div class="col-md-6">
-                                {!! input('tel', 'user_edit', false, 'tel', $values->tel, true) !!}
+                                {!! input('tel', 'user_edit', true, 'tel', $values->tel, true) !!}
                             </div>
                         </div>
 
                         {!! input('address', 'user_edit', false, false, $values->address, true) !!}
 
                         <div class="row">
-                            <div class="col-md-6">
-                                {!! input('specialization', 'user_edit', false, false, $values->specialization, true, __('a.specialization')) !!}
-                            </div>
-                            <div class="col-md-6">
-                                {!! input('discharge', 'user_edit', false, false, $values->discharge, true, __('a.discharge')) !!}
-                            </div>
+                            @if(config('shop.add_address'))
+                                @foreach(config('shop.add_address') as $item)
+                                    <div class="col-md-3 col-6">
+                                        {!! input($item, 'user_edit', false, false, $values->$item, true) !!}
+                                        {{--{!! $form::input($item, $values->$item ?? null, null, null, true, l($item, 's')) !!}--}}
+                                    </div>
+                                @endforeach
+                            @endif
                         </div>
 
                         <div class="row">

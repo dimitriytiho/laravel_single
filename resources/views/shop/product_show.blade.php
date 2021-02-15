@@ -62,7 +62,7 @@
             @if($product->categories->count())
                 @php
 
-                    $values = $product->categories;
+                    $cats = $product->categories;
 
                 @endphp
                 <h3 class="text-center mt">Категории товара</h3>
@@ -71,7 +71,7 @@
             {{--
 
             Сопутствующие товары --}}
-            @if($product->related->count())
+            {{--@if($product->related->count())
                 @php
 
                     $values = $product->related;
@@ -79,7 +79,7 @@
                 @endphp
                 <h3 class="text-center mt">Сопутствующие товары</h3>
                 @include('inc.products')
-            @endif
+            @endif--}}
         </div>
     </main>
 @endsection

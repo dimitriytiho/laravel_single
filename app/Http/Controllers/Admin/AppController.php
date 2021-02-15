@@ -31,6 +31,8 @@ class AppController extends Controller
 
     // Связанная таблица
     protected $belongTable;
+    // Связанный маршрут
+    protected $belongRoute;
 
     // Связанные таблицы
     protected $relatedTables = [];

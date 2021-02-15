@@ -145,25 +145,80 @@
                 <thead>
                 <tr>
                     <th>@lang('s.message')</th>
-                    {{--<th>@lang('s.delivery')</th>
-                    <th>@lang('s.delivery_sum')</th>--}}
                     <th>@lang('s.qty')</th>
                     <th>@lang('s.sum')</th>
-                    {{--<th>@lang('a.payment')</th>
-                    <th>@lang('a.paid')</th>--}}
-                    <th>ID</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
                     <td>{{ $values->message }}</td>
-                    {{--<td>@lang("s.{$values->delivery}")</td>
-                    <td>{{ $values->delivery_sum ?: '0' }}</td>--}}
                     <td>{{ $values->qty }}</td>
                     <td>{!! priceFormat($values->sum) !!}</td>
-                    {{--<td>@lang("s.{$values->payment}")</td>
-                    <td>{{ $values->paid ? __('a.paid') : __('a.payment_failed') }}</td>--}}
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card mt-2">
+        <div class="card-body table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>@lang('s.discount')</th>
+                    <th>@lang('s.discount_code')</th>
+                    <th>@lang('s.delivery')</th>
+                    <th>@lang('s.delivery_sum')</th>
+                    <th>@lang('a.payment')</th>
+                    <th>@lang('a.paid')</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ $values->discount ?: '0' }}</td>
+                    <td>{{ $values->discount_code }}</td>
+                    <td>@lang("s.{$values->delivery}")</td>
+                    <td>{{ $values->delivery_sum ?: '0' }}</td>
+                    <td>@lang("s.{$values->payment}")</td>
+                    <td>{{ $values->paid ? __('a.paid') : __('a.payment_failed') }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card mt-2">
+        <div class="card-body table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>@lang('s.ip')</th>
+                    <th>@lang('s.id')</th>
+                    @php
+
+                        $issetUtm = $values->user_utm && @unserialize($values->user_utm) !== false || $values->user_utm && $values->user_utm !== 'b:0;';
+
+                    @endphp
+                    @if($issetUtm)
+                        @foreach(@unserialize($values->user_utm) as $name => $value)
+                            <th>{{ l($name, 'a') }}</th>
+                        @endforeach
+                    @else
+                        <th>@lang('a.source')</th>
+                    @endif
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ $values->ip }}</td>
                     <td>{{ $values->id }}</td>
+                    @if($issetUtm)
+                        @foreach(@unserialize($values->user_utm) as $name => $value)
+                            <td>{{ $value }}</td>
+                        @endforeach
+                    @else
+                        <td>{{ $values->user_source }}</td>
+                    @endif
                 </tr>
                 </tbody>
             </table>

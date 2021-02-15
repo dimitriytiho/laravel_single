@@ -32,22 +32,22 @@ class ProductController extends AppController
             // Модификаторы
             //'modifier_groups',
 
-            // Лэйблы
-            //'labels',
+            // Цвета
+            'colors',
 
-            // Галерея
-            //'product_galleries',
+            // Фильтры
+            'filters',
+
+            // Лэйблы
+            'labels',
         ];
 
 
         // Связанные методы в моделе. Многие ко многим.
         $relatedMethods = $this->relatedMethods = [
 
-            // Аналоги
-            //'analogues',
-
             // Сопутствующие товары
-            //'related',
+            'related',
 
         ];
 
@@ -55,11 +55,8 @@ class ProductController extends AppController
         // Связанные таблицы. Многие к одному.
         $relatedManyToOne = $this->relatedManyToOne = [
 
-            // Производитель
-            //'manufacturers',
-
-            // Поставщик
-            //'providers',
+            // Бренды
+            'brands',
 
         ];
 
@@ -131,7 +128,7 @@ class ProductController extends AppController
         $rules = [
             'title' => 'required|string|max:250',
             'slug' => "required|string|unique:{$this->table}|max:250",
-            'price' => 'required|numeric',
+            'price' => 'nullable|numeric',
             'old_price' => 'nullable|numeric',
         ];
         $request->validate($rules);
@@ -155,6 +152,9 @@ class ProductController extends AppController
         }
         if (!empty($data['old_price'])) {
             $data['old_price'] = is_float($data['old_price']) ? $data['old_price'] : floatval($data['old_price']);
+        }
+        if (!empty($data['discount'])) {
+            $data['discount'] = is_float($data['old_price']) ? $data['discount'] : floatval($data['discount']);
         }
 
         // Если нет body, то ''
@@ -250,7 +250,7 @@ class ProductController extends AppController
         $rules = [
             'title' => 'required|string|max:250',
             'slug' => "required|string|unique:{$this->table},slug,{$id}|max:250",
-            'price' => 'required|numeric',
+            'price' => 'nullable|numeric',
             'old_price' => 'nullable|numeric',
         ];
         $request->validate($rules);
@@ -277,6 +277,9 @@ class ProductController extends AppController
         if (!empty($data['old_price'])) {
             $data['old_price'] = is_float($data['old_price']) ? $data['old_price'] : floatval($data['old_price']);
         }
+        if (!empty($data['discount'])) {
+            $data['discount'] = is_float($data['old_price']) ? $data['discount'] : floatval($data['discount']);
+        }
 
         // Если нет body, то ''
         if (empty($data['body'])) {
@@ -295,16 +298,6 @@ class ProductController extends AppController
         if (!empty($this->relatedMethods)) {
             foreach ($this->relatedMethods as $relatedMethod) {
                 $values->$relatedMethod()->sync($request->$relatedMethod);
-            }
-        }
-
-
-        // Связанные таблицы. Многие к одному.
-        if (!empty($this->relatedManyToOne)) {
-            foreach ($this->relatedManyToOne as $relatedMethod) {
-                if (key_exists($relatedMethod, $data) && !empty($data[$relatedMethod][0])) {
-                    $data[Str::singular($relatedMethod) . '_id'] = $data[$relatedMethod][0];
-                }
             }
         }
 

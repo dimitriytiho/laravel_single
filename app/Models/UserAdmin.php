@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMail;
 
 class UserAdmin extends User
 {
@@ -55,7 +58,8 @@ class UserAdmin extends User
     public static function saveUser(Request $request)
     {
         $data = $request->all();
-        $passwordDefault = '$2y$10$0v6wawOOs/cwp.wAPmbJNe4q3wUSnBqfV7UQL7YbpTtJE0dJ8bMKK'; // 123321q - такой пароль по-умолчанию у пользователей со статусом guest (не зарегистрированный пользователь).
+        $passwordDefault = Str::random(6); // Создаём рамдомный пароль
+        //$passwordDefault = '$2y$10$0v6wawOOs/cwp.wAPmbJNe4q3wUSnBqfV7UQL7YbpTtJE0dJ8bMKK'; // 123321q - такой пароль по-умолчанию у пользователей со статусом guest (не зарегистрированный пользователь).
 
         $data['email'] = empty($data['email']) ? null : s($data['email'], null, true);
 
@@ -112,8 +116,28 @@ class UserAdmin extends User
             $user->fill($data);
             $user->save();
 
-            // По умолчанию назначим роль Гость
-            $user->saveRoleGuest();
+            // По умолчанию назначим роль Пользователь
+            $user->saveRoleUser();
+
+            // Отправить письмо пользователю
+            try {
+                $routeLogin = route('login');
+                $title = "Вы успешно зарегистрированы на сайте " . Main::site('name');
+                $body =  <<<S
+<p>Логин: <strong>{$user->email}</strong></p>
+<p>Пароль: <strong>{$passwordDefault}</strong></p>
+<br>
+<br>
+<p><a href="{$routeLogin}">Вход в личный кабинет</a></p>
+S;
+
+                // Отправить письмо пользователям
+                Mail::to($user->email)
+                    ->send(new SendMail($title, $body));
+
+            } catch (\Exception $e) {
+                Main::getError('Error sending email', __METHOD__, false);
+            }
 
             return $user;
         }

@@ -21,7 +21,7 @@ class CreateOrderProductTable extends Migration
             $table->foreign('product_id')->references('id')->on('products');
             $table->text('message')->nullable(); // Сообщение от пользователя
             $table->text('attributes')->nullable();
-            $table->float('discount')->nullable();
+            $table->float('discount')->unsigned()->nullable();
             $table->smallInteger('qty')->unsigned()->default('1');
             $table->float('price');
             $table->softDeletes();

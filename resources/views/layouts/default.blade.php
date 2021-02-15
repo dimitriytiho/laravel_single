@@ -187,6 +187,11 @@ Bootstrap --}}
         site_email = '{{ Main::site('email') ?: ' ' }}',
         img_path = '{{ $img }}',
         main_color = '{{ config('add.scss')['primary'] ?? '#ccc' }}',
+        @if($breakpoints = config('add.breakpoints'))
+            @foreach($breakpoints as $k => $v)
+                {{ "{$k} = {$v}," }}
+            @endforeach
+        @endif
         {{--slug = '{{ str_replace('-', '_', request()->path()) }}',
         height = '{{ config('add.height') ?? 600 }}',
         cookieTime = '{{ config('admin.cookie') ?? 5184000 }}',

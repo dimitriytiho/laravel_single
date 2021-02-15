@@ -23,31 +23,28 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    {!! $form::input('type', $values->type ?? null, null) !!}
+                    {!! $form::input('price', $values->price ?? null, null, 'number', true, null, null, ['step' => '0.01', 'min' => '0']) !!}
                 </div>
                 <div class="col-md-4">
-                    {!! $form::input('consumption', $values->consumption ?? null, null) !!}
+                    {!! $form::input('old_price', $values->old_price ?? null, null, 'number', true, null, null, ['step' => '0.01', 'min' => '0']) !!}
                 </div>
                 <div class="col-md-4">
-                    {!! $form::input('weight', $values->weight ?? null, null) !!}
-                </div>
-                <div class="col-md-4">
-                    {!! $form::input('volume', $values->volume ?? null, null) !!}
-                </div>
-                <div class="col-md-4">
-                    {!! $form::select('units', config('shop.units'), $values->units ?? null) !!}
+                    {!! $form::input('discount', $values->discount ?? null, null, 'number', true, null, null, ['step' => '0.01', 'min' => '0']) !!}
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-4">
-                    {!! $form::input('price', $values->price ?? null) !!}
+                    {!! $form::input('article', $values->article ?? null, null) !!}
                 </div>
                 <div class="col-md-4">
-                    {!! $form::input('old_price', $values->old_price ?? null, null) !!}
+                    {!! $form::input('weight', $values->weight ?? null, null) !!}
                 </div>
                 <div class="col-md-4">
-                    {!! $form::input('discount', $values->discount ?? null, null) !!}
+                    {!! $form::input('size', $values->size ?? null, null) !!}
+                </div>
+                <div class="col-md-4">
+                    {!! $form::select('units', config('shop.units'), $values->units ?? null) !!}
                 </div>
             </div>
 
@@ -87,15 +84,39 @@
                     {{--
 
 
-                    Связанные таблицы. Многие к одному--}}
+                    Связанные таблицы. Многие к одному --}}
                     @if(!empty($relatedManyToOneItems))
-                        @foreach ($relatedManyToOneItems as $tableName => $items)
+                        @foreach ($relatedManyToOneItems as $itemName => $items)
                             <div class="col-md-4">
-                                {!! $form::select($tableName, $items, $values->$tableName->id ?? null, $tableName, null, ['data-placeholder' => __('s.choose')], true, null, true, 'w-100 select2_one', '<option>' . __('a.no') . '</option>', null) !!}
+                                @php
+
+                                    // Получаем название колонки как в БД
+                                    $columnName = Str::singular($itemName) . '_id';
+
+                                @endphp
+                                {!! $form::select($columnName, $items, $values->$columnName ?? null, $itemName, null, null, true, null, null, null, '<option value="0">' . __('s.choose') . '</option>') !!}
                             </div>
                         @endforeach
                     @endif
                 </div>
+                {{--
+
+                 Ссылки на редактирование цветов --}}
+                @if($values->colors->isNotEmpty())
+                    <div class="row">
+                        <div class="col-12 mt-2">
+                            <p class="font-weight-bold">{{ __('a.edit') . ' ' . Str::lower(__('a.colors')) }}</p>
+                        </div>
+                        <div class="col-12 mb-3 a-dark">
+                            @foreach($values->colors as $key => $color)
+                                <a href="{{ route('admin.color-product.edit', $color->pivot->id) }}">
+                                    <img src="{{ $color->img }}" class="img_sm" alt="{{ $color->title }}">
+                                    <div class="text-center text-sm img_sm_text">{{ $color->title }}</div>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
                 {{--
 
                 Картинка --}}

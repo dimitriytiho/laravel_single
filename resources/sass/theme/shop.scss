@@ -1,0 +1,11 @@
+@import "../config/mixins";
+@import "../config/blocks";
+
+
+.input_qty {
+    .form-control {
+        display: inline-block;
+        width: 72px;
+        text-align: center;
+    }
+}

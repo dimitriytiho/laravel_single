@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
 class PortfolioGallery extends App
 {
+    protected $guarded = ['id', 'created_at', 'updated_at']; // Запрещается редактировать
+
+
     // Обратная связь один к одному (один id и один товар)
     public function portfolio()
     {
