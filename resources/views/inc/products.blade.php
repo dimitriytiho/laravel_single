@@ -1,7 +1,7 @@
 @if($products->isNotEmpty())
     <div class="row products mt-4">
         @foreach ($products as $item)
-            <div class="col-xl-3 col-lg-4 col-md-6 product">
+            <div class="{{ empty($col9) ? 'col-xl-3 col-lg-4 col-md-6' : 'col-xl-4 col-md-6' }} product">
                 <div class="card product_card">
                     <a href="{{ route('product', $item->slug) }}" class="product_card__img">
                         <img src="{{ asset($item->img) }}" class="card-img-top product_card__img--img" alt="{{ $item->title }}">

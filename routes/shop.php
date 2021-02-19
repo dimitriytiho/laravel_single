@@ -12,6 +12,7 @@ Route::namespace(config('add.namespace_controllers') . '\\Shop')->group(function
 
     Route::post('make-order', 'OrderController@makeOrder')->name('make_order');
     Route::get('catalog', 'CategoryController@index')->name('catalog');
+    Route::post('category/{slug}', 'CategoryController@show')->name('category_post');
     Route::get('category/{slug}', 'CategoryController@show')->name('category');
     Route::get('product/{slug}', 'ProductController@show')->name('product');
 

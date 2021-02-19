@@ -54,6 +54,11 @@ class AppController extends Controller
         // Пагинация Bootstrap
         Paginator::useBootstrap();
 
+        // Определить мобильную версию
+        $detect = new \Mobile_Detect();
+        $isMobile = $detect->isMobile();
+        Main::set('isMobile', $isMobile);
+
         $this->namespaceModels = config('add.namespace_models');
         $namespaceHelpers = $this->namespaceHelpers = config('add.namespace_helpers') . '\\Admin';
         $this->viewPath = 'admin';
@@ -161,6 +166,6 @@ class AppController extends Controller
             $countTable['Order_new'] = $orders->where('status', config('admin.order_statuses')[0] ?? 'new')->count();
         }
 
-        view()->share(compact('imgRequestName', 'imgUploadID', 'namespaceHelpers', 'construct', 'form', 'dbSort', 'countTable', 'statusActive'));
+        view()->share(compact('isMobile', 'imgRequestName', 'imgUploadID', 'namespaceHelpers', 'construct', 'form', 'dbSort', 'countTable', 'statusActive'));
     }
 }

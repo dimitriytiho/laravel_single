@@ -22,9 +22,22 @@
                     <h1>{{ $title }}</h1>
                 </div>
             </div>
-            @include('inc.products')
             <div class="row">
-                <div class="col mt-4 mb">
+                {{--
+
+                Filters --}}
+                <div class="col-lg-3 mt-4">
+                    @include('inc.filters')
+                </div>
+                <div class="col-lg-9 products_js">
+                    @php
+
+                        $col9 = true;
+
+                    @endphp
+                    @include('inc.products')
+                </div>
+                <div class="col-12 mb">
                     {!! $categories->body !!}
                 </div>
             </div>

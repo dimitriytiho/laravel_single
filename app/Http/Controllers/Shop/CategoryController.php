@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Shop;
 
+use App\Models\FilterGroup;
 use App\Models\Main;
-use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 
@@ -71,25 +70,54 @@ class CategoryController extends AppController
 
     public function show($slug, Request $request)
     {
-        // Если пользователя есть разрешение к админскому классу, то будут показываться неактивные страницы
-        if (checkPermission($this->class)) {
+        // Get параметры
+        $priceFromGet = $request->query('from');
+        $priceToGet = $request->query('to');
+        $filtersGet = $request->query('filter');
+        $filtersArr = [];
+        if ($filtersGet) {
+            $filtersGet = rtrim($filtersGet, ',');
+            $filtersArr = explode(',', $filtersGet);
+        }
 
-            $categories = $this->model::with('products')
-                ->whereSlug($slug)
-                ->firstOrFail();
+        // Получаем категорию с товарами
+        $categories = $this->model::getCategoryWithProductByFilter($slug, $priceFromGet, $priceToGet, $filtersGet);
 
-        } else {
 
-            $categories = $this->model::with('products')
-                ->whereSlug($slug)
-                ->active()
-                ->firstOrFail();
 
-            $categories->savePopular; // Прибавляем популяность
+        // Принимает данные фильтра через Ajax запрос
+        if ($request->ajax()) {
+            $priceFrom = $request->priceFrom;
+            $priceTo = $request->priceTo;
+            $filters = $request->filters;
+
+            // Получаем категорию с товарами
+            $values = $this->model::getCategoryWithProductByFilter($slug, $priceFrom, $priceTo, $filters)->first();
+
+            // Товары
+            $products = new Paginator($values->products, $values->products->count(), $this->perPage);
+            $col9 = true;
+
+            // Возвщаем готовые товары
+            return view('inc.products', compact('products', 'col9'))->render();
         }
 
 
+        // Если пользователя есть разрешение к админскому классу
+        if (!checkPermission($this->class)) {
+
+            // Для пользователей
+            $categories = $categories->active(); // Будут показываться только активные страницы
+            $categories->savePopular; // Прибавляем популяность
+        }
+
+        // Если нет категории, то ошибка
+        $categories = $categories->firstOrFail();
+
+        // Товары
         $products = new Paginator($categories->products, $categories->products->count(), $this->perPage);
+        $minPrice = $priceFromGet ?: (int)$products->min('price');
+        $maxPrice = $priceToGet ?: (int)$products->max('price');
 
 
         /*
@@ -116,9 +144,24 @@ class CategoryController extends AppController
             ->get();
 
 
+        // В вид фильтров передаём фильтры
+        view()->composer('inc.filters', function ($view) {
+
+            // Кэшируем запрос в БД
+            if (cache()->has('filter_groups_with_filters')) {
+                $filterGroups = cache()->get('filter_groups_with_filters');
+            } else {
+                $filterGroups = FilterGroup::with('filters')->get();
+                cache()->forever('filter_groups_with_filters', $filterGroups);
+            }
+
+            $view->with('filterGroups', $filterGroups);
+        });
+
+
         $title = $categories->title ?? null;
         $description = $categories->description ?? null;
-        return view("{$this->viewPath}.{$this->view}_show", compact('title', 'description', 'categories', 'products', 'breadcrumbs'));
+        return view("{$this->viewPath}.{$this->view}_show", compact('title', 'description', 'categories', 'products', 'breadcrumbs', 'minPrice', 'maxPrice', 'filtersArr'));
     }
 
 

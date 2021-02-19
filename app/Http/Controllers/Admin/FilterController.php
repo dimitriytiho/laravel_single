@@ -93,7 +93,7 @@ class FilterController extends AppController
         // Передать поля для вывода, значение l - с переводом, t - дата
         $thead = [
             'title' => null,
-            'price' => null,
+            'slug' => null,
             'status' => 'l',
             'sort' => null,
             'parent_id' => null,

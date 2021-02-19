@@ -1,0 +1,8 @@
+@import "../config/mixins";
+@import "../config/blocks";
+
+
+.filter {
+    padding: $spacer;
+    border: 1px solid $light;
+}

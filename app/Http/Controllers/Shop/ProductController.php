@@ -68,8 +68,8 @@ class ProductController extends AppController
             ->add([[route('catalog') => 'catalog']])
             ->get();
 
-        $title = $values->title ?? null;
-        $description = $values->description ?? null;
+        $title = $product->title ?? null;
+        $description = $product->description ?? null;
         return view("{$this->viewPath}.{$this->c}_show", compact('title', 'description', 'product', 'breadcrumbs'));
     }
 }

@@ -23,7 +23,7 @@
 
                     <i class="far fa-compass fa-6x fa-spin text-primary py-5"></i>
 
-                    <h1 class="h3 pt-4">@lang('s.whoops_no_page')</h1>
+                    <h1 class="h4 pt-4">@lang('s.whoops_no_page')</h1>
 
                     <p class="my-5">@lang('s.you_can_go') <a href="javascript:history.back()">{{ Str::lower(__('s.back')) }},</a> @lang('s.or_go')<a href="{{ route('index') }}">@lang('s.to_home_page').</a></p>
                 </div>

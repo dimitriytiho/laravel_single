@@ -35,9 +35,9 @@ class AppServiceProvider extends ServiceProvider
 
 
         // Определить мобильную версию
-        $detect = new \Mobile_Detect();
+        /*$detect = new \Mobile_Detect();
         $isMobile = $detect->isMobile();
-        Main::set('isMobile', $isMobile);
+        Main::set('isMobile', $isMobile);*/
 
 
         // Подключаем вспомогательные библиотеки из /app/Libs
@@ -94,6 +94,6 @@ class AppServiceProvider extends ServiceProvider
 
 
         // Передаём в виды переменные
-        view()->share(compact('isMobile', 'img'));
+        view()->share(compact('img'));
     }
 }

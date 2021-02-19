@@ -7,12 +7,24 @@ document.addEventListener('DOMContentLoaded', function() {
     })
 
 
-    // fancybox
-    /*var fancybox = $('.fancybox')
-    //var fancybox = $('[data-fancybox]')
-    if (fancybox.length) {
+    // Fancybox
+    $('.fancybox').fancybox()
+    $('.fancybox_thumbs').fancybox({
+        thumbs : {
+            autoStart : true // По-умолчанию показываем эскизы
+        }
+    })
 
-        fancybox.fancybox()
-    }*/
+    // При клики на эскиз показываем галерею, начинаю с той картинки, на какую кликнули
+    $('.fancybox_click').click(function (e) {
+        var el,
+            id = $(this).data('gallery')
+
+        if (id) {
+            el = $('.fancybox_thumbs[rel=' + id + ']:eq(0)')
+            e.preventDefault()
+            el.click()
+        }
+    })
 
 }, false)

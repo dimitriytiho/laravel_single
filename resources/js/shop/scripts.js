@@ -2,9 +2,9 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     /*
-      * При клике на Plus или Minus меняем кол-во в Input.
-      * Необходимо по центру сделать input type="number" step="1" min="1" value="1", слева - span.minus, справа - span.plus.
-      */
+     * При клике на Plus или Minus меняем кол-во в Input.
+     * Необходимо по центру сделать input type="number" step="1" min="1" value="1", слева - span.minus, справа - span.plus.
+     */
     $(document).on('click', '.input_qty .minus', function() {
         var input = $(this).next('input'),
             val = input.val()
@@ -20,5 +20,11 @@ document.addEventListener('DOMContentLoaded', function() {
         input.val(val)
     })
 
+
+    // При наведении на класс .fancybox_hover показываем соответствующую блок с классом .fancybox_thumbs
+    $('.fancybox_hover').hover(function () {
+        $('.fancybox_thumbs').hide()
+        $('.fancybox_thumbs[rel=' + $(this).data('gallery') + ']').show()
+    })
 
 }, false)

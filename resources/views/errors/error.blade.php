@@ -19,7 +19,7 @@
 
                     <i class="fas fa-cog fa-6x fa-spin text-primary py-5"></i>
 
-                    <h1 class="h3 pt-4">@lang('s.Preventive_work_go')</h1>
+                    <h1 class="h4 pt-4">@lang('s.Preventive_work_go')</h1>
 
                     @if(Main::site('email'))
                         <p class="my-5">{!! __('s.Preventive_work_contact', ['email' => Main::site('email') ?: ' ']) !!}@if(Main::site('tel')) @lang('s.or_call') {{ Main::site('tel') }}@endif.</p>
