@@ -7,7 +7,7 @@
                 href="#"
                 class="nav-link link_click"
                 role="button"
-                @if($isMobile)
+                @if($isMobile ?? null)
                     data-widget="pushmenu"
                 @else
                     data-url="{{ route('admin.sidebar_mini') }}"

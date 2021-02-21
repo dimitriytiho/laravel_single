@@ -64,6 +64,7 @@ class Category extends App
                     $q->whereIn('slug', $filtersArr);
                 });
             }
+            $query->orderBy('sort')->orderBy('popular', 'desc');
         }])
             ->whereSlug($slug);
     }

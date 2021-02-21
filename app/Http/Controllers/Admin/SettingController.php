@@ -39,6 +39,7 @@ class SettingController extends AppController
         $queryArr = [
             'title',
             'value',
+            'type',
             'section',
             'id',
         ];
@@ -55,6 +56,7 @@ class SettingController extends AppController
         $thead = [
             'title' => 'l',
             'value' => null,
+            'type' => 'l',
             'section' => null,
             'id' => null,
         ];
@@ -94,6 +96,12 @@ class SettingController extends AppController
         ];
         $request->validate($rules);
         $data = $request->all();
+
+        // Если тип checkbox, то сохраним 1 или 0
+        if (isset($data['type']) && $data['type'] === (config('admin.setting_type')[1] ?? 'checkbox')) {
+            $data['value'] = empty($data['value']) ? '0' : '1';
+        }
+
 
         // Создаём экземкляр модели
         $values = new Setting();
@@ -159,6 +167,12 @@ class SettingController extends AppController
         ];
         $request->validate($rules);
         $data = $request->all();
+
+        // Если тип checkbox, то сохраним 1 или 0
+        if (isset($data['type']) && $data['type'] === (config('admin.setting_type')[1] ?? 'checkbox')) {
+            $data['value'] = empty($data['value']) ? '0' : '1';
+        }
+
 
         // Заполняем модель новыми данными
         $values->fill($data);

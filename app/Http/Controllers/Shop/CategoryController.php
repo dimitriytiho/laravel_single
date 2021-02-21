@@ -104,15 +104,18 @@ class CategoryController extends AppController
 
 
         // Если пользователя есть разрешение к админскому классу
-        if (!checkPermission($this->class)) {
+        if (!$checkPermission = checkPermission($this->class)) {
 
             // Для пользователей
             $categories = $categories->active(); // Будут показываться только активные страницы
-            $categories->savePopular; // Прибавляем популяность
         }
 
         // Если нет категории, то ошибка
         $categories = $categories->firstOrFail();
+
+        if (!$checkPermission) {
+            $categories->savePopular; // Прибавляем популяность
+        }
 
         // Товары
         $products = new Paginator($categories->products, $categories->products->count(), $this->perPage);

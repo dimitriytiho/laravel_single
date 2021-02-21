@@ -17,7 +17,7 @@ class CreateSettingsTable extends Migration
             $table->id();
             $table->string('title', 100);
             $table->index('title');
-            $table->string('type', 100)->default('string');
+            $table->string('type', 100)->default(config('admin.setting_type')[0] ?? 'string');
             $table->string('section', 100)->default('main')->nullable();
             $table->string('value')->nullable();
             $table->softDeletes();

@@ -247,5 +247,7 @@ return [
     'payment' => 'Payment',
     'hide' => 'Hide',
     'top' => 'Top',
+    'string' => 'String',
+    'remote_mode' => 'Remote mode',
 
 ];

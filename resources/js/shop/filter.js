@@ -52,8 +52,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // Отслеживаем изменение фильтров
-    $(document).on('change', '.' + filterClass + ' .filter_form input', function () {
-        var checked = $('.' + filterClass + ' .filter_form input:checked'),
+    $(document).on('change', '.' + filterClass + ' .filter_form input, .' + filterClass + ' .filter_change_js', function () {
+        var checked = $('.' + filterClass + ' .filter_form input:checked, .' + filterClass + ' .filter_change_js option:selected'),
             data = ''
 
         // Получаем отмеченные input
@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     for (var key in getFilters) {
 
                         if (key === addUrlKey) {
-                            if (addUrlValue) {
+                            if (addUrlValue && addUrlValue !== ',') {
 
                                 // В передаваемый ключ записываем новое передаваемое значение
                                 getFilters[key] = addUrlValue
@@ -177,6 +177,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     // Оправить в Url
                     history.pushState({}, '', url + (newGetParamsStr ? '?' : '') + newGetParamsStr)
+
+                    // Если пусты параметры фильтра, то перезагрузим страницу
+                    if (!newGetParamsStr) {
+                        document.location.href = url
+                    }
 
 
                 // Если передаваемого параметра нет в Url

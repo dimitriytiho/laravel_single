@@ -4,6 +4,7 @@
 namespace App\Helpers\Admin;
 
 
+use App\Models\Main;
 use Illuminate\Support\Facades\Schema;
 
 class DbSort
@@ -58,21 +59,33 @@ class DbSort
         }
 
 
+        // Показывать удалённые элементы
+        $remoteMode = Main::site('remote_mode');
+        $statusRemoved = config('add.page_statuses')[2] ?? 'removed';
+
+
         // Если нужно дополнительное условие выборки
         if ($whereColumn && $whereValue) {
 
             // Если есть строка поиска
             if ($col && in_array($col, $queryArr)) {
-                $values = $model::where($whereColumn, $whereValue)->where($col, 'LIKE', "%{$cell}%")->orderBy($columnSort, $order)->paginate($perPage);
+                $values = $model::where($whereColumn, $whereValue)
+                    ->where($col, 'LIKE', "%{$cell}%")
+                    ->orderBy($columnSort, $order);
 
                 // Иначе выборка всех элементов из БД
             } else {
 
                 // Если есть связанная таблица
                 if ($withModelMethod) {
-                    $values = $model::with($withModelMethod)->where($whereColumn, $whereValue)->orderBy($columnSort, $order)->paginate($perPage);
+                    $values = $model::with($withModelMethod)
+                        ->where($whereColumn, $whereValue)
+                        ->orderBy($columnSort, $order);
+
                 } else {
-                    $values = $model::where($whereColumn, $whereValue)->orderBy($columnSort, $order)->paginate($perPage);
+
+                    $values = $model::where($whereColumn, $whereValue)
+                        ->orderBy($columnSort, $order);
                 }
             }
 
@@ -83,24 +96,43 @@ class DbSort
 
                 // Если есть связанная таблица
                 if ($withModelMethod) {
-                    $values = $model::with($withModelMethod)->where($col, 'LIKE', "%{$cell}%")->orderBy($columnSort, $order)->paginate($perPage);
+                    $values = $model::with($withModelMethod)
+                        ->where($col, 'LIKE', "%{$cell}%")
+                        ->orderBy($columnSort, $order);
+
                 } else {
-                    $values = $model::where($col, 'LIKE', "%{$cell}%")->orderBy($columnSort, $order)->paginate($perPage);
+
+                    $values = $model::where($col, 'LIKE', "%{$cell}%")
+                        ->orderBy($columnSort, $order);
                 }
+
 
                 // Иначе выборка всех элементов из БД
             } else {
 
                 // Если есть связанная таблица
                 if ($withModelMethod) {
-                    $values = $model::with($withModelMethod)->orderBy($columnSort, $order)->paginate($perPage);
+                    $values = $model::with($withModelMethod)
+                        ->orderBy($columnSort, $order);
+
                 } else {
-                    $values = $model::orderBy($columnSort, $order)->paginate($perPage);
+
+                    $values = $model::orderBy($columnSort, $order);
                 }
             }
         }
 
-        return $values;
+        if (Schema::hasColumn($table, 'status')) {
+
+            // Показывать удалённые элементы, если выбрано в настройках remote_mode
+            if ($remoteMode) {
+                $values = $values->whereStatus($statusRemoved);
+            } else {
+                $values = $values->where('status', '!=', $statusRemoved);
+            }
+        }
+
+        return $values->paginate($perPage);
     }
 
 

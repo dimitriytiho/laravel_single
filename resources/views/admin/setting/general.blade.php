@@ -22,9 +22,21 @@
                 }
 
             @endphp--}}
-            {!! $form::input('value', $values->value ?? null, null) !!}
 
-            {!! $form::input('section', $values->section ?? null, null) !!}
+            @if(isset($values->type) && $values->type === (config('admin.setting_type')[1] ?? 'checkbox'))
+                {!! $form::checkbox('value', $values->value ?? null) !!}
+            @else
+                {!! $form::input('value', $values->value ?? null, null) !!}
+            @endif
+
+            <div class="row">
+                <div class="col-md-6">
+                    {!! $form::select('type', config('admin.setting_type'), $values->type ?? null) !!}
+                </div>
+                <div class="col-md-6">
+                    {!! $form::input('section', $values->section ?? null, null) !!}
+                </div>
+            </div>
 
             {{--
 
