@@ -251,7 +251,14 @@ return [
     'account' => 'Личный кабинет',
     'browser_details' => 'Сведения о браузере',
     'information' => 'Информация',
+    'continue_as' => 'Продолжить как:',
 
+    'reply' => 'Ответить',
+    'write' => 'Написать',
+    'text' => 'Текст',
+    'function' => 'Функция',
+    'weight' => 'Вес',
+    'action_is_not_available' => 'Это действие недоступно.',
     'courier' => 'Курьером',
     'pickup' => 'Заберу сам',
     'cash_courier' => 'Наличными',
@@ -263,5 +270,10 @@ return [
     'intercom' => 'Домофон',
     'floor' => 'Этаж',
     'score' => 'Счёт',
+    'no_sort' => 'Без сортировки',
+    'popular_asc' => 'По популярности',
+    'price_asc' => 'Цена по убыванию',
+    'price_desc' => 'Цена по возрастанию',
+    'title_asc' => 'По алфавиту',
 
 ];

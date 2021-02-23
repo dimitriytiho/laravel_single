@@ -144,8 +144,10 @@ S;
  * $disabledValue - передать значения, для которого установить атрибут disabled.
  * $option_id_value - передайте true, если передаёте массив $options, в котором ключи это id для вывода как значения для option, необязательный параметр.
  * $langFile - название файла из /resources/lang/en/t.php (этот файл по-умолчанию), необязательный параметр.
+ * $classSelect - передайте свой класс в select, необязательный параметр.
+, $classSelect = null
  */
-function select($name, $options, $idForm = null, $value = null, $label = false, $class = null, $attrs = false, $disabledValue = null, $option_id_value = null, $langFile = 't')
+function select($name, $options, $idForm = null, $value = null, $label = false, $class = null, $attrs = false, $disabledValue = null, $option_id_value = null, $langFile = 't', $classSelect = null)
 {
     $title = l($name, 's');
     $id = $idForm ? "{$idForm}_{$name}" : $name;
@@ -177,9 +179,9 @@ function select($name, $options, $idForm = null, $value = null, $label = false, 
     }
 
     return <<<S
-<div class="form-group $class">
+<div class="form-group {$class}">
     <label for="{$id}" {$label}>{$title}</label>
-    <select class="form-control" name="{$name}" id="{$id}" {$part}>
+    <select class="form-control {$classSelect}" name="{$name}" id="{$id}" {$part}>
         $opts
     </select>
 </div>

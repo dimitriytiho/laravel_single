@@ -189,4 +189,15 @@ class CategoryController extends AppController
         // Сообщение что-то пошло не так
         Main::getError("{$this->class} request", __METHOD__);
     }
+
+
+    // Записать куку сортировки товаров
+    public function sort($sort, Request $request)
+    {
+        if (in_array($sort, config('shop.sort') ?: [])) {
+            return redirect()->back()->withCookie('sort', $sort);
+        }
+        // Сообщение что-то пошло не так
+        Main::getError("{$this->class} request", __METHOD__);
+    }
 }

@@ -21,7 +21,7 @@
             </thead>
             <tbody>
             @foreach($values as $key => $item)
-                <tr @if($item->status && $item->status !== $statusActive) class="table-active"@endif>
+                <tr @if($item->status && $item->status !== $statusActive && !empty($view) && $view !== 'user') class="table-active"@endif>
                     <td class="d-flex">
                         <a href="{{ Route::has("admin.{$route}.edit") ? route("admin.{$route}.edit", $item->id) :  route("admin.{$route}.show", $item->id) }}" class="btn btn-info btn-sm mr-1 pulse" title="@lang('a.edit')">
                             <i class="fas fa-pencil-alt"></i>

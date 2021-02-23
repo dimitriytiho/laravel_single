@@ -2,6 +2,9 @@
 
 Route::namespace(config('add.namespace_controllers') . '\\Shop')->group(function () {
 
+    // Sort
+    Route::get('catalog/sort/{sort}', 'CategoryController@sort')->name('catalog_sort');
+
     // Cart
     Route::get('cart/{cart_key}/remove', 'CartController@remove')->name('cart_remove');
     Route::get('cart/{cart_key}/minus', 'CartController@minus')->name('cart_minus');

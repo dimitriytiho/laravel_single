@@ -1,13 +1,45 @@
 <section class="row filter">
-    {{--@dump($minPrice)
-    @dump($maxPrice)
-    @dump($filterGroups[0]->filters[1]->title)--}}
-    {{--
-
-
-    Цена ionRangeSlider --}}
     <div class="col-12 filter_price">
-        <input type="text" class="js_range_slider" name="filter_price" id="filter_price">
+        <div class="row">
+            {{--
+
+
+            Цена ionRangeSlider --}}
+            <div class="col-11">
+                <input type="text" class="js_range_slider" name="filter_price" id="filter_price">
+            </div>
+            {{--
+
+
+            Сортировка --}}
+            @php
+
+
+                $sortArr = config('shop.sort');
+                $sortCookie = request()->cookie('sort');
+                $noSort = config('shop.sort')[0] ?? 'no_sort';
+
+            @endphp
+            <div class="col-1 dropdown dropleft px-0 filter_sort">
+                <a type="button" id="category_sort" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="@lang('s.sort')">
+                    <i class="fas fa-sort-amount-down {{ $sortCookie && $sortCookie !== $noSort ? 'text-primary' : 'text-secondary' }}"></i>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="category_sort">
+                    @if($sortArr)
+                        @foreach($sortArr as $key => $sort)
+                            @php
+
+                                // Активный элемент сортировки
+                                $activeSort = !$sortCookie && $sort === $noSort || $sortCookie === $sort;
+                                $hrefSort = $activeSort ? null : 'href=' . route('catalog_sort', $sort);
+
+                            @endphp
+                            <a {{ $hrefSort }} class="dropdown-item {{ $activeSort ? 'active' : null }}">@lang("s.{$sort}")</a>
+                        @endforeach
+                    @endif
+                </div>
+            </div>
+        </div>
     </div>
     {{--
 
@@ -80,12 +112,12 @@
                                         @endif
                                     @endforeach
                                     @if($options)
-                                    <div class="form-group mb-0">
-                                        <label for="filter_form_{{ $group->slug }}" class="sr-only">{{ $filter->title }}</label>
-                                        <select name="{{ $group->slug }}" id="filter_form_{{ $group->slug }}" class="custom-select custom-select-sm filter_change_js">
-                                            {!! $options !!}
-                                        </select>
-                                    </div>
+                                        <div class="form-group mb-0">
+                                            <label for="filter_form_{{ $group->slug }}" class="sr-only">{{ $filter->title }}</label>
+                                            <select name="{{ $group->slug }}" id="filter_form_{{ $group->slug }}" class="custom-select custom-select-sm filter_change_js">
+                                                {!! $options !!}
+                                            </select>
+                                        </div>
                                     @endif
                                 @break
                             @endswitch

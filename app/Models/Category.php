@@ -64,7 +64,19 @@ class Category extends App
                     $q->whereIn('slug', $filtersArr);
                 });
             }
-            $query->orderBy('sort')->orderBy('popular', 'desc');
+
+            // Сортируюм товары в соответствие с кукой
+            $sort = request()->cookie('sort');
+            $noSort = config('shop.sort')[0] ?? 'no_sort';
+            if ($sort && $sort !== $noSort && in_array($sort, config('shop.sort'))) {
+                $sort = explode('_', $sort);
+                $name = $sort[0] ?? 'sort';
+                $direction = $sort[1] ?? 'asc';
+                $query->orderBy($name, $direction);
+
+            } else {
+                $query->orderBy('sort')->orderBy('popular', 'desc');
+            }
         }])
             ->whereSlug($slug);
     }

@@ -269,5 +269,10 @@ return [
     'intercom' => 'Intercom',
     'floor' => 'Floor',
     'score' => 'Score',
+    'no_sort' => 'No sorting',
+    'popular_asc' => 'By popularity',
+    'price_desc' => 'Price in descending',
+    'price_asc' => 'Price in ascending',
+    'title_asc' => 'Alphabetically',
 
 ];
