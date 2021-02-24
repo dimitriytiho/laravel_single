@@ -20,7 +20,7 @@ class CreatePromosTable extends Migration
             $table->string('slug')->unique();
             $table->timestamp('start')->nullable();
             $table->timestamp('end')->nullable();
-            $table->enum('all', ['0', '1'])->default('0'); // Все товары должны быть в чеке
+            $table->string('type')->default(config('shop.promo_type')[0] ?? 'all_products');
             $table->float('price')->unsigned()->nullable();
             $table->float('old_price')->unsigned()->nullable();
             $table->float('discount')->unsigned()->nullable();

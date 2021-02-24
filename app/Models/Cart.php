@@ -52,6 +52,17 @@ class Cart extends App
             ],
         ],
 
+        // Скидки
+        'promo_id' => 0,
+        'coupon_id' => 0,
+        'discount_sum' => 200.0,
+        'discount_percent' => 0,
+        'discount_score' => 0,
+
+        // Доставка
+        'delivery' => 'delivery_name',
+        'delivery_sum' => 300.0,
+
         // Общее кол-во, сумма в корзине
         'qty' => 1,
         'sum' => 200.50,
@@ -201,6 +212,36 @@ class Cart extends App
     }
 
 
+    /**
+     *
+     * @return bool
+     *
+     * Метод прибавляет или вычетает суммы к корзине.
+     * $sum - сумма.
+     * $options - в массиве передать параметры для сохранения в корзине, например:
+     [
+        'delivery' => 'courier',
+        'delivery_sum' => 300,
+     ].
+     * $plus - передайте false, если нужно минусовать, по-умолчанию прибавить.
+     */
+    public static function plusMinusSum($sum, array $options, $plus = true)
+    {
+        if ($plus) {
+            self::cartPlus($sum, 1, false);
+        } else {
+            self::cartMinus($sum, 1, false);
+        }
+
+        if ($options) {
+            foreach ($options as $name => $value) {
+                session()->put("cart.{$name}", $value);
+            }
+        }
+        return true;
+    }
+
+
 
     /********************** Служебные методы для работы с корзиной **********************/
 
@@ -213,8 +254,9 @@ class Cart extends App
      *
      * $sumPlus - сумма прибавляемая в корзину (сумма товара и модификаторов).
      * $qty - кол-во.
+     * $plusQty - если не нужно прибавлять кол-во, то передать false, например для доставки.
      */
-    private static function cartPlus(float $sumPlus,int $qty) {
+    private static function cartPlus(float $sumPlus, int $qty, bool $plusQty = true) {
 
         $cartSum = session()->has('cart.sum') ? session()->get('cart.sum') : 0;
         $cartQty = session()->has('cart.qty') ? session()->get('cart.qty') : 0;
@@ -226,7 +268,9 @@ class Cart extends App
 
             // Сохраним в сессию новые значения
             session()->put('cart.sum', $sum);
-            session()->put('cart.qty', $qty);
+            if ($plusQty) {
+                session()->put('cart.qty', $qty);
+            }
 
             return true;
         }
@@ -242,8 +286,9 @@ class Cart extends App
      * Кол-во в корзине также меняем.
      * $sumMinus - сумма вычитаемая из корзины (сумма товара и модификаторов).
      * $qty - кол-во.
+     * $minusQty - если не нужно вычетать кол-во, то передать false, например для доставки.
      */
-    private static function cartMinus(float $sumMinus,int $qty) {
+    private static function cartMinus(float $sumMinus, int $qty, bool $minusQty = true) {
 
         $cartSum = session()->has('cart.sum') ? session()->get('cart.sum') : 0;
         $cartQty = session()->has('cart.qty') ? session()->get('cart.qty') : 0;
@@ -254,7 +299,10 @@ class Cart extends App
 
             // Сохраним в сессию новые значения
             session()->put('cart.sum', $sum);
-            session()->put('cart.qty', $qty);
+            if ($minusQty) {
+                session()->put('cart.qty', $qty);
+            }
+
             return true;
         }
         return false;

@@ -66,35 +66,38 @@ class OrderController extends AppController
         $cart = session()->has('cart') ? session('cart') : [];
 
         // Данные для таблицы orders
-        $qty = session()->has('cart.qty') ? (int)session('cart.qty') : null;
-        $sum = session()->has('cart.sum') ? (float)session('cart.sum') : null;
         $dataOrder['user_id'] = $userId;
+        $dataOrder['ip'] = $request->ip();
 
         if (!empty($data['message'])) {
             $dataOrder['message'] = s($data['message']);
         }
 
-        $deliveryBase = config('shop.delivery')[0]['title'] ?? null;
-        $dataOrder['delivery'] = !empty($data['delivery']) ? s($data['delivery']) : $deliveryBase;
-        if (!empty($data['delivery_sum']) && (int)$data['delivery_sum']) {
-            $dataOrder['delivery_sum'] = (int)$data['delivery_sum'];
-
-            // Если приходит доставка, то прибавим её к сумме, т.к. она подставляется через JS
-            $sum = $sum + $dataOrder['delivery_sum'];
-        }
-        if (!empty($data['discount'])) {
-            $dataOrder['discount'] = s($data['discount']);
-        }
-        if (!empty($data['discount_code'])) {
-            $dataOrder['discount_code'] = s($data['discount_code']);
+        // Сохраняем элементы корзины кроме товаров
+        if ($cart) {
+            foreach ($cart as $cartElement => $value) {
+                if ('products' !== $cartElement) {
+                    $dataOrder[$cartElement] = $value;
+                }
+            }
         }
 
-        $dataOrder['qty'] = $qty;
-        $dataOrder['sum'] = $sum;
-        $dataOrder['user_source'] = session()->get('utm.source');
-        $dataOrder['user_utm'] = session()->get('utm.all');
-        $dataOrder['ip'] = $request->ip();
+        // UTM метка
+        if (session()->has('utm.source')) {
+            $dataOrder['user_source'] = session()->get('utm.source');
+        }
+        if (session()->has('utm.all')) {
+            $dataOrder['user_utm'] = session()->get('utm.all');
+        }
 
+        // Если приходит доставка, то прибавим её к сумме, т.к. она подставляется через JS
+        if (!empty($data['delivery'])) {
+            $dataOrder['delivery'] = $data['delivery'];
+        }
+        if (!empty($data['delivery_sum'])) {
+            $dataOrder['delivery_sum'] = $data['delivery_sum'];
+            $dataOrder['sum'] = ($dataOrder['sum'] ?? 0) + $dataOrder['delivery_sum'];
+        }
 
         $order = new Order();
         $order->fill($dataOrder);

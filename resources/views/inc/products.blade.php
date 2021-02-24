@@ -2,6 +2,30 @@
     <div class="row products mt-4">
         @foreach ($products as $item)
             <div class="{{ empty($col9) ? 'col-xl-3 col-lg-4 col-md-6' : 'col-xl-4 col-md-6' }} product">
+                {{--
+
+                Labels --}}
+                @if($item->labels->isNotEmpty())
+                    <div class="product_label">
+                        @foreach($item->labels as $label)
+                            @if($statusActive === $label->status)
+                                @php
+
+                                    $labelColor = $label->color ? "style='background-color: {$label->color};'" : null;
+
+                                @endphp
+                                <div class="product_label__item {{ $labelColor ? 'text-white' : null }}" {!! $labelColor !!}>
+                                    @if($label->icon)
+                                        <i class="{{ $label->icon }} product_label__item--i"></i>
+                                    @endif
+                                    @if($label->title)
+                                        <span class="product_label__item--title">{{ $label->title }}</span>
+                                    @endif
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                @endif
                 <div class="card product_card">
                     <a href="{{ route('product', $item->slug) }}" class="product_card__img">
                         <img src="{{ asset($item->img) }}" class="card-img-top product_card__img--img" alt="{{ $item->title }}">
@@ -38,8 +62,8 @@
 
         Пагинация --}}
         @if(method_exists($products, 'links'))
-            <div class="col-12 mt-2 mb-5">
-                <div class="d-flex justify-content-center">{{ $products->links() }}</div>
+            <div class="col-12 mt-4 mb-5">
+                <div class="d-flex justify-content-center">{{ $products->withQueryString()->links() }}</div>
             </div>
         @endif
     </div>

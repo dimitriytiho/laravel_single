@@ -51,6 +51,9 @@ class Category extends App
         $self = new self();
         return $self->model::with(['products' => function ($query) use ($priceFrom, $priceTo, $filters) {
 
+            // Только активные товары
+            $query->active();
+
             // Товары с учётом цены
             if ($priceFrom && $priceTo) {
                 $query->whereBetween('price', [$priceFrom, $priceTo]);
@@ -58,12 +61,17 @@ class Category extends App
 
             // Товары с учётом фильтров
             if ($filters) {
+                $filters = str_replace(',', '%2C', $filters);
                 $filters = rtrim($filters, ',');
                 $filtersArr = explode(',', $filters);
                 $query->whereHas('filters', function ($q) use ($filtersArr) {
                     $q->whereIn('slug', $filtersArr);
                 });
             }
+            
+
+            // Дополнительно получаем Labels
+            $query->with('labels');
 
             // Сортируюм товары в соответствие с кукой
             $sort = request()->cookie('sort');

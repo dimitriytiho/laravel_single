@@ -22,8 +22,12 @@ class CreateOrdersTable extends Migration
             $table->text('message')->nullable(); // Сообщение от пользователя
 
             // Скидки
-            $table->float('discount')->unsigned()->nullable();
-            $table->string('discount_code')->nullable();
+            $table->bigInteger('promo_id')->unsigned()->nullable();
+            $table->foreign('promo_id')->references('id')->on('promos');
+            $table->bigInteger('coupon_id')->unsigned()->nullable();
+            $table->foreign('coupon_id')->references('id')->on('coupons');
+            $table->float('discount_sum')->unsigned()->nullable();
+            $table->float('discount_percent')->unsigned()->nullable();
             $table->float('discount_score')->unsigned()->default('0');
 
             // Доставка

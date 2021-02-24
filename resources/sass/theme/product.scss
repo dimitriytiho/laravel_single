@@ -10,7 +10,7 @@
         @include transition();
         &:hover {
             position: relative;
-            z-index: $z-index-min - 9;
+            z-index: $z-index-min - 6;
             box-shadow: $box-shadow;
             .product_card_body_hide {
                 display: block;
@@ -108,6 +108,30 @@
                     padding-left: 2.5rem;
                 }
             }
+        }
+    }
+}
+
+.product_label {
+    position: absolute;
+    top: $spacer * .3;
+    left: $spacer * .4;
+    z-index: $z-index-min - 5;
+    &__item {
+        margin-top: $spacer * .1;
+        width: 7.2rem;
+        height: 1.6rem;
+        font-size: $font-size-base * .9;
+        border-radius: $border-radius-sm;
+        white-space: nowrap;
+        overflow: hidden;
+        @include flex-c();
+        &--i {
+            font-size: $font-size-base * .8;
+        }
+        &--title {
+            padding-left: $spacer * .4;
+            padding-right: $spacer * .4;
         }
     }
 }

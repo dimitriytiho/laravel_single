@@ -41,6 +41,7 @@ class LabelController extends AppController
         $queryArr = [
             'title',
             'icon',
+            'color',
             'status',
             'sort',
             'id',
@@ -90,8 +91,8 @@ class LabelController extends AppController
     public function store(Request $request)
     {
         $rules = [
-            'title' => 'required|string|max:250',
-            'icon' => 'required|string|max:250',
+            //'title' => 'required|string|max:250',
+            //'icon' => 'required|string|max:250',
         ];
         $request->validate($rules);
         $data = $request->all();
@@ -153,8 +154,8 @@ class LabelController extends AppController
         $values = $this->model::findOrFail($id);
 
         $rules = [
-            'title' => 'required|string|max:250',
-            'icon' => 'required|string|max:250',
+            //'title' => 'required|string|max:250',
+            //'icon' => 'required|string|max:250',
         ];
         $request->validate($rules);
         $data = $request->all();

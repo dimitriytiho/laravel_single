@@ -58,7 +58,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Получаем отмеченные input
         checked.each(function () {
-            data += this.value + ','
+            if (this.value) {
+                data += this.value + '%2C'
+            }
         })
 
         // Добавляем фильтры в Url
@@ -155,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     for (var key in getFilters) {
 
                         if (key === addUrlKey) {
-                            if (addUrlValue && addUrlValue !== ',') {
+                            if (addUrlValue && addUrlValue !== '%2C') {
 
                                 // В передаваемый ключ записываем новое передаваемое значение
                                 getFilters[key] = addUrlValue

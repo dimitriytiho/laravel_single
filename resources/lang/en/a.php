@@ -250,4 +250,8 @@ return [
     'string' => 'String',
     'remote_mode' => 'Remote mode',
 
+    'all_products' => 'The cart contains all the promo products',
+    'one_product' => 'The cart contains one product from the promo',
+    'product_as_gift' => 'Если сумма в корзине соответстует цене, то в подарок товар из акции',
+
 ];

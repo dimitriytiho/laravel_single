@@ -31,7 +31,7 @@ class CartController extends AppController
     {
         $noBtnModal = true;
 
-        //dump($cartSession);
+        //dump(session('cart'));
         //session()->forget('cart');
 
         $title = __('s.cart');

@@ -248,6 +248,10 @@ return [
     'hide' => 'Скрыть',
     'top' => 'Лучший',
     'string' => 'Строка',
-    'remote_mode' => 'Режим удаленных',
+    'remote_mode' => 'Режим удалённых',
+
+    'all_products' => 'В корзине все товары акции',
+    'one_product' => 'В корзине один товар из акции',
+    'product_as_gift' => 'If the amount in the cart corresponds to the price, then the gift is a product from the promo',
 
 ];
