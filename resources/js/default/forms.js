@@ -36,3 +36,9 @@ $(document).on('submit', '.spinner_submit', function() {
         .addClass('disabled')
         .prepend(spinnerBtn)
 })
+
+
+// При изменение формы отправить её
+$(document).on('change', '.change_submit', function() {
+    $(this).submit()
+})

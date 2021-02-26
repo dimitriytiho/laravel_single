@@ -52,16 +52,6 @@ class Cart extends App
             ],
         ],
 
-        // Скидки
-        'promo_id' => 0,
-        'coupon_id' => 0,
-        'discount_sum' => 200.0,
-        'discount_percent' => 0,
-        'discount_score' => 0,
-
-        // Доставка
-        'delivery' => 'delivery_name',
-        'delivery_sum' => 300.0,
 
         // Общее кол-во, сумма в корзине
         'qty' => 1,

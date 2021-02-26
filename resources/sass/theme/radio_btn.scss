@@ -1,0 +1,76 @@
+@import "../config/mixins";
+@import "../config/blocks";
+
+
+.radio_btn {
+    label {
+        min-width: 200px;
+        padding: $spacer * 2.5 $spacer $spacer $spacer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: rgba($white, .05);
+        color: $primary;
+        border: 1px solid $white;
+        border-radius: $border-radius;
+        cursor: pointer;
+        i {
+            padding-bottom: $spacer * .5;
+            font-size: 42px;
+        }
+        &:before,
+        &:after {
+            top: $spacer;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    }
+    &.active label {
+        color: $primary;
+        border: 1px solid $primary;
+    }
+}
+
+
+
+@media (max-width: 768px) {
+    .radio_btn {
+        label {
+            min-width: 100px;
+        }
+        &.custom-control {
+            padding-left: 0;
+        }
+        label {
+            i {
+                padding-bottom: $spacer * .3;
+                font-size: 36px;
+            }
+            span {
+                font-size: $font-size-base-sm;
+            }
+        }
+    }
+}
+
+@media (max-width: 380px) {
+    .radio_btn {
+        label {
+            min-width: 60px;
+            padding: $spacer * 1.8 $spacer * .5 $spacer * .5 $spacer * .5;
+            &:before,
+            &:after {
+                top: $spacer * .5;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            i {
+                padding-bottom: $spacer * .2;
+                font-size: 30px;
+            }
+            span {
+                font-size: $font-size-base * .68;
+            }
+        }
+    }
+}

@@ -144,6 +144,10 @@ Google ReCaptcha --}}
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {{--
 
+Bootstrap --}}
+<script src="//cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+{{--
+
 
 CDN ленивой загрузки картинок --}}
 {{--<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>--}}
@@ -170,10 +174,6 @@ jquery-validation --}}
     {{--<script src="{{ asset('js/fancybox/jquery.fancybox.min.js') }}" defer></script>
     <script src="{{ asset('js/fancybox/localization/ru.min.js') }}" defer></script>--}}
 {{--@endif--}}
-{{--
-
-Bootstrap --}}
-<script src="//cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous" defer></script>
 {{--<script src="{{ asset('js/svg4everybody.min.js') }}"></script>--}}
 <script>
     {{--svg4everybody()--}}

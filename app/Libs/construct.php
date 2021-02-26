@@ -289,6 +289,50 @@ S;
 
 
 /*
+ * Возвращает radio в виде иконок для формы.
+ * $name - передать название, перевод будет взять из /app/Modules/lang/en/f.php.
+ * $value - значение radio элемента.
+ * $idForm - если используется несколько форм на странице, то передайте id формы, чтобы id оригинальные.
+ * $required - если необязательный, то передайте null, необязательный параметр.
+ * $checked - Если checkbox должен быть нажат, то передайте true, необязательный параметр.
+ * $class - Передайте свой класс, необязательный параметр.
+ * $title - Можно передать свой заголовок, например с ссылкой, необязательный параметр.
+ * $icon - Классы для иконки fontawesome, необязательный параметр.
+ * $attrs - передайте атрибуты строкой или в массиве ['id' => 'test', 'data-id' => 'dataTest', 'novalidate' => ''], необязательный параметр.
+ */
+function radioBtn($name, $value, $idForm = false, $required = true, $checked = false, $class = false, $title = false, $icon = false, $attrs = false)
+{
+    $_title = l($name, 's');
+    $title = $title ?: $_title;
+    $id = $idForm ? "{$idForm}_{$name}_{$value}" : $name;
+
+    $checked = $checked || old($name) ? 'checked' : null;
+    $checkedClass = $checked ? 'active' : null;
+    $required = $required ? 'required' : null;
+
+    $icon = $icon ? "<i class=\"{$icon}\"></i>" : null;
+    $part = '';
+    if ($attrs && is_array($attrs)) {
+        foreach ($attrs as $k => $v) {
+            $part .= "{$k}='{$v}' ";
+        }
+    } else {
+        $part = $attrs;
+    }
+
+    return <<<S
+<div class="custom-control custom-radio custom-control-inline my-1 radio_btn $checkedClass {$class}" {$part}>
+    <input type="radio" class="custom-control-input" id="{$id}" name="{$name}" value="{$value}" $checked {$required}>
+    <label class="custom-control-label" for="{$id}">
+        $icon
+        <span>{$title}</span>
+    </label>
+</div>
+S;
+}
+
+
+/*
  * Возвращает скрытый input для формы.
  * $name - Передать имя input.
  * $value - Значение, необязательный параметр.

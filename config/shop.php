@@ -79,12 +79,16 @@ return [
         0 => [
             'title' => 'pickup',
             'icon' => 'fas fa-street-view',
+            'delivery' => false,
         ],
 
         // Курьером (должен быть вторым в этом массиве!)
         1 => [
             'title' => 'courier',
             'icon' => 'fas fa-running',
+            'delivery' => true,
+            'sum' => 300,
+            'free_after' => 3000,
         ],
     ],
 

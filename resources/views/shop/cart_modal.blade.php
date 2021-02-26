@@ -29,15 +29,15 @@
                             <a href="{{ route('product', $cartProduct->slug) }}">{{ $cartProduct->title }}</a>
                         </td>
                         <td class="min-w150">
-                            <a href="{{ route('cart_minus', $key) }}" class="btn cart_minus one_click" data-cart-key="{{ $key }}">
+                            <a href="{{ route('cart_minus', $key) }}" class="btn px-3 cart_minus one_click" data-cart-key="{{ $key }}">
                                 <i class="fas fa-minus" title="@lang('s.minus')"></i>
                             </a>
                             <span class="cart_modal_product_qty">{{ $cartProduct->qty }}</span>
-                            <a href="{{ route('cart_plus', $key) }}" class="btn cart_plus one_click" data-cart-key="{{ $key }}">
+                            <a href="{{ route('cart_plus', $key) }}" class="btn px-3 cart_plus one_click" data-cart-key="{{ $key }}">
                                 <i class="fas fa-plus" title="@lang('s.plus')"></i>
                             </a>
                         </td>
-                        <td class="min-w100">{!! priceFormat($cartProduct->sum * $cartProduct->qty) !!}</td>
+                        <th class="min-w100">{!! priceFormat($cartProduct->sum * $cartProduct->qty) !!}</th>
                         <td class="w-3">
                             <a href="{{ route('cart_remove', $key) }}" aria-label="@lang('s.Close')" class="cart_remove one_click" data-cart-key="{{ $key }}" aria-hidden="true">
                                 <i class="fas fa-times"></i>
@@ -45,18 +45,21 @@
                         </td>
                     </tr>
                 @endforeach
+                {{--
+
+                Кол-во и сумма --}}
                 @if(session()->has('cart.qty'))
                     <tr>
-                        <th colspan="3">@lang('s.qty'):</th>
+                        <td colspan="3">@lang('s.qty'):</td>
                         <th id="cart_modal_qty">{{ session('cart.qty') }}</th>
-                        <th></th>
+                        <td></td>
                     </tr>
                 @endif
                 @if(session()->has('cart.sum'))
                     <tr>
-                        <th colspan="3">@lang('s.sum'):</th>
+                        <td colspan="3">@lang('s.sum'):</td>
                         <th id="cart_modal_sum" data-sum="{{ session('cart.sum') }}">{!! priceFormat(session('cart.sum')) !!}</th>
-                        <th></th>
+                        <td></td>
                     </tr>
                 @endif
             @endif

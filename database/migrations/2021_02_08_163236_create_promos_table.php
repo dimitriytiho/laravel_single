@@ -26,7 +26,7 @@ class CreatePromosTable extends Migration
             $table->float('discount')->unsigned()->nullable();
             $table->text('description')->nullable();
             $table->text('body')->nullable();
-            $table->string('status', 32)->default(config('add.page_statuses')[0]);
+            $table->string('status', 100)->default(config('add.page_statuses')[0]);
             $table->smallInteger('sort')->unsigned()->default('500');
             $table->string('img')->nullable()->default(config('admin.imgProductDefault'));
             $table->softDeletes();

@@ -24,4 +24,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     })
 
+
+    // Добавляем класс .active к выбранной радиокнопке, меняем c id = name от радиокнопки_title: заголовок и add
+    /*$('.radio_btn').change(function () {
+        var self = $(this),
+            name = self.find('input').attr('name'),
+            title = self.find('span').text(),
+            add = self.data('add')
+
+        self.parent().find('.radio_btn').removeClass('active')
+        self.addClass('active')
+        $('#' + name + '_title').text(title)
+        $('#' + name + '_add').text(add)
+    })*/
+
 }, false)

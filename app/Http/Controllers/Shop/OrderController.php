@@ -41,8 +41,21 @@ class OrderController extends AppController
             'name' => 'required|string|max:250',
             'tel' => "required|tel|max:250",
             'email' => 'required|string|email|max:250',
-            'accept' => 'accepted',
         ];
+
+        // Для доставки добавляем адрес
+        if(session()->has('delivery.delivery') && session('delivery.delivery')) {
+            $rules += [
+                'address' => 'required|string|max:250',
+            ];
+        }
+
+        // Для не авторизированных добавляем согласие на обработку данных
+        if (!auth()->check()) {
+            $rules += [
+                'accept' => 'accepted',
+            ];
+        }
 
         // Если есть ключ Recaptcha и не локально запущен сайт
         if (config('add.env') !== 'local' && config('add.recaptcha_public_key')) {
@@ -91,11 +104,11 @@ class OrderController extends AppController
         }
 
         // Если приходит доставка, то прибавим её к сумме, т.к. она подставляется через JS
-        if (!empty($data['delivery'])) {
-            $dataOrder['delivery'] = $data['delivery'];
+        if (session()->has('delivery.title')) {
+            $dataOrder['delivery'] = session('delivery.title');
         }
-        if (!empty($data['delivery_sum'])) {
-            $dataOrder['delivery_sum'] = $data['delivery_sum'];
+        if (session()->has('delivery.sum')) {
+            $dataOrder['delivery_sum'] = session('delivery.sum');
             $dataOrder['sum'] = ($dataOrder['sum'] ?? 0) + $dataOrder['delivery_sum'];
         }
 
@@ -222,6 +235,71 @@ class OrderController extends AppController
             // Сообщение об успехе
             return redirect()->route('success_page')->with('success', __('s.order_successfully'));
         }
+    }
+
+
+    /*
+
+     Доставка
+     'delivery' => [
+            'name' => 'delivery_name',
+            'sum' => 300.0,
+        ]
+
+     */
+    public function delivery(Request $request)
+    {
+        $current = $request->delivery;
+        $deliveryAll = config('shop.delivery');
+        $delivery = null;
+
+        // Найдём данные по доставке
+        if ($current && $deliveryAll) {
+            foreach ($deliveryAll as $value) {
+                if (!empty($value['title'])&& $value['title'] === $current) {
+                    $delivery = $value;
+                    break;
+                }
+            }
+            if ($delivery) {
+
+                // Если сумма бесплатного лимита доставки больше суммы в корзине, то доставка бесплатная
+                if (isset($delivery['sum'])) {
+                    $deliverySum = isset($delivery['free_after']) && session()->has('cart.sum') && session('cart.sum') < $delivery['free_after'] ? $delivery['sum'] : 0;
+                } else {
+                    $deliverySum = 0;
+                }
+
+                // Запишем в сессию
+                session()->put('delivery.title', $current);
+                session()->put('delivery.sum', $deliverySum);
+                session()->put('delivery.delivery', !empty($delivery['delivery']));
+
+                return redirect()->route('cart');
+            }
+        }
+        Main::getError('Request', __METHOD__);
+    }
+
+
+    /*
+
+     Скидки
+     'discount' => [
+            'promo_id' => 0,
+            'coupon_id' => 0,
+            'discount_sum' => 200.0,
+            'discount_percent' => 0,
+            'discount_score' => 0,
+        ]
+
+     */
+    public function promo(Request $request)
+    {
+        if ($request->ajax()) {
+            $promo = $request->promo;
+        }
+        die;
     }
 
 
