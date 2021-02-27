@@ -69,27 +69,34 @@
             {{--
 
             Хлебные крошки --}}
-            @isset($breadcrumbs)
+            @if(!request()->is('/'))
                 <div class="container mt-3">
                     <div class="row">
                         <div class="col">
-                            <nav aria-label="breadcrumb">
-                                <ol class="breadcrumb">
-                                    @foreach($breadcrumbs as $item)
-                                        @if($item['end'])
-                                            <li class="breadcrumb-item active" aria-current="page">{{ $item['title'] }}</li>
-                                        @else
-                                            <li class="breadcrumb-item">
-                                                <a href="{{ $item['link'] }}">{{ $item['title'] }}</a>
-                                            </li>
-                                        @endif
-                                    @endforeach
+                            <nav aria-label="breadcrumb" class="d-flex justify-content-center">
+                                <ol class="breadcrumb text-sm a-black">
+                                    @if(isset($breadcrumbs))
+                                        @foreach($breadcrumbs as $item)
+                                            @if($item['end'])
+                                                <li class="breadcrumb-item active" aria-current="page">{{ $item['title'] }}</li>
+                                            @else
+                                                <li class="breadcrumb-item">
+                                                    <a href="{{ $item['link'] }}">{{ $item['title'] }}</a>
+                                                </li>
+                                            @endif
+                                        @endforeach
+                                    @else
+                                        <li class="breadcrumb-item">
+                                            <a href="{{ route('index') }}">@lang('s.home')</a>
+                                        </li>
+                                        <li class="breadcrumb-item active" aria-current="page">@section('titleSeo') @show</li>
+                                    @endif
                                 </ol>
                             </nav>
                         </div>
                     </div>
                 </div>
-            @endisset
+            @endif
 
             @yield('content')
         </div>

@@ -21,7 +21,7 @@ return [
     'orders' => 'Orders',
     'forms' => 'Forms',
     'categories' => 'Categories',
-    'Products' => 'Products',
+    'products' => 'Products',
     'Files' => 'Files',
     'db_builder' => 'Db builder',
     'file_manager' => 'File manager',
