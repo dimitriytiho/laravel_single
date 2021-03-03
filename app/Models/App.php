@@ -53,6 +53,21 @@ class App extends Model
     }
 
 
+    /*
+     * Проверить в scope: сейчас попадает ли в промежуток времени.
+     * 
+     * Использование ->betweenTime()
+     */
+    public function scopeBetweenTime($query)
+    {
+        $now = date('Y-m-d h:i:s');
+        return $query
+            ->where('start', '<', $now)
+            ->where('end', '>', $now);
+    }
+    
+
+
     // Записываем в БД популярность, т.е. прибавляем 1, когда пользователь открывает элемент, только один раз, используем сессию, вызов $values->savePopular;.
     protected function getSavePopularAttribute()
     {

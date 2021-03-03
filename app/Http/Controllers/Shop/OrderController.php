@@ -3,15 +3,10 @@
 namespace App\Http\Controllers\Shop;
 
 use App\Mail\SendMail;
-use App\Models\Main;
-use App\Models\Order;
-use App\Models\UserAdmin;
+use App\Models\{Coupon, Main, Order, Promo, UserAdmin};
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Str;
+use Illuminate\Support\{Carbon, Str};
+use Illuminate\Support\Facades\{DB, Mail, View};
 use App\Helpers\Str as HelpersStr;
 
 class OrderController extends AppController
@@ -102,6 +97,36 @@ class OrderController extends AppController
         if (session()->has('utm.all')) {
             $dataOrder['user_utm'] = session()->get('utm.all');
         }
+
+
+        // Акции
+        if (session()->has('promo.score')) {
+            $dataOrder['discount_score'] = session('promo.score');
+
+            // Уменьшить у пользователя счёт
+            $user->score = $user->score - $dataOrder['discount_score'];
+            $user->update();
+        }
+        if (session()->has('promo.coupon_id')) {
+            $dataOrder['coupon_id'] = session('promo.coupon_id');
+
+            // Сделать купон не автивным
+            $coupon = Coupon::find($dataOrder['coupon_id']);
+            if ($coupon) {
+                $coupon->status = config('add.page_statuses')[0] ?? 'inactive';
+                $coupon->update();
+            }
+        }
+        if (session()->has('promo.promo_id')) {
+            $dataOrder['promo_id'] = session('promo.promo_id');
+        }
+        if (session()->has('promo.percent')) {
+            $dataOrder['discount_percent'] = session('promo.percent');
+        }
+        if (session()->has('promo.sum')) {
+            $dataOrder['discount_sum'] = session('promo.sum');
+        }
+
 
         // Если приходит доставка, то прибавим её к сумме, т.к. она подставляется через JS
         if (session()->has('delivery.title')) {
@@ -240,6 +265,122 @@ class OrderController extends AppController
 
     /*
 
+     Скидки
+     'promo' = [
+        'title',
+        'promo_id',
+        'coupon_id',
+        'score', // Счёт пользователя
+        'percent', // Процент скидки
+        'sum', // Сумма скидки
+        'products_id', // Подарочные товары
+        'qty', // Кол-во подарочных товаров
+    ];
+
+     */
+    public function promo(Request $request)
+    {
+        //dd($request->all());
+        $promo = $request->promo;
+        //$promo_id = $request->promo_id;
+        $coupon = $request->coupon;
+        $promos = config('shop.promo_type');
+        $promoOut = [
+            'title' => null,
+            'promo_id' => null,
+            'coupon_id' => null,
+            'score' => null,
+            'percent' => null,
+            'sum' => null,
+            'products_id' => null,
+            'qty' => null,
+        ];
+
+        // Сброс акций
+        if ($promo === 'reset') {
+
+            // Удаляем сессию promo
+            session()->forget('promo');
+
+            return redirect()->route('cart');
+        }
+
+
+        // Проверяем счёт
+        elseif ($promo === 'score' && auth()->check()) {
+            $promoOut['title'] = 'score';
+            $promoOut['score'] = auth()->user()->score;
+            $promoOut['sum'] = Promo::discountMax($promoOut['score']);
+
+            // Запишем сессию акций
+            session()->put('promo', $promoOut);
+
+            return redirect()->route('cart');
+        }
+
+
+        // Проверяем купон
+        elseif ($coupon) {
+            $couponOb = Coupon::whereTitle($coupon)
+                ->active()
+                ->betweenTime();
+            if ($couponOb) {
+                $promoOut['coupon_id'] = $couponOb->id;
+                $promoOut['title'] = 'coupon';
+
+                // Если процент
+                if ($couponOb->discount) {
+                    $promoOut['sum'] = Promo::discountMax($couponOb->discount, true);
+
+                    // Если сумма
+                } else {
+                    $promoOut['sum'] = Promo::discountMax($couponOb->price);
+                }
+
+                // Запишем сессию акций
+                session()->put('promo', $promoOut);
+
+                return redirect()->route('cart');
+            }
+        }
+
+
+        // Проверяем акцию
+        elseif (in_array($promo, $promos)) {
+
+            // Получаем первую акцию по типу по сортировке
+            $promoOb = Promo::active()
+                ->betweenTime()
+                ->orderBy('sort')
+                ->whereType($promo)
+                ->first();
+
+            if ($promoOb) {
+
+                // Расчёт для акции
+                $method = 'calc' . Str::studly($promoOb->type);
+                if (method_exists('\App\Models\Promo', $method)) {
+                    $promoOut['title'] = $promo;
+                    $promoOut['promo_id'] = $promoOb->id;
+                    $promoTotal = Promo::$method($promoOb);
+                    $promoOut['products_id'] = $promoTotal['products_id'] ?? null;
+                    $promoOut['qty'] = $promoTotal['qty'] ?? null;
+                    $promoOut['sum'] = Promo::discountMax($promoTotal['sum'] ?? null);
+
+                    // Запишем сессию акций
+                    session()->put('promo', $promoOut);
+
+                    return redirect()->route('cart');
+                }
+            }
+        }
+
+        Main::getError('Request', __METHOD__);
+    }
+
+
+    /*
+
      Доставка
      'delivery' => [
             'name' => 'delivery_name',
@@ -280,28 +421,6 @@ class OrderController extends AppController
         }
         Main::getError('Request', __METHOD__);
     }
-
-
-    /*
-
-     Скидки
-     'discount' => [
-            'promo_id' => 0,
-            'coupon_id' => 0,
-            'discount_sum' => 200.0,
-            'discount_percent' => 0,
-            'discount_score' => 0,
-        ]
-
-     */
-    public function promo(Request $request)
-    {
-        if ($request->ajax()) {
-            $promo = $request->promo;
-        }
-        die;
-    }
-
 
 
     /*public function getPaymentSberbank(Request $request)

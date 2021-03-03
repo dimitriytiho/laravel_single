@@ -58,6 +58,25 @@ class Cart extends App
         'sum' => 200.50,
     ];
 
+
+    // Массив акций
+    $promo = [
+        'title',
+        'promo_id',
+        'coupon_id',
+        'score', // Счёт пользователя
+        'percent', // Процент скидки
+        'sum', // Сумма скидки
+        'products_id', // Подарочные товары
+        'qty', // Кол-во подарочных товаров
+    ];
+
+    // Массив доставки
+    $delivery = [
+        'title',
+        'sum',
+    ];
+
     */
 
 
@@ -363,7 +382,7 @@ class Cart extends App
      * Проверяет есть ли этот товар в корзине, с этим же модификаторами.
      * $product - объект товара.
      */
-    private static function productInCart($product)
+    public static function productInCart($product)
     {
         if (session()->has('cart.products') && $product) {
             $cart = session()->get('cart.products');
@@ -408,6 +427,22 @@ class Cart extends App
 
 
     /********************** Вспомогательные статичные методы для работы с корзиной **********************/
+
+    /**
+     *
+     * @return object
+     *
+     * Возвращает в объекте id товаров в корзине.
+     */
+    public static function productsId()
+    {
+        if (session()->has('cart.products')) {
+            $products = session('cart.products');
+            return collect($products)->pluck('id');
+        }
+        return null;
+    }
+    
 
     /**
      *

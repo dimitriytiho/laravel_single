@@ -250,8 +250,10 @@ return [
     'string' => 'String',
     'remote_mode' => 'Remote mode',
 
+    'score' => 'Score',
     'all_products' => 'The cart contains all the promo products',
     'one_product' => 'The cart contains one product from the promo',
-    'product_as_gift' => 'Если сумма в корзине соответстует цене, то в подарок товар из акции',
+    'product_as_gift' => 'If the amount in the cart is more than the price of the promo, then the gift is a product from the promo',
+    'two_plus_one' => 'If they buy 2 of the same product, then the 3rd one is for free',
 
 ];

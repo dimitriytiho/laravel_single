@@ -333,6 +333,50 @@ S;
 
 
 /*
+ * Возвращает radio в виде текста для формы.
+ * $name - передать название, перевод будет взять из /app/Modules/lang/en/f.php.
+ * $value - значение radio элемента.
+ * $idForm - если используется несколько форм на странице, то передайте id формы, чтобы id оригинальные.
+ * $required - если необязательный, то передайте null, необязательный параметр.
+ * $checked - Если checkbox должен быть нажат, то передайте true, необязательный параметр.
+ * $class - Передайте свой класс, необязательный параметр.
+ * $title - Можно передать свой заголовок, например с ссылкой, необязательный параметр.
+ * $text - Дополнительный текст, он выделен жирным, необязательный параметр.
+ * $attrs - передайте атрибуты строкой или в массиве ['id' => 'test', 'data-id' => 'dataTest', 'novalidate' => ''], необязательный параметр.
+ */
+function radioText($name, $value, $idForm = false, $required = true, $checked = false, $class = false, $title = false, $text = false, $attrs = false)
+{
+    $_title = l($name, 's');
+    $title = $title ?: $_title;
+    $id = $idForm ? "{$idForm}_{$name}_{$value}" : $name;
+
+    $checked = $checked || old($name) ? 'checked' : null;
+    $checkedClass = $checked ? 'active' : null;
+    $required = $required ? 'required' : null;
+
+    $text = $text ? "<b class=\"h5\">{$text}</b>" : null;
+    $part = '';
+    if ($attrs && is_array($attrs)) {
+        foreach ($attrs as $k => $v) {
+            $part .= "{$k}='{$v}' ";
+        }
+    } else {
+        $part = $attrs;
+    }
+
+    return <<<S
+<div class="custom-control custom-radio custom-control-inline my-1 radio_btn $checkedClass {$class}" {$part}>
+    <input type="radio" class="custom-control-input" id="{$id}" name="{$name}" value="{$value}" $checked {$required}>
+    <label class="custom-control-label" for="{$id}">
+        $text
+        <span class="text-sm">{$title}</span>
+    </label>
+</div>
+S;
+}
+
+
+/*
  * Возвращает скрытый input для формы.
  * $name - Передать имя input.
  * $value - Значение, необязательный параметр.

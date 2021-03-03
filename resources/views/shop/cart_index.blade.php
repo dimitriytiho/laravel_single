@@ -28,19 +28,81 @@
                             {{--
 
 
-                            Купон или акции --}}
+
+                            Купон --}}
                             {{--
+
+
+
+                            Акции --}}
+                            @if(!empty($promoMatches))
+                                <div class="row">
+                                    <div class="col-12 my-4">
+                                        <h5 class="text-center">@lang('s.select_promo')</h5>
+                                    </div>
+                                    <div class="col-12">
+                                        <form action="{{ route('promo_post') }}" method="post" class="text-center change_submit">
+                                            @csrf
+                                            @foreach($promoMatches as $promo => $id)
+                                                @php
+
+                                                    $checked = session()->has('promo.title') && session('promo.title') === $promo;
+                                                    $promoSum = 0;
+                                                    if (isset($promoData[$id])) {
+
+                                                        if (!empty($promoData[$id]['sum'])) {
+                                                         $promoText = priceFormat($promoData[$id]['sum']);
+                                                         $promoSum = $promoData[$id]['sum'];
+                                                        } elseif (!empty($promoData[$id]['products_id'])) {
+                                                            $promoText = __('s.gift');
+                                                        }
+
+                                                    } elseif (!empty($promoMatches['score'])) {
+                                                            $promoText = priceFormat($promoMatches['score']);
+                                                            $promoSum = $promoMatches['score'];
+                                                    }
+
+                                                @endphp
+                                                {!! radioText('promo', $promo, 'cart', false, $checked, null, __("a.{$promo}"), $promoText ?? null, ['data-add' => $promoSum]) !!}
+                                            @endforeach
+                                            {!! radioText('promo', 'reset', 'cart', false, null, null, __('s.reset'), '&nbsp;', ['data-add' => '0']) !!}
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="table-responsive cart_block">
+                                        <table class="table no-wrap a-black">
+                                            <tbody>
+                                            <tr>
+                                                <td class="w-5">@lang('s.promo'):</td>
+                                                <td id="promo_title">{{ session()->has('promo.title') ? __('a.' . session('promo.title')) : __('s.choose') }}</td>
+                                                <th class="text-right pr-4">
+                                                    <span id="promo_add">{{ session()->has('promo.sum') ? session('promo.sum') : 0 }}</span>
+                                                    <small>&#8381;</small>
+                                                </th>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            @endif
+                            {{--
+
 
 
                             Доставка --}}
                             @if($delivery = config('shop.delivery'))
-                                <div class="row mb-4">
+                                <div class="row">
+                                    <div class="col-12 my-4">
+                                        <h5 class="text-center">@lang('s.select_delivery')</h5>
+                                    </div>
                                     <div class="col-12">
                                         <form action="{{ route('delivery_post') }}" method="post" class="text-center change_submit">
                                             @csrf
                                             @php
 
                                                 $deliverySave = session()->has('delivery.title');
+                                                $deliveryDefault = $delivery[0]['title'] ?? 'pickup';
 
                                             @endphp
                                             @foreach($delivery as $key => $item)
@@ -68,9 +130,9 @@
                                             <tbody>
                                             <tr>
                                                 <td class="w-5">@lang('s.delivery'):</td>
-                                                <td id="delivery_title">@lang('s.pickup')</td>
+                                                <td id="delivery_title">{{ session()->has('delivery.title') ? l(session('delivery.title')) : __("s.{$deliveryDefault}") }}</td>
                                                 <th class="text-right pr-4">
-                                                    <span id="delivery_add">0</span>
+                                                    <span id="delivery_add">{{ session()->has('delivery.sum') ? session('delivery.sum') : 0 }}</span>
                                                     <small>&#8381;</small>
                                                 </th>
                                             </tr>
@@ -86,8 +148,17 @@
                                             <tbody>
                                             <tr>
                                                 <th>@lang('s.total'):</th>
+                                                @php
+
+                                                    // Итого
+                                                    $total = (session()->has('cart.sum') ? session('cart.sum') : 0)
+                                                    - (session()->has('promo.sum') ? session('promo.sum') : null)
+                                                    + (session()->has('delivery.sum') ? session('delivery.sum') : null);
+
+
+                                                @endphp
                                                 <th class="text-right pr-4">
-                                                    <span id="all_sum">{{ (session()->has('cart.sum') ? session('cart.sum') : 0) + (session()->has('delivery.sum') ? session('delivery.sum') : null) }}</span>
+                                                    <span id="all_sum">{{ $total }}</span>
                                                     <small>&#8381;</small>
                                                 </th>
                                             </tr>
@@ -101,6 +172,7 @@
                 </div>
                 @if(session()->has('cart.products'))
                     {{--
+
 
 
                     Форма заказа --}}

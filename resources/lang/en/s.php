@@ -274,5 +274,10 @@ return [
     'price_desc' => 'Price in descending',
     'price_asc' => 'Price in ascending',
     'title_asc' => 'Alphabetically',
+    'promo' => 'Promo',
+    'discount_not_exceed_percent_cart' => 'The discount amount should not exceed :percent% of the cart amount, the maximum possible discount is set.',
+    'gift' => 'Gift',
+    'select_promo' => 'Select promo',
+    'select_delivery' => 'Select delivery',
 
 ];

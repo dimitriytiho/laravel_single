@@ -250,8 +250,9 @@ return [
     'string' => 'Строка',
     'remote_mode' => 'Режим удалённых',
 
+    'score' => 'Счёт',
     'all_products' => 'В корзине все товары акции',
     'one_product' => 'В корзине один товар из акции',
-    'product_as_gift' => 'If the amount in the cart corresponds to the price, then the gift is a product from the promo',
-
+    'product_as_gift' => 'Если сумма в корзине больше цены акции, то в подарок товар из акции',
+    'two_plus_one' => 'Если покупают 2 одних и тех же товара, то 3-ий в подарок',
 ];

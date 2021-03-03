@@ -38,8 +38,8 @@
                         <p class="product_card_body__article">{{ $item->article ? 'Артикул:' : null }} <span class="product_card_body__article--span">{{ $item->article }}</span></p>
 
                         <div class="product_card_body__price">
-                            <span class="product_card_body__price--now">{!! priceFormat($item->old_price) !!}</span>
-                            <span class="product_card_body__price--old">{!! priceFormat($item->price) !!}</span>
+                            <span class="product_card_body__price--now">{!! priceFormat($item->price) !!}</span>
+                            <span class="product_card_body__price--old">{!! priceFormat($item->old_price) !!}</span>
                         </div>
 
                         <div class="product_card_body_hide">

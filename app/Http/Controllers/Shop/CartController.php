@@ -29,19 +29,45 @@ class CartController extends AppController
     // Страница оформления заказа /cart
     public function index(Request $request)
     {
-        $noBtnModal = true;
-
         //dump(session('cart'));
         //session()->forget('cart');
 
+        $noBtnModal = true;
         $title = __('s.cart');
+
+        $promoMatches = $promoMatchesNoScore = Promo::matches();
+        $promoData = [];
+        if (!empty($promoMatches)) {
+
+            if (isset($promoMatchesNoScore['score'])) {
+                unset($promoMatchesNoScore['score']);
+            }
+
+            // Получаем акции
+            $promos = Promo::active()
+                ->betweenTime()
+                ->whereIn('id', $promoMatchesNoScore)
+                ->get()
+                ->keyBy('id');
+
+
+            // Расчитываем акции
+            if ($promos->isNotEmpty()) {
+                foreach ($promos as $id => $promo) {
+                    $method = 'calc' . Str::studly($promo->type);
+                    if (method_exists('\App\Models\Promo', $method)) {
+                        $promoData[$id] = Promo::$method($promo);
+                    }
+                }
+            }
+        }
 
         // Хлебные крошки
         $breadcrumbs = $this->breadcrumbs
             ->end(['cart' => $title])
             ->get();
 
-        return view("{$this->viewPath}.{$this->view}_index", compact('title', 'breadcrumbs', 'noBtnModal'));
+        return view("{$this->viewPath}.{$this->view}_index", compact('title', 'breadcrumbs', 'noBtnModal', 'promoMatches', 'promoData'));
     }
 
 
