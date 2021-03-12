@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{DB, Schema};
 
@@ -38,8 +39,8 @@ class ExController extends Controller
 
         // Получаем данные
         if ($table && $url) {
-            $json = @file_get_contents($url);
-            $json = json_decode($json);
+            $data = File::getDataFromUrl($url);
+            $json = json_decode($data);
 
             // Превращаем данные в массив
             $arr = [];

@@ -36,6 +36,30 @@ class File
     }
 
 
+    /**
+     *
+     * @return string
+     *
+     * Возвращает строкой содержимое веб-страницы.
+     * $url - URL веб-страницы.
+     */
+    public static function getDataFromUrl($url) {
+        if (filter_var($url, FILTER_VALIDATE_URL)) {
+            $timeout = 5;
+            $agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36';
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_USERAGENT, $agent);
+            curl_setopt($ch,CURLOPT_URL, $url);
+            curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch,CURLOPT_CONNECTTIMEOUT, $timeout);
+            $data = curl_exec($ch);
+            curl_close($ch);
+            return $data;
+        }
+        return null;
+    }
+
+
 
     /*
      * Отдаём файл на скачивание через браузер.
