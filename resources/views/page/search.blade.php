@@ -34,8 +34,7 @@
             </div>
 
             @if($values && $values->count())
-                @include('inc.products')
-                {{--<div class="row a-black">
+                <div class="row a-black">
                     <div class="col-12">
                         @include('inc.search_item')
                     </div>
@@ -45,7 +44,7 @@
                     <div class="col-12 d-flex justify-content-center mb-4">
                         <div>{{ $values->appends(['s' => s(request()->query('s'))])->links() }}</div>
                     </div>
-                </div>--}}
+                </div>
             @else
                 <div class="row">
                     <div class="col my-5">

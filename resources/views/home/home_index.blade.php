@@ -42,16 +42,6 @@
         </section>
 
         <section class="row mt-4">
-            <div class="col px-2 a-black">
-                <a href="{{ route('home.order_index') }}" class="info-box">
-                    <div class="info-box-icon bg-info">
-                        <i class="fas fa-shopping-cart text-white"></i>
-                    </div>
-                    <div class="info-box-content">
-                        <div class="info-box-text">История заказов</div>
-                    </div>
-                </a>
-            </div>
             {{--<div class="col px-2 a-black">
                 <a href="{{ route('home.category_index') }}" class="info-box">
                     <div class="info-box-icon bg-success">

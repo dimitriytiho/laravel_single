@@ -28,6 +28,7 @@ class SettingController extends AppController
         view()->share(compact('class', 'c','model', 'table', 'route', 'view'));
     }
 
+
     /**
      * Display a listing of the resource.
      *
@@ -71,6 +72,7 @@ class SettingController extends AppController
         return view("{$this->viewPath}.{$this->view}.{$f}", compact('title', 'values', 'queryArr', 'col', 'cell', 'thead'));
     }
 
+
     /**
      * Show the form for creating a new resource.
      *
@@ -82,6 +84,7 @@ class SettingController extends AppController
         $title = __("a.{$f}");
         return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title'));
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -102,9 +105,8 @@ class SettingController extends AppController
             $data['value'] = empty($data['value']) ? '0' : '1';
         }
 
-
         // Создаём экземкляр модели
-        $values = new Setting();
+        $values = new $this->model();
 
         // Заполняем модель новыми данными
         $values->fill($data);
@@ -121,16 +123,6 @@ class SettingController extends AppController
             ->with('success', __('s.created_successfully', ['id' => $values->id]));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    /*public function show($id)
-    {
-        //
-    }*/
 
     /**
      * Show the form for editing the specified resource.
@@ -149,6 +141,7 @@ class SettingController extends AppController
         $title = __("a.{$f}");
         return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'values', 'disabledDelete'));
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -173,7 +166,6 @@ class SettingController extends AppController
             $data['value'] = empty($data['value']) ? '0' : '1';
         }
 
-
         // Заполняем модель новыми данными
         $values->fill($data);
 
@@ -197,6 +189,7 @@ class SettingController extends AppController
             ->route("admin.{$this->route}.edit", $values->id)
             ->with('success', __('s.saved_successfully', ['id' => $values->id]));
     }
+
 
     /**
      * Remove the specified resource from storage.

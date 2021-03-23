@@ -10,12 +10,29 @@
             <tr>
                 <th scope="col">@lang('a.action')</th>
                 @foreach($thead as $field => $val)
-                    <th scope="col">
-                        <span>{{ l($field, 'a') }}</span>
-                        @if(in_array($field, $queryArr))
-                            {!! $dbSort::viewIcons($field, $view, $route) !!}
-                        @endif
-                    </th>
+                    @switch($field)
+                        {{--
+
+
+                        Если есть поле user_id, то вместо этого покажем данные пользователя --}}
+                        @case('user_id')
+                            @isset($userFields)
+                                @foreach($userFields as $userField)
+                                    <th scope="col">
+                                        <span>{{ l($userField, 'a') }}</span>
+                                    </th>
+                                @endforeach
+                            @endisset
+                        @break
+
+                        @default
+                            <th scope="col">
+                                <span>{{ l($field, 'a') }}</span>
+                                @if(in_array($field, $queryArr))
+                                    {!! $dbSort::viewIcons($field, $view, $route) !!}
+                                @endif
+                            </th>
+                    @endswitch
                 @endforeach
             </tr>
             </thead>
@@ -51,33 +68,57 @@
                         @endempty--}}
                     </td>
                     @foreach($thead as $field => $val)
-                        <td>
-                            @switch($val)
-                                {{--
+                        @switch($field)
+                            {{--
 
-                                Если значение l, то переводим фразу --}}
-                                @case('l')
-                                    {{ l($item->$field, 'a') }}
-                                    @break
-                                {{--
 
-                                Если значение img, то выводим картинку --}}
-                                @case('img')
-                                    @if($item->$field)
-                                        <img src="{{ asset($item->$field) }}" class="img-size-64" alt="">
-                                    @endif
-                                    @break
-                                {{--
+                            Если есть поле user_id, то вместо этого покажем данные пользователя --}}
+                            @case('user_id')
+                                @if($item->user && !empty($userFields))
+                                    @foreach($userFields as $key => $userField)
+                                        <td>
+                                            @if(!$key && auth()->user()->checkPermission('Admin\User'))
+                                                <a href="{{ route('admin.user.edit', $item->user->id) }}">{{ l($item->user->$userField, 'a') }}</a>
+                                            @else
+                                                {{ l($item->user->$userField, 'a') }}
+                                            @endif
+                                        </td>
+                                    @endforeach
+                                @endif
+                            @break
 
-                                Если значение t, то выводим дату --}}
-                                @case('t')
-                                    {{ d($item->$field, config('admin.date_format')) }}
-                                    @break
+                            @default
+                                <td>
+                                    @switch($val)
+                                        {{--
 
-                                @default
-                                    {{ $item->$field }}
-                            @endswitch
-                        </td>
+
+                                        Если значение l, то переводим фразу --}}
+                                        @case('l')
+                                            {{ l($item->$field, 'a') }}
+                                        @break
+                                        {{--
+
+
+                                        Если значение img, то выводим картинку --}}
+                                        @case('img')
+                                            @if($item->$field)
+                                                <img src="{{ asset($item->$field) }}" class="img-size-64" alt="">
+                                            @endif
+                                        @break
+                                        {{--
+
+
+                                        Если значение t, то выводим дату --}}
+                                        @case('t')
+                                            {{ d($item->$field, config('admin.date_format')) }}
+                                        @break
+
+                                        @default
+                                            {{ $item->$field }}
+                                    @endswitch
+                                </td>
+                        @endswitch
                     @endforeach
                 </tr>
             @endforeach

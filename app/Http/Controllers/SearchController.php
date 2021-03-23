@@ -10,10 +10,10 @@ use App\Models\Main;
 class SearchController extends AppController
 {
     // Pages используется по-умолчанию
-    private $tableSearch = 'products';
+    private $tableSearch = 'pages';
 
     // Page используется по-умолчанию
-    private $routeSearch = 'product';
+    private $routeSearch = 'page';
 
 
 
@@ -51,10 +51,13 @@ class SearchController extends AppController
                 //->union($unionProducts)
 
 
+                ->select('id', 'title', 'slug')
+                ->addSelect(DB::raw("'{$this->routeSearch}' as route"))
                 ->whereNull('deleted_at')
                 ->whereStatus($this->statusActive)
                 ->where('title', 'like', "%{$query}%")
                 ->paginate($this->perPage);
+
         }
 
         $title = __('a.search');
@@ -89,7 +92,7 @@ class SearchController extends AppController
 
 
 
-                    ->select('id', 'title', 'slug', 'img')
+                    ->select('id', 'title', 'slug')
                     ->addSelect(DB::raw("'{$this->routeSearch}' as route"))
                     ->whereNull('deleted_at')
                     ->whereStatus($this->statusActive)

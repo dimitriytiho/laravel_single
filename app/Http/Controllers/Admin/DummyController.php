@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
-use App\Models\Dummy;
 
 class DummyController extends AppController
 {
@@ -102,7 +101,7 @@ class DummyController extends AppController
         $data = $request->all();
 
         // Создаём экземкляр модели
-        $values = new Dummy();
+        $values = new $this->model();
 
         // Заполняем модель новыми данными
         $values->fill($data);

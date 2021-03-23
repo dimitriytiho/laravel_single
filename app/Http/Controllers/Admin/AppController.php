@@ -29,10 +29,26 @@ class AppController extends Controller
     protected $perPageQuantity;
     protected $statusActive;
 
-    // Связанная таблица
-    protected $belongTable;
+    // Массив гет ключей для поиска
+    protected $queryArr = [];
+    // Передать поля для вывода в index виде
+    protected $thead = [];
+
+    // Правила валидации для метода Store
+    protected $validateStore = [];
+    // Правила валидации для метода Update
+    protected $validateUpdate = [];
+
+    // Является наследником для связанного элемента
+    protected $belongChildren = false;
+    // Условие выборки, название колонки
+    protected $belongColumn = 'parent_id';
+    // Связанная таблица, в моделе должен быть метод с таким же названием
+    protected $belongTable = '';
     // Связанный маршрут
-    protected $belongRoute;
+    protected $belongRoute = '';
+    // Связанный элемент, возможность удалить
+    protected $belongDelete = true;
 
     // Связанные таблицы
     protected $relatedTables = [];
@@ -45,6 +61,20 @@ class AppController extends Controller
 
     // Связанные таблицы. Многие к одному.
     protected $relatedManyToOne = [];
+
+    // Чексбоксы в таблице, перечислить с массиве
+    protected $checkboxInTable = [];
+
+    // Размер картинки, по-умолчанию из config('admin.imgMaxSizeSM')
+    protected $imgSize = 'imgMaxSizeSM';
+
+
+    // Поля пользователя для показа
+    public $userFields = [
+        'name',
+        'email',
+        'tel',
+    ];
 
 
     public function __construct(Request $request)
@@ -72,6 +102,8 @@ class AppController extends Controller
         $this->perPageQuantity = config('admin.pagination');
 
         $statusActive = $this->statusActive = config('add.page_statuses')[1] ?? 'active';
+
+        $userFields = $this->userFields;
 
 
         // Только внутри этой конструкции работают некоторые методы
@@ -156,16 +188,6 @@ class AppController extends Controller
         $countTable['Page'] = DB::table('pages')->whereNull('deleted_at')->count();
         $countTable['User'] = DB::table('users')->whereNull('deleted_at')->count();
 
-        // Для магазина
-        if (config('add.shop')) {
-            $countTable['Product'] = DB::table('products')->whereNull('deleted_at')->count();
-            $countTable['Category'] = DB::table('categories')->whereNull('deleted_at')->count();
-
-            $orders = DB::table('orders')->whereNull('deleted_at');
-            $countTable['Order'] = $orders->count();
-            $countTable['Order_new'] = $orders->where('status', config('admin.order_statuses')[0] ?? 'new')->count();
-        }
-
-        view()->share(compact('isMobile', 'imgRequestName', 'imgUploadID', 'namespaceHelpers', 'construct', 'form', 'dbSort', 'countTable', 'statusActive'));
+        view()->share(compact('isMobile', 'imgRequestName', 'imgUploadID', 'namespaceHelpers', 'construct', 'form', 'dbSort', 'countTable', 'statusActive', 'userFields'));
     }
 }

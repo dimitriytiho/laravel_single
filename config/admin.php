@@ -1,6 +1,36 @@
 <?php
 
-return [
+use Illuminate\Support\Str;
+
+
+// Для добавления загрузчика картинок в этот массив допишите название контроллера, например ProductGallery, далее в public/img создайте папку, например product-gallery
+$controllers = [
+    'User', // Пользователи
+    'Portfolio', // Портфолио
+    'PortfolioGallery', // Галерея портфолио
+];
+$arr = [];
+$img = env('APP_IMG', 'img');
+$path = public_path();
+
+foreach ($controllers as $name) {
+    $folder = Str::kebab($name);
+
+    switch ($name) {
+        case 'User':
+            $arr += ["img{$name}" => "/{$img}/{$folder}"];
+            $arr += ["imgPath{$name}" => "{$path}/{$img}/{$folder}"];
+            $arr += ["img{$name}Default" => "/{$img}/default/no_user.png"];
+            break;
+        default:
+            $arr += ["img{$name}" => "/{$img}/{$folder}"];
+            $arr += ["imgPath{$name}" => "{$path}/{$img}/{$folder}"];
+            $arr += ["img{$name}Default" => "/{$img}/default/no_image.jpg"];
+            break;
+    }
+}
+
+return $arr += [
 
     /*
     |--------------------------------------------------------------------------
@@ -82,36 +112,6 @@ return [
         'gif',
     ],
 
-
-    // Картинки - для новых, используйте название как написаны, в конце подставляя свои, например imgBrand
-    // Пользователи
-    'imgUser' => '/' . env('APP_IMG', 'img') . '/users-photo',
-    'imgPathUser' => public_path() . '/' . env('APP_IMG', 'img') . '/users-photo',
-    'imgUserDefault' => '/' . env('APP_IMG', 'img') . '/default/no_user.png',
-
-    // Категории
-    'imgCategory' => '/' . env('APP_IMG', 'img') . '/category',
-    'imgPathCategory' => public_path() . '/' . env('APP_IMG', 'img') . '/category',
-    'imgCategoryDefault' => '/' . env('APP_IMG', 'img') . '/default/no_image.jpg',
-
-    // Товары
-    'imgProduct' => '/' . env('APP_IMG', 'img') . '/product',
-    'imgPathProduct' => public_path() . '/' . env('APP_IMG', 'img') . '/product',
-    'imgProductDefault' => '/' . env('APP_IMG', 'img') . '/default/no_image.jpg',
-
-    // Галерея товаров
-    'imgProductGallery' => '/' . env('APP_IMG', 'img') . '/product-gallery',
-    'imgPathProductGallery' => public_path() . '/' . env('APP_IMG', 'img') . '/product-gallery',
-
-    // Портфолио
-    'imgPortfolio' => '/' . env('APP_IMG', 'img') . '/portfolio',
-    'imgPathPortfolio' => public_path() . '/' . env('APP_IMG', 'img') . '/portfolio',
-    'imgPortfolioDefault' => '/' . env('APP_IMG', 'img') . '/default/no_image.jpg',
-
-    // Галерея портфолио
-    'imgPortfolioGallery' => '/' . env('APP_IMG', 'img') . '/portfolio-gallery',
-    'imgPathPortfolioGallery' => public_path() . '/' . env('APP_IMG', 'img') . '/portfolio-gallery',
-    'imgPortfolioGalleryDefault' => '/' . env('APP_IMG', 'img') . '/default/no_image.jpg',
 
     // Размер обычной картинки
     'imgWidth' => 800,

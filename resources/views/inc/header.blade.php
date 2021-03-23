@@ -18,7 +18,7 @@
                     </li>
                     @if(config('add.auth'))
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">Login</a>
+                            <a class="nav-link" href="{{ route('login') }}">@lang('s.login')</a>
                         </li>
                     @else
                         <li class="nav-item">

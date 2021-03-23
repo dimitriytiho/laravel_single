@@ -29,8 +29,10 @@ class EnterController extends AppController
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
+        parent::__construct($request);
+
         // Только внутри этой конструкции работают некоторые методы
         $this->middleware(function ($request, $next) {
 

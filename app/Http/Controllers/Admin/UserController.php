@@ -2,16 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Helpers\Admin\DbSort;
-use App\Helpers\Admin\Img;
-use App\Models\Role;
-use App\Models\UserAdmin;
-use App\Models\UserLastData;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Schema;
+use App\Helpers\Admin\{DbSort, Img};
+use App\Models\{Role, UserAdmin, UserLastData};
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\{DB, Hash, Schema};
 
 class UserController extends AppController
 {
@@ -44,6 +39,7 @@ class UserController extends AppController
 
         view()->share(compact('class', 'c','model', 'table', 'route', 'view', 'relatedDelete'));
     }
+
 
     /**
      * Display a listing of the resource.
@@ -87,6 +83,7 @@ class UserController extends AppController
         return view("{$this->viewPath}.{$this->view}.{$f}", compact('title', 'values', 'queryArr', 'col', 'cell', 'thead'));
     }
 
+
     /**
      * Show the form for creating a new resource.
      *
@@ -107,6 +104,7 @@ class UserController extends AppController
         $title = __("a.{$f}");
         return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'roles', 'statuses', 'roleIdAdmin'));
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -182,16 +180,6 @@ class UserController extends AppController
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    /*public function show($id)
-    {
-        //
-    }*/
 
     /**
      * Show the form for editing the specified resource.
@@ -227,6 +215,7 @@ class UserController extends AppController
         $title = __("a.{$f}");
         return view("{$this->viewPath}.{$this->view}.{$this->template}", compact('title', 'values', 'related', 'statuses', 'roleIdAdmin'));
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -323,6 +312,7 @@ class UserController extends AppController
             ->route("admin.{$this->route}.edit", $values->id)
             ->with('success', __('s.saved_successfully', ['id' => $values->id]));
     }
+
 
     /**
      * Remove the specified resource from storage.

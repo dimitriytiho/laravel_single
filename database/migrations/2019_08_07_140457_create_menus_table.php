@@ -18,13 +18,13 @@ class CreateMenusTable extends Migration
             $table->bigInteger('belong_id')->unsigned();
             $table->foreign('belong_id')->references('id')->on('menu_groups')->onDelete('cascade');
             $table->bigInteger('parent_id')->default('0')->unsigned();
-            $table->string('title', 100)->nullable();
+            $table->string('title')->nullable();
             $table->index('title');
             $table->string('slug')->nullable();
-            $table->string('target', 100)->nullable();
-            $table->string('item', 100)->nullable();
-            $table->string('class', 100)->nullable();
-            $table->string('attr', 100)->nullable();
+            $table->string('target')->nullable();
+            $table->string('item')->nullable();
+            $table->string('class')->nullable();
+            $table->string('attr')->nullable();
             $table->string('status', 100)->default(config('add.page_statuses')[0] ?? 'inactive');
             $table->smallInteger('sort')->unsigned()->default('500');
             $table->softDeletes();
