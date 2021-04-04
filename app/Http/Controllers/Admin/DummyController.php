@@ -219,7 +219,7 @@ class DummyController extends AppController
                 if ($values->$relatedTable->count()) {
                     return redirect()
                         ->route("admin.{$this->route}.edit", $id)
-                        ->with('error', __('s.remove_not_possible') . ', ' . __('s.there_are_nested') . __('a.id'));
+                        ->withErrors(__('s.remove_not_possible') . ', ' . __('s.there_are_nested') . __('a.id'));
                 }
             }
         }

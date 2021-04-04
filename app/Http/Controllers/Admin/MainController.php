@@ -61,7 +61,7 @@ class MainController extends AppController
             Upload::getNewKey($key);
             return redirect()->back()->with('success', __('a.key_success'));
         }
-        return redirect()->back()->with('error', __('s.whoops_error'));
+        return redirect()->back()->withErrors(__('s.whoops_error'));
     }
 
 

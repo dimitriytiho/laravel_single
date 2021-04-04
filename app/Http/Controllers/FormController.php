@@ -68,7 +68,7 @@ class FormController extends Controller
         $userId = $user->id ?? null;
         if (!$userId) {
             // Сообщение об ошибке
-            return redirect()->back()->with('error', __('s.whoops'));
+            return redirect()->back()->withErrors(__('s.whoops'));
         }
 
         // Данные form

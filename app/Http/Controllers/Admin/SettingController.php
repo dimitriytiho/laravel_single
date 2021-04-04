@@ -175,7 +175,7 @@ class SettingController extends AppController
             // Сообщение об ошибке
             return redirect()
                 ->route("admin.{$this->route}.edit", $values->id)
-                ->with('error', __('s.something_went_wrong'));
+                ->withErrors(__('s.something_went_wrong'));
         }
 
         // Обновляем элемент
@@ -208,7 +208,7 @@ class SettingController extends AppController
             // Сообщение об ошибке
             return redirect()
                 ->route("admin.{$this->route}.edit", $values->id)
-                ->with('error', __('s.something_went_wrong'));
+                ->withErrors(__('s.something_went_wrong'));
         }
 
         // Удаляем элемент

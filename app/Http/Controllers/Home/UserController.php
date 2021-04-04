@@ -51,7 +51,7 @@ class UserController extends AppController
     {
         // Если у пользователя есть разрешение редактирования пользователей в админке, то здесь ему нельзя редактировать
         if (checkPermission($this->class)) {
-            return back()->with('error', __('s.action_is_not_available'));
+            return back()->withErrors(__('s.action_is_not_available'));
         }
 
 

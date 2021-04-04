@@ -161,7 +161,7 @@ class UserController extends AppController
             // Сообщение об ошибке
             return redirect()
                 ->back()
-                ->with('error', __('s.admin_choose_admin'));
+                ->withErrors(__('s.admin_choose_admin'));
         }
 
 
@@ -272,7 +272,7 @@ class UserController extends AppController
             // Сообщение об ошибке
             return redirect()
                 ->route("admin.{$this->route}.edit", $values->id)
-                ->with('error', __('s.admin_choose_admin'));
+                ->withErrors(__('s.admin_choose_admin'));
         }
 
         // Сохраняем предыдущие данные пользователя, если данные были изменены
@@ -333,7 +333,7 @@ class UserController extends AppController
             // Сообщение об ошибке
             return redirect()
                 ->back()
-                ->with('error', __('s.admin_choose_admin'));
+                ->withErrors(__('s.admin_choose_admin'));
         }
 
 
@@ -343,7 +343,7 @@ class UserController extends AppController
                 if ($values->$relatedTable->count()) {
                     return redirect()
                         ->route("admin.{$this->route}.edit", $id)
-                        ->with('error', __('s.remove_not_possible') . ', ' . __('s.there_are_nested') . __('a.id'));
+                        ->withErrors(__('s.remove_not_possible') . ', ' . __('s.there_are_nested') . __('a.id'));
                 }
             }
         }

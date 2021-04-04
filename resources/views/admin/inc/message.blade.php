@@ -2,23 +2,15 @@
 {{--
 
 Сообщения об ошибках --}}
-@if(session()->has('error') || isset($errors) && $errors->any())
+@if(isset($errors) && $errors->any())
     <div class="mt-1">
         <div class="alert alert-danger alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            @if($errors->any())
-                <ul class="list-unstyled mb-0">
-                    @foreach($errors->all() as $error)
-                        <li class="mt-1">{{ $error }}</li>
-                    @endforeach
-                </ul>
-            @endif
-            @if($errors->any() && session()->has('error'))
-                <br>
-            @endif
-            @if(session()->has('error'))
-                <div>{{ session('error') }}</div>
-            @endif
+            <ul class="list-unstyled mb-0">
+                @foreach($errors->all() as $error)
+                    <li class="mt-1">{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
     </div>
 @endif

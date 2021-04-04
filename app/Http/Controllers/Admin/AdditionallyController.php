@@ -97,7 +97,7 @@ class AdditionallyController extends AppController
             Main::getError('Request', __METHOD__, null);
             return redirect()
                 ->route("admin.{$this->route}")
-                ->with('error', __('s.something_went_wrong'));
+                ->withErrors(__('s.something_went_wrong'));
         }
 
         $f = __FUNCTION__;

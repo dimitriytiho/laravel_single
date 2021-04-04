@@ -26,7 +26,7 @@ if (preloader) {
     })
 
     // После загрузки всего загружаем 100%
-    window.onload = () => {
+    window.onload = function() {
         preloader.style.width = '100%'
 
         // Скрываем preloader через секунду

@@ -141,7 +141,7 @@ class ImportExportController extends AppController
                                 ->count();
 
                             if ($uniqueCount) {
-                                return back()->with('error',  __('a.not_unique_element', ['id' => $values['id']]) . $unique);
+                                return back()->withErrors( __('a.not_unique_element', ['id' => $values['id']]) . $unique);
                             }
                         }
 
@@ -259,7 +259,7 @@ class ImportExportController extends AppController
                                 ->count();
 
                             if ($uniqueCount) {
-                                return back()->with('error',  __('a.not_unique_element', ['id' => $values['id']]) . $unique);
+                                return back()->withErrors( __('a.not_unique_element', ['id' => $values['id']]) . $unique);
                             }
                         }
 

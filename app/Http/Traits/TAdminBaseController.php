@@ -467,7 +467,7 @@ trait TAdminBaseController
                 if ($values->$relatedTable->count()) {
                     return redirect()
                         ->route("admin.{$this->route}.edit", $id)
-                        ->with('error', __('s.remove_not_possible') . ', ' . __('s.there_are_nested') . __('a.id'));
+                        ->withErrors(__('s.remove_not_possible') . ', ' . __('s.there_are_nested') . __('a.id'));
                 }
             }
         }
@@ -476,14 +476,14 @@ trait TAdminBaseController
         if ($values->parents && $values->parents->isNotEmpty()) {
             return redirect()
                 ->route("admin.{$this->route}.edit", $id)
-                ->with('error', __('s.remove_not_possible') . ', ' . __('s.there_are_nested') . __('a.id'));
+                ->withErrors(__('s.remove_not_possible') . ', ' . __('s.there_are_nested') . __('a.id'));
         }
 
         // Если есть связанная таблица и связанные элементы, то ошибка
         if ($this->belongDelete && $this->belongTable && $values->{$this->belongTable} && $values->{$this->belongTable}->count()) {
             return redirect()
                 ->route("admin.{$this->route}.edit", $id)
-                ->with('error', __('s.remove_not_possible') . ', ' . __('s.there_are_nested') . __('a.id'));
+                ->withErrors(__('s.remove_not_possible') . ', ' . __('s.there_are_nested') . __('a.id'));
         }
 
 
