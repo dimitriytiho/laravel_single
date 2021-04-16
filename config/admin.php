@@ -104,6 +104,22 @@ return $arr += [
     ],
 
 
+    // Картинки Webp качество до 100
+    'webpQuality' => 90,
+
+    'images_ext' => [
+
+        //cut, width, height, text
+        [false, '800', '800', 'one_side'], // Первый по-умолчанию
+        [false, '1280', '1280', 'one_side'],
+        [false, '1920', '1920', 'one_side'],
+        [false, '500', '500', 'one_side'],
+        [false, '100', '100', 'square'],
+        ['not_cut'],
+    ],
+
+
+
     // Разрешённые для загрузки картинки
     'acceptedImagesExt' => [
         'jpg',
@@ -128,6 +144,5 @@ return $arr += [
 
     // Картинки Webp
     'webp' => true,
-    'webpQuality' => 80, // Качество до 100
 
 ];

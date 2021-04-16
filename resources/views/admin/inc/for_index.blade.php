@@ -1,6 +1,11 @@
 @php
 
+    use App\Models\File;
+    use App\Helpers\Admin\Attachment;
+
+
     $guardedIds = $guardedIds ?? [];
+
 
 @endphp
 @if(!empty($queryArr) && !empty($thead))
@@ -104,6 +109,23 @@
                                         @case('img')
                                             @if($item->$field)
                                                 <img src="{{ asset($item->$field) }}" class="img-size-64" alt="">
+                                            @endif
+                                        @break
+                                        {{--
+
+
+                                        Если значение file, то выводим превью файла --}}
+                                        @case('file')
+                                            @if($item->$field)
+                                                @php
+
+                                                    if ($item instanceof File) {
+                                                        echo Attachment::previewFile($item);
+                                                    } elseif ($item->attachment instanceof File) {
+                                                        echo Attachment::previewFile($item);
+                                                    }
+
+                                                @endphp
                                             @endif
                                         @break
                                         {{--

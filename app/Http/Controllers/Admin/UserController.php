@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Helpers\Admin\{DbSort, Img};
 use App\Models\{Role, UserAdmin, UserLastData};
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\{DB, Hash, Schema};
+use Illuminate\Support\Facades\{DB, File, Hash, Schema};
 
 class UserController extends AppController
 {
@@ -26,7 +26,8 @@ class UserController extends AppController
         $this->relatedTables = [
 
             // Роли
-            'roles',
+            'roles' => 'title',
+
         ];
 
 
@@ -149,7 +150,7 @@ class UserController extends AppController
         }
 
         // Создаём экземкляр модели
-        $values = new UserAdmin();
+        $values = new $this->model();
 
         // Заполняем модель новыми данными
         $values->fill($data);
@@ -198,11 +199,14 @@ class UserController extends AppController
         // Получаем данные связанных таблиц
         $related = [];
         if (!empty($this->relatedTables)) {
-            foreach ($this->relatedTables as $relatedTable) {
-                if (Schema::hasTable($relatedTable)) {
-                    $related[$relatedTable] = DB::table($relatedTable)
-                        ->whereNull('deleted_at')
-                        ->pluck('title', 'id');
+            foreach ($this->relatedTables as $relatedTable => $relatedColumn) {
+                if (Schema::hasTable($relatedTable) && Schema::hasColumn($relatedTable, $relatedColumn)) {
+
+                    $res = DB::table($relatedTable)->pluck($relatedColumn, 'id');
+                    if (Schema::hasColumn($relatedTable, 'deleted_at')) {
+                        $res->whereNull('deleted_at');
+                    }
+                    $related[$relatedTable] = $res;
                 }
             }
         }
@@ -243,7 +247,7 @@ class UserController extends AppController
         $data = $request->all();
 
 
-        if ($request->hasFile('img')) {
+        /*if ($request->hasFile('img')) {
 
             // Обработка картинки
             $data['img'] = Img::upload($request, $this->class, $values->img);
@@ -252,7 +256,7 @@ class UserController extends AppController
 
             // Если нет картинки
             $data['img'] = $values->img;
-        }
+        }*/
 
         // Поле подтверждение пароля удаляется
         unset($data['password_confirmation']);
@@ -266,6 +270,7 @@ class UserController extends AppController
 
         $values->fill($data);
 
+
         // Если не Админ выбирает роль Админ, то ошибка или Если не Админ редактирует Админа
         if ($values->noAdminToAdmin($request->roles) || $values->noAdminEditAdmin()) {
 
@@ -278,10 +283,14 @@ class UserController extends AppController
         // Сохраняем предыдущие данные пользователя, если данные были изменены
         UserLastData::diffSaveLastUser($values);
 
+        // Связь с файлами
+        if ($request->file) {
+            $values->file()->sync($request->file);
+        }
 
         // Сохраняем связи
         if (!empty($this->relatedTables)) {
-            foreach ($this->relatedTables as $relatedTable) {
+            foreach ($this->relatedTables as $relatedTable => $relatedColumn) {
 
                 // Добавим условие, чтобы роль по-умолчанию Гость
                 $requestSync = $relatedTable === 'roles' && empty($request->$relatedTable) ? $values->roleGuestId() : $request->$relatedTable;
@@ -349,9 +358,20 @@ class UserController extends AppController
         }
 
 
+        // Связь с файлами
+        if ($values->file) {
+            $values->file()->sync([]);
+
+            // Удалить файл
+            if (!empty($values->file->path) && File::exists(public_path($values->file->path))) {
+                File::delete(public_path($values->file->path));
+            }
+        }
+
+
         // Удаляем связанные элементы
         if (!empty($this->relatedTables)) {
-            foreach ($this->relatedTables as $relatedTable) {
+            foreach ($this->relatedTables as $relatedTable => $relatedColumn) {
                 $values->$relatedTable()->sync([]);
             }
         }

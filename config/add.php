@@ -71,7 +71,9 @@ return [
 
     // Папка для картинок
     'img' => '/' . env('APP_IMG', 'img'),
+    'imgDefault' => '/' . env('APP_IMG', 'img') . '/default/no_image.jpg',
     'imgPath' => public_path() . '/' . env('APP_IMG', 'img'),
+    'imgExt' => ['png', 'jpg', 'jpeg', 'gif', 'svg'],
 
     // Протокол и домен
     'protocol' => Str::before(env('APP_URL'), '://'),

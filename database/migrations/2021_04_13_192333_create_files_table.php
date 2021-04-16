@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProductPromoTable extends Migration
+class CreateFilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreateProductPromoTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_promo', function (Blueprint $table) {
+        Schema::create('files', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('product_id')->unsigned();
-            $table->bigInteger('promo_id')->unsigned();
-            $table->foreign('product_id')->references('id')->on('products');
-            $table->foreign('promo_id')->references('id')->on('promos');
+            $table->string('name');
+            $table->string('path');
+            $table->string('ext');
+            $table->string('mime_type');
+            $table->string('size');
+            $table->string('old_name')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +32,6 @@ class CreateProductPromoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_promo');
+        Schema::dropIfExists('files');
     }
 }

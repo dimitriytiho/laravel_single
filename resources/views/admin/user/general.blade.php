@@ -1,3 +1,11 @@
+@php
+
+    use App\Models\File;
+
+
+    $images = File::onlyImg()->pluck('path', 'id');
+
+@endphp
 @extends('admin.layouts.admin')
 {{--
 
@@ -13,7 +21,7 @@
                 <div class="card card-primary card-outline">
                     <div class="card-body box-profile">
                         <div class="text-center">
-                            <img class="profile-user-img img_sm img-circle img_replace" src="{{ asset($values->img) }}" alt="{{ $values->name }}">
+                            <img class="profile-user-img img_sm img-circle img_replace" src="{{ asset($values->file[0]->path ?? config('add.imgDefault')) }}" alt="{{ $values->name }}">
                             {{--
 
                             Удаление картинки --}}
@@ -69,21 +77,20 @@
                         <div class="col-md-6">
                             {!! $form::select('status', $statuses, $values->status ?? null) !!}
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="img">@lang('a.img')</label>
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" name="img" id="img">
-                                    <label class="custom-file-label" for="img">{{ $values->img ?? __('a.choose_file') }}</label>
-                                </div>
+                        {{--
+
+                        Картинка --}}
+                        @if(!empty($values->id) && !empty($images))
+                            <div class="col-md-6">
+                                {!! $form::select('file', $images, $values->file[0]->id ?? null, __('a.img'), null, ['data-placeholder' => __('s.choose')], true, null, null, 'w-100 select2_img') !!}
                             </div>
-                        </div>
+                        @endif
                     </div>
                     {{--
 
                     Связи множественные select2 --}}
-                    @if (!empty($related))
-                        @foreach ($related as $tableName => $items)
+                    @if(!empty($related))
+                        @foreach($related as $tableName => $items)
                             {!! $form::select($tableName, $items, $values->$tableName ?? null, $tableName, null, ['data-placeholder' => __('s.choose')], true, null, true, 'w-100 select2', null, null) !!}
                         @endforeach
                     @endif

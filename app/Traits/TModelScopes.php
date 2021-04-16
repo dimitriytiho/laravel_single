@@ -1,28 +1,11 @@
 <?php
 
-namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+namespace App\Traits;
 
-class App extends Model
+
+trait TModelScopes
 {
-    use HasFactory;
-
-
-    // Расширяем модель
-    protected $class;
-    protected $model;
-    protected $table;
-    protected $view;
-
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-
     /*
      * Scope для элементов с статусом active.
      *
@@ -55,7 +38,7 @@ class App extends Model
 
     /*
      * Проверить в scope: сейчас попадает ли в промежуток времени.
-     * 
+     *
      * Использование ->betweenTime()
      */
     public function scopeBetweenTime($query)
@@ -65,7 +48,7 @@ class App extends Model
             ->where('start', '<', $now)
             ->where('end', '>', $now);
     }
-    
+
 
 
     // Записываем в БД популярность, т.е. прибавляем 1, когда пользователь открывает элемент, только один раз, используем сессию, вызов $values->savePopular;.

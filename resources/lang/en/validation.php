@@ -148,6 +148,7 @@ return [
 
     'attributes' => [
         'img'                   => 'Image',
+        'files'                 => 'Files',
     ],
 
 

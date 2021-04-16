@@ -108,7 +108,7 @@ class File
             }
             return $arr;
         }
-        return [];
+        return null;
     }
 
 

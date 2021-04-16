@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Traits\TAdminBaseController;
+use App\Traits\TAdminBaseController;
 
 class FormController extends AppController
 {

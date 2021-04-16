@@ -256,4 +256,14 @@ return [
     'product_as_gift' => 'If the amount in the cart is more than the price of the promo, then the gift is a product from the promo',
     'two_plus_one' => 'If they buy 2 of the same product, then the 3rd one is for free',
 
+    'path' => 'Path',
+    'old_name' => 'Old name',
+    'max_size' => 'Max size',
+    'webp' => 'Image Webp',
+    'no_save' => 'No save',
+    'not_cut' => 'Not cut',
+    'one_side' => 'One side',
+    'square' => 'Square',
+    'file' => 'File',
+
 ];

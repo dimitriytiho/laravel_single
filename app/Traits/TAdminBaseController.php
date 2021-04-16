@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Http\Traits;
+namespace App\Traits;
 
 use App\Helpers\Admin\{DbSort, Img};
 use App\Models\Main;
@@ -16,13 +16,13 @@ trait TAdminBaseController
      * Перед наследование этого Trait переопеделите переменные указав нужное:
      *
      * protected $queryArr = ['title', 'id']; // Массив гет ключей для поиска
-     * protected $thead = ['title' => null, 'id' => null]; // Передать поля для вывода в index виде, значения: null, l - с переводом, t - дата
+     * protected $thead = ['title' => null, 'id' => null]; // Передать поля для вывода в index виде, значения: null, l - с переводом, t - дата, img - картинка, file - превью файла
      *
      * protected $validateStore = []; // Правила валидации для метода Store, если используется название таблице, вместо используйте маркер: $this->table
      * protected $validateUpdate = []; // Правила валидации для метода Update, если используется $id элемента (разрешения картинок $imagesExt), вместо используйте маркер: $id ($imagesExt)
      *
      * protected $belongTable = 'menu_groups'; // Указать связанной название таблицы
-     * protected $relatedTables = ['categories', 'labels']; // Указать название таблиц
+     * protected $relatedTables = ['categories' => 'title', 'labels' => 'title']; // Указать название таблиц это ключ и название колонки это значение
      * protected $relatedDelete = ['products']; // Указать название таблиц
      *
      *
@@ -42,7 +42,7 @@ trait TAdminBaseController
         $c = $this->c = Str::lower($this->class);
 
         // Название модели
-        $model = $this->model = "{$this->namespaceModels}\\" . $this->class;
+        $model = $this->model = "{$this->namespaceModels}\\{$this->class}";
 
         // Название таблицы
         $table = $this->table = with(new $model)->getTable();
@@ -351,11 +351,13 @@ trait TAdminBaseController
         // Получаем данные связанных таблиц
         $related = [];
         if (!empty($this->relatedTables)) {
-            foreach ($this->relatedTables as $relatedTable) {
-                if (Schema::hasTable($relatedTable)) {
-                    $related[$relatedTable] = DB::table($relatedTable)
-                        ->whereNull('deleted_at')
-                        ->pluck('title', 'id');
+            foreach ($this->relatedTables as $relatedTable => $relatedColumn) {
+                if (Schema::hasTable($relatedTable) && Schema::hasColumn($relatedTable, $relatedColumn)) {
+                    $res = DB::table($relatedTable)->pluck($relatedColumn, 'id');
+                    if (Schema::hasColumn($relatedTable, 'deleted_at')) {
+                        $res->whereNull('deleted_at');
+                    }
+                    $related[$relatedTable] = $res;
                 }
             }
         }
@@ -422,7 +424,7 @@ trait TAdminBaseController
 
         // Сохраняем связи
         if (!empty($this->relatedTables)) {
-            foreach ($this->relatedTables as $relatedTable) {
+            foreach ($this->relatedTables as $relatedTable => $relatedColumn) {
                 $values->$relatedTable()->sync($request->$relatedTable);
             }
         }
@@ -489,7 +491,7 @@ trait TAdminBaseController
 
         // Удаляем связанные элементы
         if (!empty($this->relatedTables)) {
-            foreach ($this->relatedTables as $relatedTable) {
+            foreach ($this->relatedTables as $relatedTable => $relatedColumn) {
                 $values->$relatedTable()->sync([]);
             }
         }

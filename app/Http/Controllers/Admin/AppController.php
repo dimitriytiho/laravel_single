@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Helpers\Admin\LeftMenu;
-use App\Models\Main;
-use App\Models\Permission;
+use App\Models\{Main, Permission};
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;

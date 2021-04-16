@@ -2,15 +2,18 @@
 
 namespace App\Models;
 
+use App\Traits\TModelScopes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class MenuGroup extends App
+class MenuGroup extends Model
 {
+    use HasFactory, SoftDeletes, TModelScopes;
+
+
     protected $guarded = ['id', 'created_at', 'updated_at']; // Запрещается редактировать
 
-
-    use SoftDeletes;
 
 
     // Связь один к многим

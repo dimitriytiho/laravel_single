@@ -105,7 +105,7 @@ class UserAdmin extends User
 
             // Статус повторно
             $issetUser->status = config('admin.user_statuses')['1'] ?? 'info';
-            
+
             $issetUser->update();
             return $issetUser;
 

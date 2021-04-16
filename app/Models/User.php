@@ -56,6 +56,14 @@ class User extends Authenticatable
 
 
 
+    // Связь один ко многим для любых моделей
+    public function file()
+    {
+        return $this->morphToMany(File::class, 'fileable')
+            ->withTimestamps(); // Добавить, чтобы записывать в БД created_at updated_at;
+    }
+
+
     // Обратная многие ко многим
     public function roles() {
         return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id')->withTimestamps();
@@ -64,16 +72,6 @@ class User extends Authenticatable
 
     public function forms() {
         return $this->hasMany(Form::class, 'user_id', 'id');
-    }
-
-    public function orders() {
-        return $this->hasMany(Order::class, 'user_id', 'id');
-    }
-
-    // Связь многие ко многим
-    public function products()
-    {
-        return $this->belongsToMany(Product::class);
     }
 
 

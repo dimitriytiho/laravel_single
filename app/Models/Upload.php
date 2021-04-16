@@ -10,8 +10,10 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
-class Upload extends App
+class Upload extends Model
 {
+    use HasFactory;
+
 
 
     /**
