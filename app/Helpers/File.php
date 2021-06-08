@@ -62,6 +62,29 @@ class File
 
 
     /*
+     * Сохраняем файл через URL.
+     *
+     * $file - URL файла, который нужно сохранить.
+     * $path - путь к папке, куда сохранить файл.
+     */
+    public static function saveFile($file, $path) {
+        if ($file && $path) {
+            $name = pathinfo($file)['basename'] ?? null;
+            $path = $path . '/' . $name;
+
+            $ch = curl_init($file);
+            $fp = fopen($path, 'wb');
+            curl_setopt($ch, CURLOPT_FILE, $fp);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_exec($ch);
+            curl_close($ch);
+            fclose($fp);
+        }
+    }
+
+
+
+    /*
      * Отдаём файл на скачивание через браузер.
      * $file - полный путь к файлу
      */
