@@ -68,7 +68,7 @@ class File
      * $path - путь к папке, куда сохранить файл.
      */
     public static function saveFile($file, $path) {
-        if ($file && $path) {
+        if ($file && filter_var(trim($file), FILTER_VALIDATE_URL) && $path) {
             $name = pathinfo($file)['basename'] ?? null;
             $path = $path . '/' . $name;
 
